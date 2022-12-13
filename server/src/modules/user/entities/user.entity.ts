@@ -8,8 +8,10 @@ import {
   Following,
 } from '../../index.models';
 
+import { IUser } from 'src/core/interfaces';
+
 @Table
-export class User extends Model {
+export class User extends Model<IUser> {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,

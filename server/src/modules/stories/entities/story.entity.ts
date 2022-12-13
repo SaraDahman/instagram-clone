@@ -10,9 +10,10 @@ import {
 
 import { User } from 'src/modules/index.models';
 import { Viewer } from '../../index.models';
+import { IStory } from 'src/core/interfaces';
 
 @Table
-export class Story extends Model {
+export class Story extends Model<IStory> {
   @Column({
     type: DataType.BIGINT,
     primaryKey: true,

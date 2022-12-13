@@ -9,9 +9,10 @@ import {
 } from 'sequelize-typescript';
 
 import { User, Comment, Like } from 'src/modules/index.models';
+import { IPost } from 'src/core/interfaces';
 
 @Table
-export class Post extends Model {
+export class Post extends Model<IPost> {
   @Column({
     type: DataType.INTEGER,
     primaryKey: true,
@@ -25,11 +26,11 @@ export class Post extends Model {
   })
   caption: string;
 
-  // @Column({
-  //   type: DataType.ARRAY(DataType.TEXT),
-  //   allowNull: false,
-  // })
-  // media: string[];
+  @Column({
+    type: DataType.ARRAY(DataType.TEXT),
+    allowNull: false,
+  })
+  media: string[];
 
   @Column({
     type: DataType.BOOLEAN,

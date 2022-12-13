@@ -6,10 +6,12 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
+
 import { User, Post } from '../../index.models';
+import { IComment } from 'src/core/interfaces';
 
 @Table
-export class Comment extends Model {
+export class Comment extends Model<IComment> {
   @Column({
     type: DataType.BIGINT,
     primaryKey: true,

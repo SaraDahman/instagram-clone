@@ -7,8 +7,10 @@ import {
 } from 'sequelize-typescript';
 
 import { User, Post } from 'src/modules/index.models';
+import { IBookmarks } from 'src/core/interfaces';
+
 @Table
-export class Bookmark extends Model {
+export class Bookmark extends Model<IBookmarks> {
   @ForeignKey(() => User)
   @Column({
     primaryKey: true,

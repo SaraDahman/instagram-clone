@@ -20,7 +20,6 @@ import config from './core/database/connection';
       sync: { force: false },
       autoLoadModels: true,
       synchronize: true,
-      models: [],
     }),
     UserModule,
     PostsModule,
