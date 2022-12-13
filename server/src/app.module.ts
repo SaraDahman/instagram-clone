@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
+
 import {
   UserModule,
   PostsModule,
@@ -12,12 +13,13 @@ import {
 } from './modules';
 
 import config from './core/database/connection';
-
 @Module({
   imports: [
     SequelizeModule.forRoot({
       ...config,
-      models: [],
+      sync: { force: false },
+      autoLoadModels: true,
+      synchronize: true,
     }),
     UserModule,
     PostsModule,
@@ -31,4 +33,4 @@ import config from './core/database/connection';
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}
