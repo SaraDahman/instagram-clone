@@ -13,7 +13,7 @@ import { User, Comment, Like } from 'src/modules/index.models';
 @Table
 export class Post extends Model {
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.BIGINT,
     primaryKey: true,
     autoIncrement: true,
   })
@@ -25,11 +25,11 @@ export class Post extends Model {
   })
   caption: string;
 
-  // @Column({
-  //   type: DataType.ARRAY(DataType.TEXT),
-  //   allowNull: false,
-  // })
-  // media: string[];
+  @Column({
+    type: DataType.ARRAY(DataType.TEXT),
+    allowNull: false,
+  })
+  media: string[];
 
   @Column({
     type: DataType.BOOLEAN,
