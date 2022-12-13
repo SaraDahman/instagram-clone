@@ -5,10 +5,12 @@ import {
   ForeignKey,
   BelongsTo,
 } from 'sequelize-typescript';
+
 import { Story, User } from 'src/modules/index.models';
+import { IViewer } from 'src/core/interfaces';
 
 @Table
-export class Viewer extends Model {
+export class Viewer extends Model<IViewer> {
   @ForeignKey(() => User)
   @Column({
     primaryKey: true,

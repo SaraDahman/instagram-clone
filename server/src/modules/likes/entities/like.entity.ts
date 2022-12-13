@@ -7,8 +7,10 @@ import {
 } from 'sequelize-typescript';
 
 import { User, Post } from 'src/modules/index.models';
+import { ILike } from 'src/core/interfaces';
+
 @Table
-export class Like extends Model {
+export class Like extends Model<ILike> {
   @ForeignKey(() => User)
   @Column({
     primaryKey: true,

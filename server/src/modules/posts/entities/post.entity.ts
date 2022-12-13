@@ -9,9 +9,10 @@ import {
 } from 'sequelize-typescript';
 
 import { User, Comment, Like } from 'src/modules/index.models';
+import { IPost } from 'src/core/interfaces';
 
 @Table
-export class Post extends Model {
+export class Post extends Model<IPost> {
   @Column({
     type: DataType.BIGINT,
     primaryKey: true,
