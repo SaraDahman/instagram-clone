@@ -14,7 +14,7 @@ import { IPost } from 'src/core/interfaces';
 @Table
 export class Post extends Model<IPost> {
   @Column({
-    type: DataType.INTEGER,
+    type: DataType.BIGINT,
     primaryKey: true,
     autoIncrement: true,
   })
