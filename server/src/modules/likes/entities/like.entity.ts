@@ -27,5 +27,5 @@ export class Like extends Model<ILike> {
   postId: number;
 
   @BelongsTo(() => Post)
-  post: User;
+  post: Post;
 }

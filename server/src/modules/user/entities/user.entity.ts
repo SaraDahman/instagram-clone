@@ -81,6 +81,9 @@ export class User extends Model<IUser> {
   @HasMany(() => Bookmark, { onDelete: 'CASCADE' })
   bookmarks: Bookmark[];
 
-  @HasMany(() => Following, { onDelete: 'CASCADE' })
-  followings: Following[];
+  @HasMany(() => Following, 'followerId')
+  follower: Following[];
+
+  @HasMany(() => Following, 'followedId')
+  followed: Following[];
 }
