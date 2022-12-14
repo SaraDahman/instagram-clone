@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { SequelizeModule } from '@nestjs/sequelize';
+import { ConfigModule } from '@nestjs/config';
 
 import {
+  AuthModule,
   UserModule,
   PostsModule,
   BookmarksModule,
@@ -21,6 +23,8 @@ import config from './core/database/connection';
       autoLoadModels: true,
       synchronize: true,
     }),
+    ConfigModule.forRoot({ isGlobal: true }),
+    AuthModule,
     UserModule,
     PostsModule,
     BookmarksModule,
@@ -33,4 +37,4 @@ import config from './core/database/connection';
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }

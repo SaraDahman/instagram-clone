@@ -6,3 +6,4 @@ export * from './posts/posts.module';
 export * from './stories/stories.module';
 export * from './user/user.module';
 export * from './viewers/viewers.module';
+export * from './auth/auth.module';
