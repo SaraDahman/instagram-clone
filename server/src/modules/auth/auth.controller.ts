@@ -1,8 +1,7 @@
-import { Controller, Post, Body, Get, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { CheckAuthDto } from './dto/check-auth.dto';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -16,11 +15,5 @@ export class AuthController {
   @Post('signin')
   async signIn(@Body() checkAuthDto: CheckAuthDto) {
     return this.authService.signIn(checkAuthDto);
-  }
-
-  @UseGuards(AuthGuard('jwt'))
-  @Get('test')
-  test() {
-    return 'something';
   }
 }
