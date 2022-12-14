@@ -20,12 +20,12 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@getUser('id') userId: number, @Body() dto: CreatePostDto) {
+  create(@getUser() userId: number, @Body() dto: CreatePostDto) {
     return this.postsService.create(userId, dto);
   }
 
   @Get()
-  findAll(@getUser('id') userId: number) {
+  findAll(@getUser() userId: number) {
     return this.postsService.findAll(userId);
   }
 
@@ -37,17 +37,16 @@ export class PostsController {
   @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(
-    @getUser('sub') userId: number,
+    @getUser() userId: number,
     @Param('id', ParseIntPipe) id: number,
     @Body() updatePostDto: UpdatePostDto,
   ) {
-    console.log('the id of the user', userId);
     return this.postsService.update(userId, id, updatePostDto);
   }
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@getUser('id') userId: number, @Param('id', ParseIntPipe) id: number) {
+  remove(@getUser() userId: number, @Param('id', ParseIntPipe) id: number) {
     console.log(userId);
     return this.postsService.remove(userId, id);
   }
