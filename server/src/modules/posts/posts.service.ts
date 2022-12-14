@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Messages } from 'src/core/messages';
 import { Following, Like, User } from '../index.models';
+import { Messages } from 'src/core/messages';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities';
@@ -10,29 +10,29 @@ import { Post } from './entities';
 export class PostsService {
   constructor(
     @InjectModel(Post)
-    private postModel: typeof Post,
+    private postRepository: typeof Post,
   ) {}
 
-  async create(dto: CreatePostDto) {
-    const data = await this.postModel.create(dto);
+  async create(userId: number, dto: CreatePostDto) {
+    const data = await this.postRepository.create({ ...dto, userId });
 
-    if (!data) throw new BadRequestException(Messages.CREATE_POST_FAILED);
+    if (!data) throw new BadRequestException(Messages.CREATE_FAILED);
 
-    return { data, message: Messages.CREATE_POST };
+    return { message: Messages.CREATE_SUCCESS };
   }
 
-  async findAll() {
-    const authUser = 0;
+  async findAll(userId: number) {
     const includeFollowing = [];
-    if (authUser) {
+    if (userId) {
       includeFollowing[0] = {
         model: Following,
         required: true,
         as: 'followed',
-        where: { followerId: authUser },
+        where: { followerId: userId },
       };
     }
-    return await this.postModel.findAll({
+    return await this.postRepository.findAll({
+      attributes: { exclude: ['updatedAt'] },
       include: [
         {
           model: User,
@@ -46,6 +46,7 @@ export class PostsService {
             {
               model: User,
               attributes: ['name', 'username', 'image'],
+              required: true,
             },
           ],
         },
@@ -55,7 +56,7 @@ export class PostsService {
   }
 
   async findOne(id: number) {
-    return await this.postModel.findOne({
+    return await this.postRepository.findOne({
       include: [
         {
           model: User,
@@ -75,20 +76,21 @@ export class PostsService {
     });
   }
 
-  async update(id: number, dto: UpdatePostDto) {
-    const [updated, data] = await this.postModel.update(dto, {
-      where: { id },
+  async update(userId: number, id: number, dto: UpdatePostDto) {
+    const [updated] = await this.postRepository.update(dto, {
+      where: { id, userId },
       returning: true,
     });
 
-    if (!updated) throw new BadRequestException(Messages.UPDATE_POST_FAILED);
-    return { data: data[0], message: Messages.UPDATE_POST };
+    if (!updated) throw new BadRequestException(Messages.UPDATE_FAILED);
+    return { message: Messages.UPDATE_SUCCESS };
   }
 
-  async remove(id: number) {
-    const deleted = await this.postModel.destroy({ where: { id } });
-
-    if (!deleted) throw new BadRequestException(Messages.DELETE_POST_FAILED);
+  async remove(userId: number, id: number) {
+    const deleted = await this.postRepository.destroy({
+      where: { id, userId },
+    });
+    if (!deleted) throw new BadRequestException(Messages.DELETE_FAILED);
     return { message: Messages.DELETE_POST };
   }
 }

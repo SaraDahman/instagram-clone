@@ -7,23 +7,26 @@ import {
   Param,
   Delete,
   ParseIntPipe,
+  UseGuards,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
-
+import { JwtAuthGuard } from '../auth/strategy/jwt-auth-guard';
+import { getUser } from '../auth/decorator/user.decorator';
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() dto: CreatePostDto) {
-    return this.postsService.create(dto);
+  create(@getUser('id') userId: number, @Body() dto: CreatePostDto) {
+    return this.postsService.create(userId, dto);
   }
 
   @Get()
-  findAll() {
-    return this.postsService.findAll();
+  findAll(@getUser('id') userId: number) {
+    return this.postsService.findAll(userId);
   }
 
   @Get(':id')
@@ -31,16 +34,21 @@ export class PostsController {
     return this.postsService.findOne(id);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(
+    @getUser('sub') userId: number,
     @Param('id', ParseIntPipe) id: number,
     @Body() updatePostDto: UpdatePostDto,
   ) {
-    return this.postsService.update(id, updatePostDto);
+    console.log('the id of the user', userId);
+    return this.postsService.update(userId, id, updatePostDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@Param('id', ParseIntPipe) id: number) {
-    return this.postsService.remove(id);
+  remove(@getUser('id') userId: number, @Param('id', ParseIntPipe) id: number) {
+    console.log(userId);
+    return this.postsService.remove(userId, id);
   }
 }

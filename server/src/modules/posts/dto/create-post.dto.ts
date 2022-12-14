@@ -8,8 +8,4 @@ export class CreatePostDto {
   @IsArray()
   @IsString({ each: true })
   media: string[];
-
-  @IsNotEmpty()
-  @IsNumber()
-  userId: number;
 }
