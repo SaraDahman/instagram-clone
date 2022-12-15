@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Following, Like, User } from '../index.models';
 import { Messages } from 'src/core/messages';
@@ -86,6 +90,11 @@ export class PostsService {
     return { data };
   }
 
+  async checkPost(postId: number) {
+    const post = await this.postRepository.findByPk(postId);
+    if (!post) throw new NotFoundException("This post doesn't exist any more");
+  }
+
   async update(userId: number, id: number, dto: UpdatePostDto) {
     const [updated, data] = await this.postRepository.update(dto, {
       where: { id, userId },
@@ -101,6 +110,6 @@ export class PostsService {
       where: { id, userId },
     });
     if (!deleted) throw new BadRequestException(Messages.DELETE_FAILED);
-    return { message: Messages.DELETE_POST };
+    return { message: Messages.DELETE_SUCCESS };
   }
 }
