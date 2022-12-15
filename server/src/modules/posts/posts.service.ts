@@ -92,7 +92,7 @@ export class PostsService {
 
   async checkPost(postId: number) {
     const post = await this.postRepository.findByPk(postId);
-    if (!post) throw new NotFoundException("This post doesn't exist any more");
+    if (!post) throw new NotFoundException(Messages.POST_NOT_FOUND);
   }
 
   async update(userId: number, id: number, dto: UpdatePostDto) {

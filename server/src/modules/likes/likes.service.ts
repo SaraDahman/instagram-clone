@@ -17,8 +17,7 @@ export class LikesService {
   ) {}
 
   async create(dto: LikeDto, userId: number) {
-    const post = await this.postsService.findOne(dto.postId);
-    if (!post) throw new NotFoundException();
+    await this.postsService.checkPost(dto.postId);
 
     const [data] = await this.likeRepository.upsert(
       { ...dto, userId },
@@ -30,8 +29,7 @@ export class LikesService {
   }
 
   async remove(dto: LikeDto, userId: number) {
-    const post = this.postsService.findOne(dto.postId);
-    if (!post) throw new NotFoundException();
+    await this.postsService.checkPost(dto.postId);
 
     const deleted = await this.likeRepository.destroy({
       where: { ...dto, userId },
