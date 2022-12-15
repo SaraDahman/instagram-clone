@@ -5,6 +5,7 @@ import { Messages } from 'src/core/messages';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities';
+import { findAllQueryDTO } from './dto/find-all-query.dto';
 
 @Injectable()
 export class PostsService {
@@ -18,10 +19,15 @@ export class PostsService {
 
     if (!data) throw new BadRequestException(Messages.CREATE_FAILED);
 
-    return { message: Messages.CREATE_SUCCESS };
+    return { data, message: Messages.CREATE_SUCCESS };
   }
 
-  async findAll(userId: number) {
+  async findAll(userId: number, dto: findAllQueryDTO) {
+    const whereObj = {};
+    if (dto.profileUserId) {
+      whereObj['userId'] = dto.profileUserId;
+    }
+
     const includeFollowing = [];
     if (userId) {
       includeFollowing[0] = {
@@ -31,7 +37,7 @@ export class PostsService {
         where: { followerId: userId },
       };
     }
-    return await this.postRepository.findAll({
+    const data = await this.postRepository.findAll({
       attributes: { exclude: ['updatedAt'] },
       include: [
         {
@@ -51,12 +57,15 @@ export class PostsService {
           ],
         },
       ],
+      where: whereObj,
       order: [['createdAt', 'DESC']],
     });
+
+    return { data };
   }
 
   async findOne(id: number) {
-    return await this.postRepository.findOne({
+    const data = await this.postRepository.findOne({
       include: [
         {
           model: User,
@@ -74,16 +83,17 @@ export class PostsService {
       ],
       where: { id },
     });
+    return { data };
   }
 
   async update(userId: number, id: number, dto: UpdatePostDto) {
-    const [updated] = await this.postRepository.update(dto, {
+    const [updated, data] = await this.postRepository.update(dto, {
       where: { id, userId },
       returning: true,
     });
 
     if (!updated) throw new BadRequestException(Messages.UPDATE_FAILED);
-    return { message: Messages.UPDATE_SUCCESS };
+    return { data, message: Messages.UPDATE_SUCCESS };
   }
 
   async remove(userId: number, id: number) {

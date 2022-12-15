@@ -8,12 +8,14 @@ import {
   Delete,
   ParseIntPipe,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { JwtAuthGuard } from '../auth/strategy/jwt-auth-guard';
 import { getUser } from '../auth/decorator/user.decorator';
+import { findAllQueryDTO } from './dto/find-all-query.dto';
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
@@ -25,8 +27,9 @@ export class PostsController {
   }
 
   @Get()
-  findAll(@getUser() userId: number) {
-    return this.postsService.findAll(userId);
+  findAll(@getUser() userId: number, @Query() dto: findAllQueryDTO) {
+    console.log(dto);
+    return this.postsService.findAll(userId, dto);
   }
 
   @Get(':id')
