@@ -1,26 +1,43 @@
-import { Injectable } from '@nestjs/common';
-import { CreateLikeDto } from './dto/create-like.dto';
-import { UpdateLikeDto } from './dto/update-like.dto';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { Messages } from '../../core/messages';
+import { PostsService } from '../posts/posts.service';
+import { LikeDto } from './dto/like.dto';
+import { Like } from './entities';
 
 @Injectable()
 export class LikesService {
-  create(createLikeDto: CreateLikeDto) {
-    return 'This action adds a new like';
+  constructor(
+    @InjectModel(Like) private likeRepository: typeof Like,
+    private readonly postsService: PostsService,
+  ) {}
+
+  async create(dto: LikeDto, userId: number) {
+    const post = await this.postsService.findOne(dto.postId);
+    if (!post) throw new NotFoundException();
+
+    const [data] = await this.likeRepository.upsert(
+      { ...dto, userId },
+      { returning: true },
+    );
+    if (!data) throw new BadRequestException(Messages.CREATE_FAILED);
+
+    return { data, message: Messages.CREATE_SUCCESS };
   }
 
-  findAll() {
-    return `This action returns all likes`;
-  }
+  async remove(dto: LikeDto, userId: number) {
+    const post = this.postsService.findOne(dto.postId);
+    if (!post) throw new NotFoundException();
 
-  findOne(id: number) {
-    return `This action returns a #${id} like`;
-  }
+    const deleted = await this.likeRepository.destroy({
+      where: { ...dto, userId },
+    });
+    if (!deleted) throw new BadRequestException(Messages.DELETE_FAILED);
 
-  update(id: number, updateLikeDto: UpdateLikeDto) {
-    return `This action updates a #${id} like`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} like`;
+    return { message: Messages.DELETE_SUCCESS };
   }
 }

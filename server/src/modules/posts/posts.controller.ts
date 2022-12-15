@@ -28,7 +28,6 @@ export class PostsController {
 
   @Get()
   findAll(@GetUser() userId: number, @Query() dto: findAllQueryDTO) {
-    console.log(dto);
     return this.postsService.findAll(userId, dto);
   }
 
