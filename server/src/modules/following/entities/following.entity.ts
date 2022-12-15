@@ -17,10 +17,13 @@ export class Following extends Model<IFollowing> {
   })
   followerId: number;
 
+  @BelongsTo(() => User, 'followerId')
+  follower: User;
+
   @ForeignKey(() => User)
   @Column
   followedId: number;
 
-  @BelongsTo(() => User)
-  user: User;
+  @BelongsTo(() => User, 'followedId')
+  followed: User;
 }
