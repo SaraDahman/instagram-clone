@@ -6,37 +6,51 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common/decorators';
 import { CommentsService } from './comments.service';
-import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
+import { CommentDto } from './dto/create-comment.dto';
+import { JwtAuthGuard } from '../auth/strategy/jwt-auth-guard';
+import { GetUser } from '../auth/decorator/user.decorator';
 
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
-  @Post()
-  create(@Body() createCommentDto: CreateCommentDto) {
-    return this.commentsService.create(createCommentDto);
+  @UseGuards(JwtAuthGuard)
+  @Post(':postId')
+  create(
+    @Param('postId', ParseIntPipe) postId: number,
+    @Body()
+    createCommentDto: CommentDto,
+    @GetUser() userId: number,
+  ) {
+    return this.commentsService.create(createCommentDto, postId, userId);
   }
 
-  @Get()
-  findAll() {
-    return this.commentsService.findAll();
+  @Get(':postId')
+  findAll(@Param('postId', ParseIntPipe) postId: number) {
+    return this.commentsService.findAll(postId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.commentsService.findOne(+id);
-  }
-
+  @UseGuards(JwtAuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentsService.update(+id, updateCommentDto);
+  update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateCommentDto: CommentDto,
+    @GetUser() userId: number,
+  ) {
+    return this.commentsService.update(updateCommentDto, id, userId);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.commentsService.remove(+id);
+  @UseGuards(JwtAuthGuard)
+  @Delete(':id/post/:postId')
+  remove(
+    @Param('id', ParseIntPipe) id: number,
+    @Param('postId', ParseIntPipe) postId: number,
+    @GetUser() userId: number,
+  ) {
+    return this.commentsService.remove(id, postId, userId);
   }
 }
