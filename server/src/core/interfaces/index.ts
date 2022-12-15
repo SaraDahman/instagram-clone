@@ -25,7 +25,7 @@ export interface IPost
   id: CreationOptional<number>;
   caption: string;
   media: string[];
-  archived: boolean;
+  archived?: boolean;
   userId: ForeignKey<IUser['id']>;
   createdAt?: CreationOptional<Date>;
   updatedAt?: CreationOptional<Date>;
@@ -64,7 +64,7 @@ export interface IStory
   extends Model<InferAttributes<IStory>, InferCreationAttributes<IStory>> {
   id: CreationOptional<number>;
   media: string;
-  archived: boolean;
+  archived?: boolean;
   userId: ForeignKey<IUser['id']>;
   createdAt?: CreationOptional<Date>;
   updatedAt?: CreationOptional<Date>;

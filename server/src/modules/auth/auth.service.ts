@@ -13,7 +13,7 @@ export class AuthService {
     @InjectModel(User) private userRepository: typeof User,
     private jwt: JwtService,
     private config: ConfigService,
-  ) { }
+  ) {}
 
   async signUp(createAuthDto: CreateAuthDto) {
     try {

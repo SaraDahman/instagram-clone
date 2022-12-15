@@ -5,7 +5,7 @@ import { CheckAuthDto } from './dto/check-auth.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) { }
+  constructor(private readonly authService: AuthService) {}
 
   @Post('signup')
   async signUp(@Body() createAuthDto: CreateAuthDto) {
