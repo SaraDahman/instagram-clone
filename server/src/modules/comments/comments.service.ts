@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
-import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
+import { InjectModel } from '@nestjs/sequelize';
+
+import { CommentDto } from './dto/create-comment.dto';
+import { Comment } from './entities/';
 
 @Injectable()
 export class CommentsService {
-  create(createCommentDto: CreateCommentDto) {
-    return 'This action adds a new comment';
+  constructor(@InjectModel(Comment) private commentModel: typeof Comment) {}
+  async create(CommentDto: CommentDto, postId: number) {
+    return await this.commentModel.create({ postId, userId: 1 });
   }
 
   findAll() {
@@ -16,7 +19,7 @@ export class CommentsService {
     return `This action returns a #${id} comment`;
   }
 
-  update(id: number, updateCommentDto: UpdateCommentDto) {
+  update(id: number, CommentDto: CommentDto) {
     return `This action updates a #${id} comment`;
   }
 

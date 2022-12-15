@@ -6,18 +6,22 @@ import {
   Patch,
   Param,
   Delete,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { CommentsService } from './comments.service';
-import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
+import { CommentDto } from './dto/create-comment.dto';
 
 @Controller('comments')
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
-  @Post()
-  create(@Body() createCommentDto: CreateCommentDto) {
-    return this.commentsService.create(createCommentDto);
+  @Post(':postId')
+  create(
+    @Param('postId', ParseIntPipe) postId: number,
+    @Body()
+    createCommentDto: CommentDto,
+  ) {
+    return this.commentsService.create(createCommentDto, postId);
   }
 
   @Get()
@@ -31,7 +35,7 @@ export class CommentsController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
+  update(@Param('id') id: string, @Body() updateCommentDto: CommentDto) {
     return this.commentsService.update(+id, updateCommentDto);
   }
 
