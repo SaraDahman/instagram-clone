@@ -4,7 +4,6 @@ import { Op } from 'sequelize';
 import sequelize from 'sequelize';
 import { CommentDto } from './dto/create-comment.dto';
 import { Comment } from './entities/';
-
 import { Messages } from 'src/core/messages';
 import { User } from '../user/entities/user.entity';
 import { PostsService } from '../posts/posts.service';
@@ -40,16 +39,17 @@ export class CommentsService {
   }
 
   async update(updateCommentDto: CommentDto, id: number, userId: number) {
-    const [affectedRows] = await this.commentRepository.update(
+    const [affectedRows, data] = await this.commentRepository.update(
       {
         comment: updateCommentDto.comment,
       },
       {
         where: { id, userId },
+        returning: true,
       },
     );
     if (!affectedRows) throw new NotFoundException();
-    return { message: Messages.UPDATE_SUCCESS };
+    return { message: Messages.UPDATE_SUCCESS, data };
   }
 
   async remove(id: number, postId: number, userId: number) {
@@ -58,10 +58,9 @@ export class CommentsService {
         id,
         [Op.or]: [
           {
-            // $1 postId , $2 userId
             userId: sequelize.literal(
               `0<(SELECT "userId" FROM "Posts" as posts where "id"=${postId} and 
-          "userId" = ${userId})`,
+               "userId" = ${userId})`,
             ),
           },
           {

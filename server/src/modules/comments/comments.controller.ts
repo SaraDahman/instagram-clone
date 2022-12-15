@@ -33,23 +33,24 @@ export class CommentsController {
   findAll(@Param('postId', ParseIntPipe) postId: number) {
     return this.commentsService.findAll(postId);
   }
+
   @UseGuards(JwtAuthGuard)
-  @Patch(':commentId')
+  @Patch(':id')
   update(
-    @Param('commentId', ParseIntPipe) commentId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateCommentDto: CommentDto,
     @GetUser() userId: number,
   ) {
-    return this.commentsService.update(updateCommentDto, commentId, userId);
+    return this.commentsService.update(updateCommentDto, id, userId);
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete(':commentId/post/:postId')
+  @Delete(':id/post/:postId')
   remove(
-    @Param('commentId', ParseIntPipe) commentId: number,
+    @Param('id', ParseIntPipe) id: number,
     @Param('postId', ParseIntPipe) postId: number,
     @GetUser() userId: number,
   ) {
-    return this.commentsService.remove(commentId, postId, userId);
+    return this.commentsService.remove(id, postId, userId);
   }
 }
