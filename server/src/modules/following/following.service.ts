@@ -8,7 +8,7 @@ import { Following } from './entities';
 import { User } from '../index.models';
 import { UserService } from '../user/user.service';
 import { Messages } from '../../core/messages/index';
-
+import { FollowingDto } from './dto';
 @Injectable()
 export class FollowingService {
   constructor(
@@ -16,32 +16,45 @@ export class FollowingService {
     @InjectModel(User) private userRepository: typeof User,
     private userService: UserService,
   ) {}
+
   async create(followedId: number, followerId: number) {
     if (followedId === followerId) throw new BadRequestException();
     await this.userService.checkUser(followedId);
-    return await Following.upsert({ followedId, followerId });
+    const data = await Following.upsert({ followedId, followerId });
+    return { data };
   }
 
-  async findAll(followedId: number) {
-    return await this.followingRepository.findAll({
+  async findAll(followingDto: FollowingDto) {
+    const whereObj = {};
+    let as = 'follower';
+    if (followingDto.followedId) {
+      // To get all users who are following you
+      whereObj['followedId'] = followingDto.followedId;
+    } else {
+      // To get all users who you are following
+      whereObj['followerId'] = followingDto.followerId;
+      as = 'followed';
+    }
+
+    const data = await this.followingRepository.findAll({
       nest: false,
       raw: true,
       attributes: ['followerId'],
-      where: { followedId },
+      where: whereObj,
       include: {
         model: this.userRepository,
         attributes: ['name', 'image', 'username'],
         required: true,
-        as: 'follower',
+        as,
       },
     });
+    return { data };
   }
 
   async remove(followedId: number, followerId: number) {
     const affectedRows = await this.followingRepository.destroy({
       where: { followedId, followerId },
     });
-
     if (!affectedRows) throw new NotFoundException();
     return { message: Messages.DELETE_SUCCESS };
   }

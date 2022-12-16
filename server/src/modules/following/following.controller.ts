@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Param, Delete, Query } from '@nestjs/common';
 import { FollowingService } from './following.service';
 import { FollowingDto } from './dto';
 import { UseGuards } from '@nestjs/common/decorators';
@@ -15,9 +15,10 @@ export class FollowingController {
     return this.followingService.create(dto.followedId, followerId);
   }
 
-  @Get(':followedId')
-  findAll(@Param() dto: FollowingDto) {
-    return this.followingService.findAll(dto.followedId);
+  @Get()
+  findAllFollowers(@Query() dto: FollowingDto) {
+    // Get all followers for specific user
+    return this.followingService.findAll(dto);
   }
 
   @UseGuards(JwtAuthGuard)
