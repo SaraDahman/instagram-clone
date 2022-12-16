@@ -21,6 +21,9 @@ export class Following extends Model<IFollowing> {
   follower: User;
 
   @ForeignKey(() => User)
+  @Column({
+    primaryKey: true,
+  })
   @Column
   followedId: number;
 
