@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-import { databaseConfig } from './config';
+import { production, development, test } from './config';
 
 dotenv.config();
 const { NODE_ENV } = process.env;
@@ -8,13 +8,13 @@ let config;
 
 switch (NODE_ENV) {
   case 'development':
-    config = databaseConfig.development;
+    config = development;
     break;
   case 'production':
-    config = databaseConfig.production;
+    config = production;
     break;
   case 'test':
-    config = databaseConfig.test;
+    config = test;
     break;
   default:
     throw new Error('invalid database config variables');
