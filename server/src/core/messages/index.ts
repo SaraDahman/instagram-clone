@@ -5,4 +5,5 @@ export enum Messages {
   UPDATE_FAILED = 'Updated failed',
   DELETE_SUCCESS = 'Deleted successfully',
   DELETE_FAILED = 'Deleted failed',
+  POST_NOT_FOUND = "This post doesn't exist any more",
 }

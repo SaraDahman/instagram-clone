@@ -24,6 +24,7 @@ export class Following extends Model<IFollowing> {
   @Column({
     primaryKey: true,
   })
+  @Column
   followedId: number;
 
   @BelongsTo(() => User, 'followedId')
