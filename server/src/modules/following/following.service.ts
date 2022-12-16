@@ -21,7 +21,7 @@ export class FollowingService {
     if (followedId === followerId) throw new BadRequestException();
     await this.userService.checkUser(followedId);
     const data = await Following.upsert({ followedId, followerId });
-    return { data };
+    return data;
   }
 
   async findAll(followingDto: FollowingDto) {
@@ -48,7 +48,7 @@ export class FollowingService {
         as,
       },
     });
-    return { data };
+    return data;
   }
 
   async remove(followedId: number, followerId: number) {
