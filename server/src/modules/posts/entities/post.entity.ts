@@ -8,7 +8,7 @@ import {
   HasMany,
 } from 'sequelize-typescript';
 
-import { User, Comment, Like } from 'src/modules/index.models';
+import { User, Comment, Like, Bookmark } from '../../index.models';
 import { IPost } from 'src/core/interfaces';
 
 @Table
@@ -50,4 +50,7 @@ export class Post extends Model<IPost> {
 
   @HasMany(() => Like)
   likes: Like[];
+
+  @HasMany(() => Bookmark)
+  bookMarks: Bookmark[];
 }
