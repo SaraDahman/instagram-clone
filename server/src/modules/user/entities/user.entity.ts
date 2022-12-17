@@ -66,19 +66,19 @@ export class User extends Model<IUser> {
   })
   private: boolean;
 
-  @HasMany(() => Post, { onDelete: 'CASCADE' })
+  @HasMany(() => Post)
   posts: Post[];
 
-  @HasMany(() => Comment, { onDelete: 'CASCADE' })
+  @HasMany(() => Comment)
   comments: Comment[];
 
-  @HasMany(() => Story, { onDelete: 'CASCADE' })
+  @HasMany(() => Story)
   stories: Story[];
 
-  @HasMany(() => Like, { onDelete: 'CASCADE' })
+  @HasMany(() => Like)
   likes: Like[];
 
-  @HasMany(() => Bookmark, { onDelete: 'CASCADE' })
+  @HasMany(() => Bookmark)
   bookmarks: Bookmark[];
 
   @HasMany(() => Following, 'followerId')

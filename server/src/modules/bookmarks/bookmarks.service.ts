@@ -1,26 +1,65 @@
-import { Injectable } from '@nestjs/common';
-import { CreateBookmarkDto } from './dto/create-bookmark.dto';
-import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
+import { BadRequestException, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/sequelize';
+import { Messages } from '../../core/messages';
+import { PostsService } from '../posts/posts.service';
+import { BookmarkDto } from './dto/bookmark.dto';
+import { Post, Bookmark, User, Like } from '../index.models';
 
 @Injectable()
 export class BookmarksService {
-  create(createBookmarkDto: CreateBookmarkDto) {
-    return 'This action adds a new bookmark';
+  constructor(
+    @InjectModel(Bookmark) private BookmarkRepository: typeof Bookmark,
+    @InjectModel(Post) private PostRepository: typeof Post,
+    private readonly postsService: PostsService,
+  ) {}
+  async create(userId: number, dto: BookmarkDto) {
+    await this.postsService.checkPost(dto.postId);
+
+    const [data] = await this.BookmarkRepository.upsert(
+      { ...dto, userId },
+      { returning: true },
+    );
+    if (!data) throw new BadRequestException(Messages.CREATE_FAILED);
+
+    return { data, message: Messages.CREATE_SUCCESS };
   }
 
-  findAll() {
-    return `This action returns all bookmarks`;
+  async findAll(userId: number) {
+    const data = await this.BookmarkRepository.findAll({
+      include: [
+        {
+          model: Post,
+          required: true,
+          include: [
+            {
+              model: User,
+              attributes: ['id', 'name', 'username', 'image'],
+            },
+            {
+              model: Like,
+              include: [
+                {
+                  model: User,
+                  attributes: ['id', 'name', 'username', 'image'],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      where: { userId },
+    });
+    return { data };
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} bookmark`;
-  }
+  async remove(userId: number, dto: BookmarkDto) {
+    await this.postsService.checkPost(dto.postId);
 
-  update(id: number, updateBookmarkDto: UpdateBookmarkDto) {
-    return `This action updates a #${id} bookmark`;
-  }
+    const deleted = await this.BookmarkRepository.destroy({
+      where: { ...dto, userId },
+    });
+    if (!deleted) throw new BadRequestException(Messages.DELETE_FAILED);
 
-  remove(id: number) {
-    return `This action removes a #${id} bookmark`;
+    return { message: Messages.DELETE_SUCCESS };
   }
 }

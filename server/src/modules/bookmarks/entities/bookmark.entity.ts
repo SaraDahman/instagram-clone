@@ -27,5 +27,5 @@ export class Bookmark extends Model<IBookmarks> {
   postId: number;
 
   @BelongsTo(() => Post)
-  post: User;
+  post: Post;
 }

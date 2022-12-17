@@ -2,44 +2,34 @@ import {
   Controller,
   Get,
   Post,
-  Body,
-  Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { BookmarksService } from './bookmarks.service';
-import { CreateBookmarkDto } from './dto/create-bookmark.dto';
-import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
+import { BookmarkDto } from './dto/bookmark.dto';
+import { GetUser } from '../auth/decorator/user.decorator';
+import { JwtAuthGuard } from '../auth/strategy';
 
 @Controller('bookmarks')
 export class BookmarksController {
   constructor(private readonly bookmarksService: BookmarksService) {}
 
-  @Post()
-  create(@Body() createBookmarkDto: CreateBookmarkDto) {
-    return this.bookmarksService.create(createBookmarkDto);
+  @UseGuards(JwtAuthGuard)
+  @Post(':postId')
+  create(@GetUser() userId: number, @Param() dto: BookmarkDto) {
+    return this.bookmarksService.create(userId, dto);
   }
 
-  @Get()
-  findAll() {
-    return this.bookmarksService.findAll();
+  @UseGuards(JwtAuthGuard)
+  @Get('')
+  findAll(@GetUser() userId: number) {
+    return this.bookmarksService.findAll(userId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.bookmarksService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id') id: string,
-    @Body() updateBookmarkDto: UpdateBookmarkDto,
-  ) {
-    return this.bookmarksService.update(+id, updateBookmarkDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.bookmarksService.remove(+id);
+  @UseGuards(JwtAuthGuard)
+  @Delete(':postId')
+  remove(@GetUser() userId: number, @Param() dto: BookmarkDto) {
+    return this.bookmarksService.remove(userId, dto);
   }
 }
