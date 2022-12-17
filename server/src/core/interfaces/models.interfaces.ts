@@ -68,6 +68,7 @@ export interface IStory
   userId: ForeignKey<IUser['id']>;
   createdAt?: CreationOptional<Date>;
   updatedAt?: CreationOptional<Date>;
+  deletedAt?: CreationOptional<Date>;
 }
 
 export interface IViewer
