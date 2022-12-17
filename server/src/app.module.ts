@@ -22,6 +22,7 @@ import config from './core/database/connection';
       sync: { force: false },
       autoLoadModels: true,
       synchronize: true,
+      logging: false,
     }),
     ConfigModule.forRoot({ isGlobal: true }),
     AuthModule,
@@ -37,4 +38,4 @@ import config from './core/database/connection';
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }
