@@ -39,11 +39,11 @@ export class FollowingService {
     const data = await this.followingRepository.findAll({
       nest: false,
       raw: true,
-      attributes: ['followerId'],
+      attributes: [],
       where: whereObj,
       include: {
         model: this.userRepository,
-        attributes: ['name', 'image', 'username'],
+        attributes: ['id', 'name', 'image', 'username'],
         required: true,
         as,
       },

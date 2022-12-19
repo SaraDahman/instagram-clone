@@ -1,4 +1,10 @@
-import { IsNumber, IsInt, IsPositive, IsOptional } from 'class-validator';
+import {
+  IsNumber,
+  IsInt,
+  IsPositive,
+  IsOptional,
+  ValidateIf,
+} from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class FollowingDto {
@@ -9,11 +15,10 @@ export class FollowingDto {
   @IsOptional()
   followedId: number;
 
+  @ValidateIf((following: FollowingDto) => !Boolean(following.followedId))
   @Type(() => Number)
   @IsNumber()
   @IsInt()
   @IsPositive()
-  @IsOptional()
-  @IsOptional()
   followerId: number;
 }
