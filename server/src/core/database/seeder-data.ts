@@ -5,6 +5,7 @@ import {
   IFakeFollowing,
   IFakeLike,
   IFakeStory,
+  IFakeViewers,
 } from '../interfaces';
 
 export const users: IFakeUser[] = [
@@ -310,6 +311,57 @@ export const stories: IFakeStory[] = [
     media:
       'https://az334033.vo.msecnd.net/images-5/still-life-with-flowers-in-a-glass-vase-jan-davidsz-de-heem-1650-567066b1.jpg',
     userId: 2,
+    createdAt: '2022-12-14 15:55:13.446+02',
+    updatedAt: '2022-12-14 15:55:13.446+02',
+  },
+];
+
+export const viewers: IFakeViewers[] = [
+  {
+    storyId: 6,
+    userId: 2,
+    createdAt: '2022-12-14 15:55:13.446+02',
+    updatedAt: '2022-12-14 15:55:13.446+02',
+  },
+  {
+    storyId: 6,
+    userId: 3,
+    createdAt: '2022-12-14 15:55:13.446+02',
+    updatedAt: '2022-12-14 15:55:13.446+02',
+  },
+  {
+    storyId: 1,
+    userId: 1,
+    createdAt: '2022-12-14 15:55:13.446+02',
+    updatedAt: '2022-12-14 15:55:13.446+02',
+  },
+  {
+    storyId: 1,
+    userId: 2,
+    createdAt: '2022-12-14 15:55:13.446+02',
+    updatedAt: '2022-12-14 15:55:13.446+02',
+  },
+  {
+    storyId: 1,
+    userId: 4,
+    createdAt: '2022-12-14 15:55:13.446+02',
+    updatedAt: '2022-12-14 15:55:13.446+02',
+  },
+  {
+    storyId: 2,
+    userId: 1,
+    createdAt: '2022-12-14 15:55:13.446+02',
+    updatedAt: '2022-12-14 15:55:13.446+02',
+  },
+  {
+    storyId: 2,
+    userId: 2,
+    createdAt: '2022-12-14 15:55:13.446+02',
+    updatedAt: '2022-12-14 15:55:13.446+02',
+  },
+  {
+    storyId: 2,
+    userId: 4,
     createdAt: '2022-12-14 15:55:13.446+02',
     updatedAt: '2022-12-14 15:55:13.446+02',
   },
