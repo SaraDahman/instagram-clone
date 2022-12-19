@@ -4,6 +4,7 @@ import { FollowingDto } from './dto';
 import { UseGuards } from '@nestjs/common/decorators';
 import { JwtAuthGuard } from '../auth/strategy/jwt-auth-guard';
 import { GetUser } from '../auth/decorator/user.decorator';
+import { ValidationParamPipe } from '../../core/Pipes';
 
 @Controller('followings')
 export class FollowingController {
@@ -11,8 +12,11 @@ export class FollowingController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':followedId')
-  create(@Param() dto: FollowingDto, @GetUser() followerId: number) {
-    return this.followingService.create(dto.followedId, followerId);
+  create(
+    @Param('followedId', ValidationParamPipe) followedId: number,
+    @GetUser() followerId: number,
+  ) {
+    return this.followingService.create(followedId, followerId);
   }
 
   @Get()
@@ -23,7 +27,10 @@ export class FollowingController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':followedId')
-  remove(@Param() dto: FollowingDto, @GetUser() followerId: number) {
-    return this.followingService.remove(dto.followedId, followerId);
+  remove(
+    @Param('followedId', ValidationParamPipe) followedId: number,
+    @GetUser() followerId: number,
+  ) {
+    return this.followingService.remove(followedId, followerId);
   }
 }

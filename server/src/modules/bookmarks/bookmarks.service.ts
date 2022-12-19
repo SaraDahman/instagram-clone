@@ -2,21 +2,19 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Messages } from '../../core/messages';
 import { PostsService } from '../posts/posts.service';
-import { BookmarkDto } from './dto/bookmark.dto';
 import { Post, Bookmark, User, Like } from '../index.models';
 
 @Injectable()
 export class BookmarksService {
   constructor(
     @InjectModel(Bookmark) private BookmarkRepository: typeof Bookmark,
-    @InjectModel(Post) private PostRepository: typeof Post,
     private readonly postsService: PostsService,
   ) {}
-  async create(userId: number, dto: BookmarkDto) {
-    await this.postsService.checkPost(dto.postId);
+  async create(userId: number, postId: number) {
+    await this.postsService.checkPost(postId);
 
     const [data] = await this.BookmarkRepository.upsert(
-      { ...dto, userId },
+      { postId, userId },
       { returning: true },
     );
     if (!data) throw new BadRequestException(Messages.CREATE_FAILED);
@@ -52,11 +50,11 @@ export class BookmarksService {
     return { data };
   }
 
-  async remove(userId: number, dto: BookmarkDto) {
-    await this.postsService.checkPost(dto.postId);
+  async remove(userId: number, postId: number) {
+    await this.postsService.checkPost(postId);
 
     const deleted = await this.BookmarkRepository.destroy({
-      where: { ...dto, userId },
+      where: { postId, userId },
     });
     if (!deleted) throw new BadRequestException(Messages.DELETE_FAILED);
 

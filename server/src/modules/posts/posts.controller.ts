@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  ParseIntPipe,
   UseGuards,
   Query,
 } from '@nestjs/common';
@@ -16,6 +15,8 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { JwtAuthGuard } from '../auth/strategy/jwt-auth-guard';
 import { GetUser } from '../auth/decorator/user.decorator';
 import { findAllQueryDTO } from './dto/find-all-query.dto';
+import { ValidationParamPipe } from '../../core/Pipes';
+
 @Controller('posts')
 export class PostsController {
   constructor(private readonly postsService: PostsService) {}
@@ -32,7 +33,7 @@ export class PostsController {
   }
 
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
+  findOne(@Param('id', ValidationParamPipe) id: number) {
     return this.postsService.findOne(id);
   }
 
@@ -40,7 +41,7 @@ export class PostsController {
   @Patch(':id')
   update(
     @GetUser() userId: number,
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ValidationParamPipe) id: number,
     @Body() updatePostDto: UpdatePostDto,
   ) {
     return this.postsService.update(userId, id, updatePostDto);
@@ -48,7 +49,10 @@ export class PostsController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  remove(@GetUser() userId: number, @Param('id', ParseIntPipe) id: number) {
+  remove(
+    @GetUser() userId: number,
+    @Param('id', ValidationParamPipe) id: number,
+  ) {
     console.log(userId);
     return this.postsService.remove(userId, id);
   }
