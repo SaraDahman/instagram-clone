@@ -44,3 +44,10 @@ export interface IFakeStory {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface IFakeViewers {
+  storyId: number;
+  userId: number;
+  createdAt: string;
+  updatedAt: string;
+}
