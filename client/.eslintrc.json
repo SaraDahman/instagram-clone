@@ -27,7 +27,7 @@
       "linebreak-style":"off",
       "eol-last": ["error", "always"],
       "no-param-reassign": 0,
-      "semi": [1, "never"],
+      "semi": [1, "always"],
       "no-nested-ternary": 0,
       "no-use-before-define": "off",
       "max-len": ["error", { "code": 100 }],
