@@ -40,7 +40,6 @@ export interface IFakeLike {
 
 export interface IFakeStory {
   media: string;
-  archived: boolean;
   userId: number;
   createdAt: string;
   updatedAt: string;

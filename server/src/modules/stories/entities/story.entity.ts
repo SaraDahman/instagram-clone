@@ -12,7 +12,9 @@ import { User } from 'src/modules/index.models';
 import { Viewer } from '../../index.models';
 import { IStory } from 'src/core/interfaces';
 
-@Table
+@Table({
+  paranoid: true,
+})
 export class Story extends Model<IStory> {
   @Column({
     type: DataType.BIGINT,
@@ -27,11 +29,11 @@ export class Story extends Model<IStory> {
   })
   media: string;
 
-  @Column({
-    type: DataType.BOOLEAN,
-    defaultValue: false,
-  })
-  archived: boolean;
+  // @Column({
+  //   type: DataType.BOOLEAN,
+  //   defaultValue: false,
+  // })
+  // archived: boolean;
 
   @HasMany(() => Viewer)
   viewers: Viewer[];

@@ -268,7 +268,6 @@ export const stories: IFakeStory[] = [
   {
     media:
       'https://upload.wikimedia.org/wikipedia/commons/4/4d/Cat_November_2010-1a.jpg',
-    archived: false,
     userId: 5,
     createdAt: '2022-12-14 15:55:13.446+02',
     updatedAt: '2022-12-14 15:55:13.446+02',
@@ -276,14 +275,19 @@ export const stories: IFakeStory[] = [
   {
     media:
       'https://img.freepik.com/free-photo/red-white-cat-i-white-studio_155003-13189.jpg?w=360',
-    archived: false,
+    userId: 5,
+    createdAt: '2022-12-14 15:55:13.446+02',
+    updatedAt: '2022-12-14 15:55:13.446+02',
+  },
+  {
+    media:
+      'https://i.pinimg.com/564x/d3/7f/3c/d37f3c1d5c32509932ac6e953958a49e--cat-wallpaper-iphone-wallpaper.jpg',
     userId: 5,
     createdAt: '2022-12-14 15:55:13.446+02',
     updatedAt: '2022-12-14 15:55:13.446+02',
   },
   {
     media: 'https://w0.peakpx.com/wallpaper/296/813/HD-wallpaper-bts-ot7.jpg',
-    archived: true,
     userId: 4,
     createdAt: '2022-12-14 15:55:13.446+02',
     updatedAt: '2022-12-14 15:55:13.446+02',
@@ -291,7 +295,6 @@ export const stories: IFakeStory[] = [
   {
     media:
       'https://pm1.narvii.com/6348/6b30e281a44191763cfab05dd360c2f7b00f1145_hq.jpg',
-    archived: false,
     userId: 4,
     createdAt: '2022-12-14 15:55:13.446+02',
     updatedAt: '2022-12-14 15:55:13.446+02',
@@ -299,8 +302,14 @@ export const stories: IFakeStory[] = [
   {
     media:
       'https://static.designboom.com/wp-content/uploads/2022/05/strozzi-nft-db-500.jpg',
-    archived: false,
     userId: 1,
+    createdAt: '2022-12-14 15:55:13.446+02',
+    updatedAt: '2022-12-14 15:55:13.446+02',
+  },
+  {
+    media:
+      'https://az334033.vo.msecnd.net/images-5/still-life-with-flowers-in-a-glass-vase-jan-davidsz-de-heem-1650-567066b1.jpg',
+    userId: 2,
     createdAt: '2022-12-14 15:55:13.446+02',
     updatedAt: '2022-12-14 15:55:13.446+02',
   },
