@@ -6,10 +6,11 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
+
 import { BookmarksService } from './bookmarks.service';
-import { BookmarkDto } from './dto/bookmark.dto';
 import { GetUser } from '../auth/decorator/user.decorator';
 import { JwtAuthGuard } from '../auth/strategy';
+import { ValidationParamPipe } from '../../core/Pipes';
 
 @Controller('bookmarks')
 export class BookmarksController {
@@ -17,8 +18,11 @@ export class BookmarksController {
 
   @UseGuards(JwtAuthGuard)
   @Post(':postId')
-  create(@GetUser() userId: number, @Param() dto: BookmarkDto) {
-    return this.bookmarksService.create(userId, dto);
+  create(
+    @GetUser() userId: number,
+    @Param('postId', ValidationParamPipe) postId: number,
+  ) {
+    return this.bookmarksService.create(userId, postId);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -29,7 +33,10 @@ export class BookmarksController {
 
   @UseGuards(JwtAuthGuard)
   @Delete(':postId')
-  remove(@GetUser() userId: number, @Param() dto: BookmarkDto) {
-    return this.bookmarksService.remove(userId, dto);
+  remove(
+    @GetUser() userId: number,
+    @Param('postId', ValidationParamPipe) postId: number,
+  ) {
+    return this.bookmarksService.remove(userId, postId);
   }
 }

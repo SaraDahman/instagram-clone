@@ -16,11 +16,11 @@ export class LikesService {
     private readonly postsService: PostsService,
   ) {}
 
-  async create(dto: LikeDto, userId: number) {
-    await this.postsService.checkPost(dto.postId);
+  async create(postId: number, userId: number) {
+    await this.postsService.checkPost(postId);
 
     const [data] = await this.likeRepository.upsert(
-      { ...dto, userId },
+      { postId, userId },
       { returning: true },
     );
     if (!data) throw new BadRequestException(Messages.CREATE_FAILED);
@@ -28,11 +28,11 @@ export class LikesService {
     return { data, message: Messages.CREATE_SUCCESS };
   }
 
-  async remove(dto: LikeDto, userId: number) {
-    await this.postsService.checkPost(dto.postId);
+  async remove(postId: number, userId: number) {
+    await this.postsService.checkPost(postId);
 
     const deleted = await this.likeRepository.destroy({
-      where: { ...dto, userId },
+      where: { postId, userId },
     });
     if (!deleted) throw new BadRequestException(Messages.DELETE_FAILED);
 

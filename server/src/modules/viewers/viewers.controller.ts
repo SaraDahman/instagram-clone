@@ -10,6 +10,7 @@ import {
 import { ViewersService } from './viewers.service';
 import { CreateViewerDto } from './dto/create-viewer.dto';
 import { UpdateViewerDto } from './dto/update-viewer.dto';
+import { ValidationParamPipe } from '../../core/Pipes';
 
 @Controller('viewers')
 export class ViewersController {
@@ -26,17 +27,20 @@ export class ViewersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  findOne(@Param('id', ValidationParamPipe) id: string) {
     return this.viewersService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateViewerDto: UpdateViewerDto) {
+  update(
+    @Param('id', ValidationParamPipe) id: string,
+    @Body() updateViewerDto: UpdateViewerDto,
+  ) {
     return this.viewersService.update(+id, updateViewerDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  remove(@Param('id', ValidationParamPipe) id: string) {
     return this.viewersService.remove(+id);
   }
 }

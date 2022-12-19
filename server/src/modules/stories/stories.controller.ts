@@ -6,17 +6,17 @@ import {
   Param,
   Delete,
   UseGuards,
-  ParseIntPipe,
-  BadRequestException,
   Query,
 } from '@nestjs/common';
 import { StoriesService } from './stories.service';
 import { CreateStoryDto } from './dto/create-story.dto';
 import { GetUser } from '../auth/decorator/user.decorator';
 import { JwtAuthGuard } from '../auth/strategy';
+import { ValidationParamPipe } from '../../core/Pipes';
+
 @Controller('stories')
 export class StoriesController {
-  constructor(private readonly storiesService: StoriesService) { }
+  constructor(private readonly storiesService: StoriesService) {}
 
   @UseGuards(JwtAuthGuard)
   @Post()
@@ -38,8 +38,7 @@ export class StoriesController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  findOne(@Param('id', ParseIntPipe) id: number) {
-    if (id < 0) throw new BadRequestException('expected a positive id');
+  findOne(@Param('id', ValidationParamPipe) id: number) {
     return this.storiesService.findOne(id);
   }
 
@@ -47,10 +46,9 @@ export class StoriesController {
   @Delete(':id')
   remove(
     @GetUser() userId: number,
-    @Param('id', ParseIntPipe) id: number,
+    @Param('id', ValidationParamPipe) id: number,
     @Query('force') force: boolean,
   ) {
-    if (id < 1) throw new BadRequestException('expected a positive id');
     return this.storiesService.remove(userId, id, force);
   }
 }
