@@ -11,7 +11,7 @@ public static init():void {
   this.axios.interceptors.response.use((res) => res, (err) => {
     const statusCode = err?.response?.status;
     if (statusCode >= 400 && statusCode < 500 && statusCode !== 401) {
-      toast.error(err?.response?.data?.message));
+      toast.error(err?.response?.data?.message);
     }
     return Promise.reject(err);
   });
