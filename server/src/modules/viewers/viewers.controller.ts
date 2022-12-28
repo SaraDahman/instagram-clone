@@ -1,46 +1,28 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Param, UseGuards } from '@nestjs/common';
 import { ViewersService } from './viewers.service';
-import { CreateViewerDto } from './dto/create-viewer.dto';
-import { UpdateViewerDto } from './dto/update-viewer.dto';
 import { ValidationParamPipe } from '../../core/Pipes';
+import { JwtAuthGuard } from '../auth/strategy';
+import { GetUser } from '../auth/decorator/user.decorator';
 
 @Controller('viewers')
 export class ViewersController {
-  constructor(private readonly viewersService: ViewersService) {}
+  constructor(private readonly viewersService: ViewersService) { }
 
-  @Post()
-  create(@Body() createViewerDto: CreateViewerDto) {
-    return this.viewersService.create(createViewerDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.viewersService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id', ValidationParamPipe) id: string) {
-    return this.viewersService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(
-    @Param('id', ValidationParamPipe) id: string,
-    @Body() updateViewerDto: UpdateViewerDto,
+  @UseGuards(JwtAuthGuard)
+  @Post(':id')
+  create(
+    @GetUser() userId: number,
+    @Param('id', ValidationParamPipe) id: number,
   ) {
-    return this.viewersService.update(+id, updateViewerDto);
+    return this.viewersService.create(userId, id);
   }
 
-  @Delete(':id')
-  remove(@Param('id', ValidationParamPipe) id: string) {
-    return this.viewersService.remove(+id);
+  @UseGuards(JwtAuthGuard)
+  @Get(':id')
+  findAll(
+    @GetUser() userId: number,
+    @Param('id', ValidationParamPipe) id: number,
+  ) {
+    return this.viewersService.findAll(userId, id);
   }
 }

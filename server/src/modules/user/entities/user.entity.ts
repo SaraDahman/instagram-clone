@@ -6,6 +6,7 @@ import {
   Like,
   Bookmark,
   Following,
+  Viewer,
 } from '../../index.models';
 
 import { IUser } from 'src/core/interfaces';
@@ -86,4 +87,7 @@ export class User extends Model<IUser> {
 
   @HasMany(() => Following, 'followedId')
   followed: Following[];
+
+  @HasMany(() => Viewer)
+  viewers: Viewer[];
 }

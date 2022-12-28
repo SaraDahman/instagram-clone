@@ -73,7 +73,7 @@ export interface IStory
 
 export interface IViewer
   extends Model<InferAttributes<IViewer>, InferCreationAttributes<IViewer>> {
-  stroyId: ForeignKey<IStory['id']>;
+  storyId: ForeignKey<IStory['id']>;
   userId: ForeignKey<IUser['id']>;
   createdAt?: CreationOptional<Date>;
   updatedAt?: CreationOptional<Date>;

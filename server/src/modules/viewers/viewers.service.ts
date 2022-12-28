@@ -1,26 +1,62 @@
-import { Injectable } from '@nestjs/common';
-import { CreateViewerDto } from './dto/create-viewer.dto';
-import { UpdateViewerDto } from './dto/update-viewer.dto';
-
+import {
+  BadRequestException,
+  Injectable,
+  ForbiddenException,
+} from '@nestjs/common';
+import { User, Story, Viewer } from '../index.models';
+import { InjectModel } from '@nestjs/sequelize';
+import { Messages } from 'src/core/messages';
 @Injectable()
 export class ViewersService {
-  create(createViewerDto: CreateViewerDto) {
-    return 'This action adds a new viewer';
+  constructor(
+    @InjectModel(User) private userRepository: typeof User,
+    @InjectModel(Story) private storyRepository: typeof Story,
+    @InjectModel(Viewer) private viewerRepository: typeof Viewer,
+  ) { }
+  async create(userId: number, storyId: number) {
+    const story = await this.storyRepository.findOne({
+      where: { id: storyId },
+    });
+
+    if (!story) throw new BadRequestException('Expected a valid story id');
+
+    const [viewer, created] = await this.viewerRepository.findOrCreate({
+      where: {
+        userId,
+        storyId,
+      },
+      defaults: {
+        userId,
+        storyId,
+      },
+    });
+
+    if (!created)
+      throw new ForbiddenException('The user already viewed the story');
+
+    return { viewer, message: Messages.CREATE_SUCCESS };
   }
 
-  findAll() {
-    return `This action returns all viewers`;
-  }
+  async findAll(userId: number, storyId: number) {
 
-  findOne(id: number) {
-    return `This action returns a #${id} viewer`;
-  }
+    const story = await this.storyRepository.findOne({
+      where: { id: storyId, userId },
+    });
 
-  update(id: number, updateViewerDto: UpdateViewerDto) {
-    return `This action updates a #${id} viewer`;
-  }
+    if (!story) throw new BadRequestException('Expected a valid story/user id');
 
-  remove(id: number) {
-    return `This action removes a #${id} viewer`;
+    const allViewers = await this.userRepository.findAll({
+      raw: true,
+      attributes: ['id', 'name', 'username', 'image'],
+      include: [
+        {
+          model: this.viewerRepository,
+          where: { storyId },
+          required: true,
+          attributes: [],
+        },
+      ],
+    });
+    return allViewers;
   }
 }
