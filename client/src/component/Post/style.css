@@ -18,3 +18,41 @@
 .post-header .post-options:hover{
   color: rgba(96, 96, 96, 0.812);
 }
+
+.post-operations{
+  display: flex;
+  justify-content: space-between;
+  margin: 7px auto;
+}
+.operation-icon{
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.likes-count{
+  font-weight: 500;
+  font-size: 13px;
+  margin-top: 10px 5px;
+}
+
+.caption{
+  font-size: 13px;
+  font-weight: 300;
+  margin: 8px 0;
+  color: rgba(0, 0, 0, 0.789);
+}
+
+.caption span{
+  font-size: 14px;
+  font-weight: 500;
+  padding: 0 6px 0 0 ;
+}
+
+.comments-count{
+  font-size: 13px;
+  font-weight: 400;
+  margin: 8px 0;
+  color: rgba(101, 101, 101, 0.789);
+  cursor: pointer;
+  margin-top: 10px;
+}
