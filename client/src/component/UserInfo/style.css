@@ -1,0 +1,22 @@
+.user-info{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: max-content;
+  cursor: pointer;
+}
+
+.user-info .user-avatar{
+  width: 42px;
+  height: 42px;
+}
+
+.user-info  .username{
+  font-weight: 500;
+  font-size: 14px;
+  padding: 0 10px;
+}
+
+.user-info  .username:hover{
+  color: rgba(72, 72, 72, 0.812);
+}
