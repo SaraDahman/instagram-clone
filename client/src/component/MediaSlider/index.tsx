@@ -1,14 +1,19 @@
-import { FC, useRef, useState } from 'react';
+import {
+  FC, useRef, useState, useEffect,
+} from 'react';
 import { Carousel } from 'antd';
-import { LeftOutlined, RightOutlined } from '@ant-design/icons';
+import { LeftCircleFilled, RightCircleFilled } from '@ant-design/icons';
 import { v4 as uuidv4 } from 'uuid';
 
 import './style.css';
 
-const ImageSlider:FC<{media:string[]}> = ({ media }) => {
+const MediaSlider:FC<{media:string[]}> = ({ media }) => {
   const slider = useRef<any>(null);
+  const imageRef = useRef<any>(null);
+
   const [showNext, setShowNext] = useState<boolean>(true);
   const [showPrev, setShowPrev] = useState<boolean>(false);
+  const [imageHeight, setImageHeight] = useState<number>(0);
 
   const onChange = (currentSlide: number):void => {
     if (currentSlide === media.length - 1) {
@@ -16,7 +21,6 @@ const ImageSlider:FC<{media:string[]}> = ({ media }) => {
     } else {
       setShowNext(true);
     }
-
     if (currentSlide === 0) {
       setShowPrev(false);
     } else {
@@ -24,26 +28,38 @@ const ImageSlider:FC<{media:string[]}> = ({ media }) => {
     }
   };
 
+  useEffect(() => {
+    const { offsetHeight } = imageRef.current;
+    setImageHeight(+offsetHeight);
+  }, []);
+
+  console.log(imageHeight);
+
   return (
     <div className="img-slider">
 
       {showPrev && (
-      <LeftOutlined
+      <LeftCircleFilled
         className="prev-btn"
         onClick={() => slider.current.prev()}
       />
       )}
 
       <Carousel afterChange={onChange} ref={slider}>
-        {media.map((img:string) => (
+        {media.map((img:string, i:number) => (
           <div className="media-post" key={uuidv4()}>
-            <img src={img} alt="img" />
+            <img
+              ref={i ? undefined : imageRef}
+              height={i ? imageHeight : undefined}
+              src={img}
+              alt="img"
+            />
           </div>
         ))}
       </Carousel>
 
       {showNext && (
-      <RightOutlined
+      <RightCircleFilled
         className="next-btn"
         onClick={() => slider.current.next()}
       />
@@ -52,4 +68,4 @@ const ImageSlider:FC<{media:string[]}> = ({ media }) => {
   );
 };
 
-export default ImageSlider;
+export default MediaSlider;
