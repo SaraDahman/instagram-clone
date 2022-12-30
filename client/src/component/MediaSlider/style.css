@@ -1,0 +1,32 @@
+.img-slider{
+  position: relative;
+}
+
+.prev-btn, .next-btn{
+  position: absolute;
+  top: 50%;
+  z-index: 10;
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.662);
+}
+
+.prev-btn{
+  left: 10px;
+}
+
+.next-btn{
+  right: 10px;
+}
+
+.media-post{
+  width: 100%;
+  max-width: 470px;
+  max-height: 589px;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.media-post img{
+  object-fit: cover;
+  width: 100%;
+}

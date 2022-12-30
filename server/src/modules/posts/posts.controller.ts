@@ -53,7 +53,6 @@ export class PostsController {
     @GetUser() userId: number,
     @Param('id', ValidationParamPipe) id: number,
   ) {
-    console.log(userId);
     return this.postsService.remove(userId, id);
   }
 }
