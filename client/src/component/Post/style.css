@@ -1,12 +1,16 @@
 .post{
-  margin: 30px auto;
-  width: 472px;
+  margin: 15px auto;
+  width: 100%;
 }
 .post .post-header{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 6px 0;
+  margin: 6px 0 8px;
+}
+.post-header .post-date{
+  font-size: 13px;
+  color: #8E8E8E;
 }
 
 .post-header .post-options{
@@ -16,7 +20,7 @@
 }
 
 .post-header .post-options:hover{
-  color: rgba(96, 96, 96, 0.812);
+  color:#8E8E8E;
 }
 
 .post-operations{
@@ -27,6 +31,10 @@
 .operation-icon{
   cursor: pointer;
   margin: 0 5px;
+}
+
+.operation-icon:hover{
+  color:#8E8E8E;
 }
 
 .likes-count{
@@ -52,7 +60,16 @@
   font-size: 13px;
   font-weight: 400;
   margin: 8px 0;
-  color: rgba(101, 101, 101, 0.789);
+  color:#8E8E8E;
   cursor: pointer;
   margin-top: 10px;
 }
+
+.emoji-drop-down{
+  margin: 0 !important;
+}
+.emoji-drop-down :first-child{
+  padding: 0 !important;
+  max-height: 350px;
+}
+

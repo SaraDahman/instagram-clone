@@ -33,8 +33,6 @@ const MediaSlider:FC<{media:string[]}> = ({ media }) => {
     setImageHeight(+offsetHeight);
   }, []);
 
-  console.log(imageHeight);
-
   return (
     <div className="img-slider">
 

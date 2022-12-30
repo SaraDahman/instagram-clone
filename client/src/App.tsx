@@ -1,11 +1,11 @@
 import { FC } from 'react';
 import './App.css';
-import Post from './component/Post';
+import PostsContainer from './component/PostsContainer';
 
 const App:FC = () => (
   <div className="App">
     mostafa here
-    <Post />
+    <PostsContainer />
   </div>
 );
 

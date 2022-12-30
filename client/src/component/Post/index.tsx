@@ -1,10 +1,14 @@
 import { FC, useState } from 'react';
-import { EllipsisOutlined } from '@ant-design/icons';
-import { Input, Divider } from 'antd';
+import { EllipsisOutlined, SmileOutlined } from '@ant-design/icons';
+import {
+  Input, Divider, Button, Dropdown,
+} from 'antd';
+import type { MenuProps } from 'antd';
 import MediaSlider from '../MediaSlider';
 import UserInfo from '../UserInfo';
 import { SaveIcon, LikeIcon, CommentIcon } from './icons';
 import './style.css';
+import EmojiPicker from '../EmojiPicker';
 
 const media = [
   'https://images.pexels.com/photos/5702958/pexels-photo-5702958.jpeg',
@@ -16,6 +20,17 @@ const media = [
 const Post:FC = () => {
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [comment, setComment] = useState<string>('');
+
+  const items: MenuProps['items'] = [
+    {
+      key: '1',
+      label: (
+        <EmojiPicker setComment={setComment} />
+      ),
+    },
+  ];
 
   const handleLike = ():void => {
     setIsLiked(!isLiked);
@@ -25,10 +40,17 @@ const Post:FC = () => {
     setIsSaved(!isSaved);
   };
 
+  const handleOpenChange = (e:boolean):void => {
+    setOpen(e);
+  };
+
   return (
     <div className="post">
       <div className="post-header">
-        <UserInfo />
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <UserInfo />
+          <p className="post-date">• 11h</p>
+        </div>
         <EllipsisOutlined className="post-options" />
       </div>
       <MediaSlider media={media} />
@@ -53,8 +75,32 @@ const Post:FC = () => {
         {' '}
         comments
       </p>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Input
+          placeholder="add a comment..."
+          bordered={false}
+          style={{ padding: '5px 0' }}
+          value={comment}
+          onChange={(e) => {
+            setComment(e.target.value);
+          }}
+        />
+        {
+        comment && <Button type="link">Post</Button>
+      }
 
-      <Input placeholder="add a comment..." bordered={false} style={{ padding: '5px 0' }} />
+        <Dropdown
+          menu={{ items }}
+          placement="topLeft"
+          open={open}
+          onOpenChange={handleOpenChange}
+          arrow={{ pointAtCenter: true }}
+          overlayClassName="emoji-drop-down"
+        >
+          <SmileOutlined />
+        </Dropdown>
+      </div>
+
       <Divider />
     </div>
   );
