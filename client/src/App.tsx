@@ -1,10 +1,11 @@
-import { FC } from 'react'
-import './App.css'
+import { FC } from 'react';
+import Stories from './component/stories';
+import './App.css';
 
 const App:FC = () => (
   <div className="App">
-    mostafa here
+    <Stories />
   </div>
-)
+);
 
-export default App
+export default App;

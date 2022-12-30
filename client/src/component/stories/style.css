@@ -1,0 +1,45 @@
+.stories-container {
+  display: flex;
+
+  height: 110px;
+  background-color: #ffffff;
+  border: 0.2px solid silver;
+  gap: 10px;
+  align-items: center;
+  width: 420px;
+  border-radius: 10px;
+  padding-left: 10px;
+  margin: 40px auto;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  /* margin: 30px   33% 0 40%; */
+}
+
+.user-story {
+  display: flex;
+  margin-bottom: 5px;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.avatar-story {
+  border: 1px solid silver;
+  width: fit-content;
+  padding: 0.4px;
+  border-radius: 50%;
+}
+
+.username-story {
+  color: #8e8e8e;
+  font-size: 10px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.mohammed {
+  border: 2px sienna solid;
+  height: 90%;
+  width: 80%;
+  display: flex;
+  flex-direction: row !important;
+}

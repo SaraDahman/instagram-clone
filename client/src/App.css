@@ -1,4 +1,13 @@
+* {
+  margin: 0px;
+  padding: 0px;
+}
+
 .App {
   text-align: center;
+  height: 100vh;
+  background-color: #fafafa;
 }
+
+
 
