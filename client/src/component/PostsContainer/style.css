@@ -1,0 +1,23 @@
+.posts-containers{
+  width: 472px;
+  margin: 30px auto;
+}
+
+@media (max-width: 1200px) {
+
+}
+
+@media (max-width: 992px) {	
+
+}
+
+@media (max-width: 768px) {
+}
+
+@media (max-width: 575.98px) { 
+  .posts-containers{
+    width: 90% !important ;
+  }
+}
+
+

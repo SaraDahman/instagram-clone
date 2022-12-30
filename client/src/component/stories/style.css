@@ -5,12 +5,12 @@
   width: 472px;
   height: 110px;
   margin: 40px auto;
+  text-align: center;
   padding-left: 12px;
   padding-top: 5px;
-  border: 0.2px solid silver;
+  border: 0.2px solid rgb(219, 219, 219);
   border-radius: 10px;
   background-color: #ffffff;
-  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 /* this class from the core (Low level) */
