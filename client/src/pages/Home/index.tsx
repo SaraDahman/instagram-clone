@@ -1,8 +1,9 @@
 import { FC } from 'react';
-import { PostsContainer } from '../component';
+import { PostsContainer, Stories } from '../../component';
 
 const Home:FC = () => (
   <div>
+    <Stories />
     <PostsContainer />
   </div>
 );
