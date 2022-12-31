@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import { RouterProvider } from 'react-router-dom';
+import router from './router';
 import { ApiService } from './services/ApiService';
 
 const root = ReactDOM.createRoot(
@@ -10,6 +11,6 @@ ApiService.init();
 ApiService.setHeader();
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>,
 );
