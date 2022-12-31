@@ -1,0 +1,34 @@
+.menu{
+  /* background-color: aqua; */
+  height: 100%;
+  padding: 3rem 0;
+}
+
+.menu .logo-container{
+  display: flex;
+  align-items:center;
+  margin-bottom: 2rem;
+}
+
+.menu .logo-img{
+  width: 100%;
+  height: 2.6rem;
+  object-fit: contain;
+  margin-left: -19px;
+}
+
+.logo-icon{
+  display: none;
+}
+
+.sub-menu {
+  height: 60%;
+}
+
+.sub-menu .ant-menu-item {
+  margin-bottom: 1.5rem;
+}
+
+.menu svg{
+  font-size: 1.5rem;
+}
