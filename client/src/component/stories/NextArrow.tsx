@@ -11,7 +11,7 @@ const NextArrow: FC = (props:any) => (
       marginBottom: '20px',
       position: 'relative',
       top: '10px',
-      right: '28px',
+      right: '45px',
     }}
   />
 );

@@ -1,0 +1,64 @@
+.auth-container{
+  display: flex;
+  justify-content: space-around;
+  width: 55%;
+  margin: 60px auto;
+  align-items: center;
+}
+
+.auth-form{
+  min-height: 370px;
+}
+
+.auth-form, .have-account{
+  width: 45%;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #e0e0e0;
+  padding: 31px;
+  min-width: 320px;
+  max-width: 350px;
+}
+
+.auth-brief{
+  color: #8E8E8E;
+  text-align: center;
+  margin: 20px auto ;
+  font-weight: 500;
+}
+
+.logo{
+  background-image: url('../../assets/images/logo.png');
+  display: block;
+  margin: 20px auto;
+  background-position: 0px -52px;
+  background-size: auto;
+  width: 175px;
+  height: 52px;
+  background-repeat: no-repeat
+}
+
+.form-item{
+  margin:10px 0;
+  width: 100%;
+}
+
+.privacy-msg{
+  font-size: 11px;
+  color: #8E8E8E;
+  text-align: center;
+  width: 100%;
+  margin: 12px 0;
+}
+
+.have-account{
+  margin-top: 15px;
+}
+.have-account p{
+  text-align: center;
+  font-size: 12px;
+}
+
+.have-account a{
+  text-decoration: none;
+  color:#1677ff ;
+}
