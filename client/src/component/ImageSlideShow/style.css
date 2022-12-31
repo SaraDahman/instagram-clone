@@ -1,0 +1,33 @@
+.auth-trailer{
+  min-width: 400px;
+  height: 581px;
+  background-image: url('../../assets/images/authBg.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+.image-slide-show{
+  width: 250px;
+  height: 538.84px;
+  position: absolute;
+  right: 18px;
+  top: 20px;
+}
+.image-slide-show img{
+  max-width: 215px;
+}
+
+
+
+@media (max-width: 768px) {
+  .auth-trailer{
+    display: none;
+  }
+}
+
+@media (max-width: 575.98px) { 
+  .posts-containers{
+    width: 90% !important ;
+  }
+}
