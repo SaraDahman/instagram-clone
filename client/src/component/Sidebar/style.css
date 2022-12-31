@@ -38,6 +38,11 @@
 
 
 @media screen and (max-width : 1200px){
+
+  .sub-menu .ant-menu-item:first-child{
+    pointer-events: none;
+  }
+
   .sub-menu .ant-menu-item:first-child .anticon{
     display: block;
   }
