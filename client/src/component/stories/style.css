@@ -1,0 +1,106 @@
+.story-slider {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  width: 472px;
+  height: 110px;
+  margin: 40px auto;
+  text-align: center;
+  padding-left: 12px;
+  padding-top: 5px;
+  border-radius: 10px;
+}
+
+/* this class from the core (Low level) */
+.slick-list{
+  min-width: 100% !important;
+}
+
+
+.story-user {
+  display: flex;
+  flex-direction: column ;
+  align-items: center ;
+  justify-content: center;
+  min-width: 4rem;
+  margin-bottom: 5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.avatar {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+.avatar-story-seen {
+  width: fit-content;
+  padding: 2px;
+  border: 1px solid silver;
+  border-radius: 50%;
+}
+
+.avatar-story-unseen {
+  width: fit-content;
+  padding: 1.2px;
+  border: 2px solid;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  background: linear-gradient(white, rgba(255, 255, 255, 0.653)) padding-box,
+    linear-gradient(
+        90deg,
+        #ffb800 5%,
+        #ff2e41,
+        #d300c5 78%,
+        rgb(255, 0, 123) 100%
+      )
+      border-box;
+}
+
+.story-username {
+  font-size: 10px;
+  margin-top: 5px;
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+.story-username-seen {
+  color: #8e8e8e;
+}
+
+.story-username-unseen {
+  color: black;
+}
+
+/* Next and prev arrow components */
+
+
+/* Media query */
+@media (max-width: 1200px) {
+}
+
+@media (max-width: 992px) {
+}
+
+@media (max-width: 768px) {
+}
+
+@media (max-width: 575.98px) {
+  .story-slider {
+    width: 100%;
+    border-radius: 4px;
+
+  }
+  .avatar {
+    width: 3.2rem;
+    height: 3.2rem;
+  }
+}
+
+@media (max-width: 391px) {
+  .avatar {
+    width: 2.9rem;
+    height: 2.9rem;
+  }
+}
