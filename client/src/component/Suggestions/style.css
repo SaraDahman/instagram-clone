@@ -50,7 +50,7 @@
 .suggestions-for-you-box {
   display: flex; 
   justify-content: space-between;
-   margin-top: 10px;
+  margin-top: 10px;
 }
 
 .suggestion-for-you-text {
@@ -94,8 +94,8 @@
 
 .other-user-box-name {
   display: flex;
-  gap: 6px;
   flex-direction: column;
+  gap: 6px;
 }
 
 .other-username {
@@ -105,11 +105,28 @@
 }
 
 .other-user-info {
+  width:180px;
   color: #acacac;
   font-size: 12px;
-  width:180px;
+  font-weight: 400;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  font-weight: 400;
+}
+
+
+@media (max-width: 1200px) {
+}
+
+@media (max-width: 1000px) {
+  .suggestions-container{
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+}
+
+@media (max-width: 575.98px) {
+
 }
