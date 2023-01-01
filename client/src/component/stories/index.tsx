@@ -8,7 +8,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 import PrevArrow from './PrevArrow';
 import NextArrow from './NextArrow';
-import { stories } from '../../data/storyData';
+import { userData } from '../../data/FakeUsersData';
 import './style.css';
 
 const Stories:FC = () => {
@@ -16,7 +16,7 @@ const Stories:FC = () => {
     dots: false,
     infinite: false,
     speed: 500,
-    slidesToShow: 6.2,
+    slidesToShow: 6,
     slidesToScroll: 4,
     accessibility: true,
     nextArrow: <NextArrow />,
@@ -29,7 +29,7 @@ const Stories:FC = () => {
       className="story-slider"
     >
       {
-        stories.map((story) => (
+        userData.map((story) => (
           <div className="story-user">
             <div className={story.seen ? 'avatar-story-seen' : 'avatar-story-unseen'}>
               <Avatar
