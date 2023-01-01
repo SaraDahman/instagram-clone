@@ -1,0 +1,115 @@
+.suggestions-container {
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px;
+  margin-top: 36px;
+} 
+
+.suggestions-current-user-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+  height: 90px;
+}
+
+.current-user-box {
+  display: flex; 
+  gap: 15px; 
+}
+
+.current-user-avatar {
+  width: 60px;
+  height: 60px;
+}
+
+.current-username-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.current-username {
+  color: black; 
+  font-weight: 600; 
+  font-size: 12px ;
+}
+
+.suggestions-switch-follow {
+  color: #0095f6; 
+  font-size: 12px; 
+  font-weight: 600;
+}
+
+.current-name {
+  color: #acacac; 
+  font-size: 12px; 
+}
+
+.suggestions-for-you-box {
+  display: flex; 
+  justify-content: space-between;
+   margin-top: 10px;
+}
+
+.suggestion-for-you-text {
+  color: #acacac;
+  font-size: 14px; 
+  font-weight: 600;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.seeAll {
+  color: black;
+  font-size: 12px;
+  font-weight: 400;
+  font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.suggestions-other-user-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.suggestions-one-user {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 300px;
+  height: 55px;
+  padding-top: 10px;
+  margin-top: 10px;
+}
+
+.other-user-box {
+  display: flex; 
+  gap: 10px;
+}
+
+.other-user-avatar {
+  width: 40px;
+  height: 40px;
+}
+
+.other-user-box-name {
+  display: flex;
+  gap: 6px;
+  flex-direction: column;
+}
+
+.other-username {
+  color: black; 
+  font-weight: 600; 
+  font-size: 12px;
+}
+
+.other-user-info {
+  color: #acacac;
+  font-size: 12px;
+  width: '180px';
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-weight: 400;
+}
