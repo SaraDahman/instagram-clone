@@ -30,7 +30,7 @@ const Stories:FC = () => {
     >
       {
         userData.map((story) => (
-          <div className="story-user">
+          <div className="story-user" key={story.id}>
             <div className={story.seen ? 'avatar-story-seen' : 'avatar-story-unseen'}>
               <Avatar
                 src={story.image}
