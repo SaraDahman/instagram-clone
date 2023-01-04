@@ -22,6 +22,9 @@ const SignUp:FC = () => {
       navigate('/');
     } catch (error:any) {
       message.error(error.response.data.message);
+      message.config({
+        maxCount: 1,
+      });
       setSubmitting(false);
     }
   };
