@@ -8,16 +8,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import ImageSlideshow from '../../component/ImageSlideShow';
 import { validationSchema } from '../../validation/SignUp';
 import { ApiService, JwtService } from '../../services';
-import { ISignUp } from '../../interfaces';
+import { IAuth } from '../../interfaces';
 
 import './style.css';
 
 const SignUp:FC = () => {
   const navigate = useNavigate();
 
-  const handleSignUp = async (payload:ISignUp, setSubmitting:any) => {
+  const handleSignUp = async (body:IAuth, setSubmitting:any) => {
     try {
-      const { data } = await ApiService.post('/api/v1/auth/signup', payload);
+      const { data } = await ApiService.post('/api/v1/auth/signup', body);
       JwtService.setToken(data.access_token);
       navigate('/');
     } catch (error:any) {
