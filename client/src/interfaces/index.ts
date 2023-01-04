@@ -1,1 +1,1 @@
-export * from './ISignUp';
+export * from './IAuth';
