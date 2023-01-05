@@ -37,7 +37,7 @@ const UserProfile: React.FC = () => {
           items={items}
         />
       </div>
-      { !userPosts.length ? <EmptyPosts />
+      { userPosts.length ? <EmptyPosts />
         : (<ProfilePosts />
         )}
 
