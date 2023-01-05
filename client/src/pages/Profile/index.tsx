@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import ProfilePosts from '../../component/ProfileMenu/Index';
+import { UserProfile } from '../../component';
 
 const Profile:FC = () => (
-  <div><ProfilePosts /></div>
+  <div><UserProfile /></div>
 );
 
 export default Profile;
