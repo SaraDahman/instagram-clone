@@ -2,13 +2,13 @@ import { Avatar } from 'antd';
 import { FC } from 'react';
 import './style.css';
 
-const UserInfo:FC = () => (
+const UserInfo:FC<{username:string, image:string}> = ({ username, image }) => (
   <div className="user-info">
     <Avatar
       className="user-avatar"
-      src="https://images.pexels.com/photos/6159139/pexels-photo-6159139.jpeg"
+      src={image}
     />
-    <p className="username">mostafa.4omar</p>
+    <p className="username">{username}</p>
   </div>
 );
 
