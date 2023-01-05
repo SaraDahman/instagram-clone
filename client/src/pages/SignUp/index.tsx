@@ -19,6 +19,7 @@ const SignUp:FC = () => {
     try {
       const { data } = await ApiService.post('/api/v1/auth/signup', body);
       JwtService.setToken(data.access_token);
+      ApiService.setHeader();
       navigate('/');
     } catch (error:any) {
       message.error(error.response.data.message);
