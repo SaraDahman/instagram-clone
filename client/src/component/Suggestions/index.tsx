@@ -34,7 +34,7 @@ const Suggestions :FC = () => (
     <section className="suggestions-other-user-container">
       {
       userData.slice(0, 5).map((user:any) => (
-        <div className="suggestions-one-user">
+        <div className="suggestions-one-user" key={user.id}>
           <div className="other-user-box">
             <Avatar
               className="other-user-avatar"
