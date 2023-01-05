@@ -28,11 +28,6 @@ export class PostsService {
 
   // get all home page posts
   async findAll(userId: number) {
-    // const whereObj = {};
-    // if (dto.profileUserId) {
-    //   whereObj['userId'] = dto.profileUserId;
-    // }
-
     const includeFollowing = [];
     if (userId) {
       includeFollowing[0] = {
