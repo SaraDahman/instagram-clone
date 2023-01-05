@@ -9,13 +9,13 @@ import { Messages } from 'src/core/messages';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities';
-import { findAllQueryDTO } from './dto/find-all-query.dto';
+import { fn, col } from 'sequelize';
 
 @Injectable()
 export class PostsService {
   constructor(
-    @InjectModel(Post)
-    private postRepository: typeof Post,
+    @InjectModel(Post) private postRepository: typeof Post,
+    @InjectModel(User) private userRepository: typeof User,
   ) {}
 
   async create(userId: number, dto: CreatePostDto) {
@@ -26,46 +26,83 @@ export class PostsService {
     return { data, message: Messages.CREATE_SUCCESS };
   }
 
-  async findAll(userId: number, dto: findAllQueryDTO) {
-    const whereObj = {};
-    if (dto.profileUserId) {
-      whereObj['userId'] = dto.profileUserId;
-    }
+  // get all home page posts
+  async findAll(userId: number) {
+    // const whereObj = {};
+    // if (dto.profileUserId) {
+    //   whereObj['userId'] = dto.profileUserId;
+    // }
 
     const includeFollowing = [];
     if (userId) {
       includeFollowing[0] = {
         model: Following,
+        attributes: [],
         required: true,
         as: 'followed',
         where: { followerId: userId },
       };
     }
     const data = await this.postRepository.findAll({
-      attributes: { exclude: ['updatedAt'] },
+      attributes: [
+        '*',
+        [fn('COUNT', col('likes.user.id')), 'likes'],
+        'user.name' as 'name',
+        'user.username' as 'username',
+        'user.image' as 'image',
+      ],
+      raw: true,
       include: [
         {
           model: User,
-          attributes: ['name', 'username', 'image'],
+          attributes: [],
           required: true,
           include: includeFollowing,
         },
         {
           model: Like,
+          attributes: [],
           include: [
             {
               model: User,
-              attributes: ['name', 'username', 'image'],
+              attributes: [],
               required: true,
             },
           ],
         },
       ],
-      where: whereObj,
       order: [['createdAt', 'DESC']],
+      group: ['Post.id', 'user.id'],
     });
 
     return { data };
+  }
+
+  // get all the posts for one user (profile page)
+  async findUserPosts(username) {
+    const user = await this.userRepository.findOne({ where: { username } });
+
+    if (!user) throw new NotFoundException('user not found');
+
+    const posts = this.postRepository.findAll({
+      attributes: [
+        '*',
+        'user.name' as 'name',
+        'user.username' as 'username',
+        'user.image' as 'image',
+      ],
+      raw: true,
+      include: [
+        {
+          model: this.userRepository,
+          attributes: [],
+          required: true,
+          where: { username },
+        },
+      ],
+    });
+
+    return posts;
   }
 
   async findOne(id: number) {
