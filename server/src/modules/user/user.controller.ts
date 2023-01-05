@@ -6,11 +6,14 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ValidationParamPipe } from '../../core/Pipes';
+import { JwtAuthGuard } from '../auth/strategy';
+import { GetUser } from '../auth/decorator/user.decorator';
 
 @Controller('user')
 export class UserController {
@@ -24,6 +27,12 @@ export class UserController {
   @Get()
   findAll() {
     return this.userService.findAll();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('me')
+  getUser(@GetUser() userId: number) {
+    return this.userService.getUser(userId);
   }
 
   @Get(':id')
