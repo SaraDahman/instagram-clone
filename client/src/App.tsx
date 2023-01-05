@@ -13,7 +13,7 @@ const App:FC = () => {
   const [collapsed, setCollapsed] = useState(false);
 
   return (
-    <Layout>
+    <Layout style={{ backgroundColor: '#ffffff' }}>
       <Sider
         style={{
           backgroundColor: '#fff',
