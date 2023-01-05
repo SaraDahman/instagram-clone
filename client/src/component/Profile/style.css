@@ -10,10 +10,11 @@
   width: 70%;
 }
 
+/* Ant Design */
 .ant-tabs-tab-active div span {
   color: black !important; 
-
 }
+
 .tab-profile {
   display: flex;
   align-items: center;
@@ -26,6 +27,5 @@
 
 .post-tab-profile {
   gap: 0px;
-
 }
 

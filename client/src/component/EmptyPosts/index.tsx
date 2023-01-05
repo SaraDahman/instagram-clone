@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { footerLinks } from '../../data/FakeUsersData';
+import { footerLinks } from '../../data/FoorterLinks';
 import cameraIcon from '../../assets/images/camera.png';
 import './style.css';
 

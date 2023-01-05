@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 
 import { Tabs } from 'antd';
@@ -9,7 +10,7 @@ import './style.css';
 
 const UserProfile: React.FC = () => {
   // This just an initial step, It must change later
-  const [isAuth] = useState<boolean>(false);
+  const [isAuth] = useState<boolean>(true);
   const [tabWidth, setTabWidth] = useState<number>(50);
   // initial State
   const [userPosts] = useState<any>([]);
@@ -23,7 +24,7 @@ const UserProfile: React.FC = () => {
   }, [isAuth]);
 
   return (
-    <div>
+    <div className="profile-container">
       <div className="tabs-container">
         <Tabs
           className="tabs-slider"

@@ -7,28 +7,29 @@ import taggedIcon from '../assets/images/tagged.png';
 export const tabsItem = [{
   label:
 (<span className="tab-profile post-tab-profile">
-  <InsertRowAboveOutlined />
-  Posts
+  <InsertRowAboveOutlined className="tab-icon" />
+  <span className="tab-text">Posts</span>
  </span>),
   key: 'Posts',
 }, {
   label: <span className="tab-profile">
     <img src={instagramReelIcon} alt="Reels" width={12} />
-    Reels
+    <span className="tab-text">Reels</span>
          </span>,
   key: 'Reels',
 }, {
   label:
   <span className="tab-profile">
     <img src={savedIcon} alt="bookMark" width={12} />
-    Saved
+    <span className="tab-text">Saved</span>
+
   </span>,
   key: 'Saved',
 },
 {
-  label: <span className="tab-profile">
+  label: <span className="tab-profile tagged-icon">
     <img src={taggedIcon} alt="tagged" width={12} />
-    Tagged
+    <span className="tab-text">Tagged</span>
          </span>,
   key: 'Tagged',
 }];
