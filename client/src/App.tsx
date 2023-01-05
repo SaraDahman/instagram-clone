@@ -15,7 +15,7 @@ const App:FC = () => {
 
   return (
     <AuthProvider>
-      <Layout>
+      <Layout style={{ backgroundColor: '#fff' }}>
         <Sider
           style={{
             backgroundColor: '#fff',

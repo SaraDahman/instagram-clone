@@ -1,5 +1,6 @@
 import { FC } from 'react';
 
+import { Link } from 'react-router-dom';
 import { Avatar } from 'antd';
 
 import { userData } from '../../data/FakeUsersData';
@@ -9,13 +10,16 @@ const Suggestions :FC = () => (
   <div className="suggestions-container">
     <section className="suggestions-current-user-container">
       <div className="current-user-box">
-        <Avatar
-          className="current-user-avatar"
-          src="https://images.pexels.com/photos/6159139/pexels-photo-6159139.jpeg"
-          alt="user-avatar"
-        />
+        <Link to="username">
+          <Avatar
+            className="current-user-avatar"
+            src="https://images.pexels.com/photos/6159139/pexels-photo-6159139.jpeg"
+            alt="user-avatar"
+          />
+        </Link>
+
         <div className="current-username-box">
-          <p className="current-username"> mah1mm2ad </p>
+          <Link to="username" className="current-username"> mah1mm2ad </Link>
           <p className="current-name">Mohammed Omar</p>
         </div>
       </div>
@@ -39,7 +43,7 @@ const Suggestions :FC = () => (
               alt={user.name}
             />
             <div className="other-user-box-name">
-              <p className="other-username">{user.name}</p>
+              <Link to={user.name} className="other-username">{user.name}</Link>
               <p className="other-user-info"> Followed by Shamshom and 3 more</p>
             </div>
           </div>
