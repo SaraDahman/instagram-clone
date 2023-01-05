@@ -70,7 +70,7 @@ export class PostsService {
       group: ['Post.id', 'user.id'],
     });
 
-    return { data };
+    return data;
   }
 
   // get all the posts for one user (profile page)
@@ -119,7 +119,8 @@ export class PostsService {
       ],
       where: { id },
     });
-    return { data };
+
+    return data;
   }
 
   async checkPost(postId: number) {
