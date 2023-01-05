@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Following, Like, User } from '../index.models';
+import { Following, Like, User, Comment } from '../index.models';
 import { Messages } from 'src/core/messages';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
@@ -41,7 +41,8 @@ export class PostsService {
     const data = await this.postRepository.findAll({
       attributes: [
         '*',
-        [fn('COUNT', col('likes.user.id')), 'likes'],
+        [fn('COUNT', col('likes.userId')), 'likes'],
+        [fn('COUNT', col('comments.id')), 'comments'],
         'user.name' as 'name',
         'user.username' as 'username',
         'user.image' as 'image',
@@ -57,13 +58,11 @@ export class PostsService {
         {
           model: Like,
           attributes: [],
-          include: [
-            {
-              model: User,
-              attributes: [],
-              required: true,
-            },
-          ],
+          required: true,
+        },
+        {
+          model: Comment,
+          attributes: [],
         },
       ],
       order: [['createdAt', 'DESC']],
