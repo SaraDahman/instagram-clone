@@ -6,15 +6,16 @@ import './style.css';
 
 const EmptyPosts :FC = () => (
   <div className="empty-posts-container">
-    <div className="camera-container">
-      <img src={cameraIcon} alt="camera" />
+    <div>
+      <div className="camera-container">
+        <img src={cameraIcon} alt="camera" />
+      </div>
+      <h1 className="title-empty-posts">Share photos</h1>
+      <p className="empty-posts-desc">
+        When you share photos, they will appear on your profile.
+      </p>
+      <p className="share-photo-empty-post">Share your first photo</p>
     </div>
-    <h1 className="title-empty-posts">Share photos</h1>
-    <p>
-      When you share photos, they will appear on your profile.
-    </p>
-    <p className="share-photo-empty-post">Share your first photo</p>
-
     <footer className="footer-profile">
       {footerLinks.map((link) => (<p>{link}</p>))}
     </footer>

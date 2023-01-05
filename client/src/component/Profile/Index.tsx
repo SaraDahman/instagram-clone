@@ -10,7 +10,7 @@ import './style.css';
 
 const UserProfile: React.FC = () => {
   // This just an initial step, It must change later
-  const [isAuth] = useState<boolean>(true);
+  const [isAuth] = useState<boolean>(false);
   const [tabWidth, setTabWidth] = useState<number>(50);
   // initial State
   const [userPosts] = useState<any>([]);
@@ -37,7 +37,7 @@ const UserProfile: React.FC = () => {
           items={items}
         />
       </div>
-      { userPosts.length ? <EmptyPosts />
+      { !userPosts.length ? <EmptyPosts />
         : (<ProfilePosts />
         )}
 
