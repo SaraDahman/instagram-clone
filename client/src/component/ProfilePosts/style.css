@@ -1,0 +1,108 @@
+.profile-all-posts-container {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 72%;
+  margin: 5px auto 0px;
+}
+
+.profile-row-posts {
+  display: flex;
+  justify-content: center;
+  gap: 3%;
+  width: 100%;
+  margin-top: 20px;
+}
+
+.single-posts {
+  width: 31%;
+  height: 320px;
+  box-shadow: rgba(4, 93, 182, 0.2) 2px 8px 24px;
+}
+
+.images-posts-profile {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (max-width: 1200px) {
+  .tabs-container {
+    width: 95%;
+  }
+  .tabs-slider {
+    width: 90% !important;
+  }
+  .profile-all-posts-container {
+    width: 95%;
+  }
+}
+
+@media (max-width: 821px) {
+  .single-posts {
+    width: 31%;
+    height: 240px;
+  }
+}
+
+@media (max-width: 768px) {
+  .single-posts {
+    width: 32%;
+    height: 198px;
+  }
+}
+
+@media (max-width: 735px) {
+  .tab-text {
+    display: none;
+  }
+  .tab-profile img {
+    width: 20px;
+  }
+
+  .tab-icon {
+    font-size: 20px;
+  }
+
+  .tagged-icon {
+    width: 25px !important;
+  }
+
+  .profile-all-posts-container {
+    width: 100%;
+    gap: 0px;
+  }
+  .profile-container {
+    width: 100%;
+  }
+
+  .profile-row-posts {
+    gap: 0px;
+    margin-top: 0px;
+  }
+
+  .single-posts {
+    width: 33.3%;
+  }
+}
+
+@media (max-width: 600px) {
+  .single-posts {
+    height: 150px;
+  }
+  .profile-row-posts {
+    gap: 3px;
+    margin-top: 3px;
+  }
+}
+
+@media (max-width: 400px) {
+  .single-posts {
+    height: 140;
+  }
+}
+@media (max-width: 359px) {
+  .single-posts {
+    height: 110px;
+  }
+}
