@@ -1,18 +1,13 @@
 import { FC } from 'react';
 
-const PrevArrow: FC = (props:any) => (
+const PrevArrow: FC = ({
+  className, onClick,
+}:any) => (
   <button
     type="button"
-    className="story-arrow"
-    // eslint-disable-next-line react/jsx-props-no-spreading
-    {...props}
-    style={{
-      position: 'relative',
-      left: '25px',
-      marginBottom: '20px',
-      top: '10px',
-      zIndex: '70',
-    }}
+    className={className}
+    onClick={onClick}
+    aria-label="Save"
   />
 );
 
