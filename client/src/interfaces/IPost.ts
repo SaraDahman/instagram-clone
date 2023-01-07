@@ -5,7 +5,6 @@ export interface IPost{
   id: string,
   image: string,
   likes:string,
-  comments: string,
   media: string[],
   name: string,
   updatedAt: string,
