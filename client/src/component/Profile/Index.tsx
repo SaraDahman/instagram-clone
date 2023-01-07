@@ -5,6 +5,7 @@ import { Tabs } from 'antd';
 import EmptyPosts from '../EmptyPosts';
 import Saved from '../Saved';
 import { tabsItem } from './TabsItem';
+import ProfileUserInfo from '../ProfileUserInfo';
 import ProfilePosts from '../ProfilePosts';
 import cameraIcon from '../../assets/images/camera.png';
 import './style.css';
@@ -21,7 +22,7 @@ const UserProfile: React.FC = () => {
   useEffect(() => {
     if (!isAuth) {
       setItems(items.filter((item) => item.key !== 'Saved'));
-      setTabWidth(60);
+      setTabWidth(100);
     }
   }, [isAuth]);
 
@@ -31,6 +32,7 @@ const UserProfile: React.FC = () => {
 
   return (
     <div className="profile-container">
+      <ProfileUserInfo />
       <div className="tabs-container">
         <Tabs
           className="tabs-slider"

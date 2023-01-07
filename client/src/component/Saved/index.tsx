@@ -8,7 +8,7 @@ const Saved:FC = () => {
   const [bookmarks] = useState<any>([]);
   return (
     <div>
-      { !bookmarks.length ? <ProfilePosts /> : (
+      { bookmarks.length ? <ProfilePosts /> : (
         <EmptyPosts
           icon={savedIcon}
           title="Start Saving"
