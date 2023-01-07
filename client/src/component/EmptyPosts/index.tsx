@@ -1,24 +1,24 @@
 import { FC } from 'react';
 
-import { footerLinks } from '../../data/FoorterLinks';
-import cameraIcon from '../../assets/images/camera.png';
+import Footer from '../Footer';
+import { IEmptyPostProps } from '../../interfaces';
 import './style.css';
 
-const EmptyPosts :FC = () => (
+const EmptyPosts :FC<IEmptyPostProps> = ({
+  icon, title, content, isPost,
+}) => (
   <div className="empty-posts-container">
     <div>
       <div className="camera-container">
-        <img src={cameraIcon} alt="camera" />
+        <img src={icon} alt="camera" />
       </div>
-      <h1 className="title-empty-posts">Share photos</h1>
+      <h1 className="title-empty-posts">{title}</h1>
       <p className="empty-posts-desc">
-        When you share photos, they will appear on your profile.
+        {content}
       </p>
-      <p className="share-photo-empty-post">Share your first photo</p>
+      {isPost && <p className="share-photo-empty-post">Share your first photo</p>}
     </div>
-    <footer className="footer-profile">
-      {footerLinks.map((link) => (<p>{link}</p>))}
-    </footer>
+    <Footer />
   </div>
 );
 

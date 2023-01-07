@@ -4,7 +4,7 @@
   align-items: center;
   margin-top: 50px;
   margin-bottom: 70px;
-  height: 73vh;
+  height: 50vh;
   justify-content: space-between;
 }
 
@@ -46,27 +46,7 @@
 .empty-posts-desc {
   text-align: center;
 }
-.footer-profile {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 30px;
-  margin-left: 25px;
-  margin-top: 20px;
-  width: 800px;
-}
 
-.footer-profile p {
-  color: #8e8e8e;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 12px;
-}
-
-@media (max-width: 821px) {
-  .footer-profile {
-    /* margin-top: 150px; */
-  }
-}
 @media (max-width: 769px) {
   .empty-posts-container {
     height: 60vh;
@@ -80,6 +60,7 @@
     width: 90%;
   }
 }
+
 @media (max-width: 680px) {
   .footer-profile {
     display: none;
