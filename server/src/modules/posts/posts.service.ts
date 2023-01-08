@@ -42,7 +42,7 @@ export class PostsService {
       attributes: [
         '*',
         [fn('COUNT', col('likes.userId')), 'likes'],
-        [fn('COUNT', col('comments.id')), 'comments'],
+        // [fn('COUNT', col('comments.id')), 'comments'],
         'user.name' as 'name',
         'user.username' as 'username',
         'user.image' as 'image',
@@ -58,7 +58,21 @@ export class PostsService {
         {
           model: Like,
           attributes: [],
+        },
+      ],
+      order: [['createdAt', 'DESC']],
+      group: ['Post.id', 'user.id'],
+    });
+
+    const comments = await this.postRepository.findAll({
+      attributes: ['id', [fn('COUNT', col('comments.id')), 'comments']],
+      raw: true,
+      include: [
+        {
+          model: User,
+          attributes: [],
           required: true,
+          include: includeFollowing,
         },
         {
           model: Comment,
@@ -66,10 +80,10 @@ export class PostsService {
         },
       ],
       order: [['createdAt', 'DESC']],
-      group: ['Post.id', 'user.id'],
+      group: ['Post.id'],
     });
 
-    return data;
+    return { data, comments };
   }
 
   // get all the posts for one user (profile page)

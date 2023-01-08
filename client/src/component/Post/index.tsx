@@ -11,7 +11,7 @@ import './style.css';
 import EmojiPicker from '../EmojiPicker';
 import { IPost } from '../../interfaces';
 
-const Post:FC<{post : IPost}> = ({ post }) => {
+const Post:FC<{post : IPost, comments: {id: string, comments:string}}> = ({ post, comments }) => {
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
@@ -69,7 +69,7 @@ const Post:FC<{post : IPost}> = ({ post }) => {
       <p className="comments-count">
         View all
         {' '}
-        {Number(post.comments) || ''}
+        {Number(comments.comments) || ''}
         {' '}
         comments
       </p>

@@ -8,14 +8,17 @@ import './style.css';
 
 const PostsContainer:FC = () => {
   const [posts, setPosts] = useState([]);
+  const [comment, setComment] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const fetchPosts = async () => {
     try {
       setLoading(true);
-      const { data } = await ApiService.get('/api/v1/posts');
+      const response = await ApiService.get('/api/v1/posts');
+      const { data, comments } = response.data;
       setLoading(false);
       setPosts(data);
+      setComment(comments);
     } catch (error) {
       console.log(error);
     }
@@ -28,7 +31,7 @@ const PostsContainer:FC = () => {
   if (loading) return <h1>Loading ...</h1>;
   return (
     <div className="posts-containers">
-      {posts.map((post, i) => <Post post={post} key={i} />)}
+      {posts.map((post, i) => <Post post={post} comments={comment[i]} key={i} />)}
     </div>
   );
 };
