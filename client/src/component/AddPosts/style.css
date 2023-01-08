@@ -1,0 +1,19 @@
+.back-icon{
+  cursor: pointer;
+}
+
+.add-post-modal-title{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px 2px;
+}
+
+.add-post-modal-title p {
+  margin: 0 auto;
+  color: #262626;
+}
+
+.ant-modal-content {
+  padding: 0 !important;
+}

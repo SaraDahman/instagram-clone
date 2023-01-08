@@ -1,6 +1,9 @@
 import { Modal, Button, Divider } from 'antd';
 import { FC, useState } from 'react';
 import { Dropzone } from '..';
+import ImageEditor from '../ImageEditor';
+import { BackIcon } from './icons';
+import './style.css';
 
 const AddPosts:FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,6 +20,7 @@ const AddPosts:FC = () => {
   const handleCancel = ():void => {
     setIsModalOpen(false);
   };
+
   return (
     <div>
       <Button type="primary" onClick={showModal}>
@@ -27,13 +31,23 @@ const AddPosts:FC = () => {
         onOk={handleOk}
         onCancel={handleCancel}
         footer={[]}
+        closable={false}
       >
-        <h4 style={{ textAlign: 'center' }}>Create new post</h4>
-        <Divider style={{ marginTop: '7px' }} />
-        <div>
-          <Dropzone setImage={setImage} image={image} />
+        <div className="add-post-modal-title">
+          {image && <BackIcon />}
+          <p>Create new post</p>
+          { image && <Button type="link">Next</Button>}
+
         </div>
-        {image && <img width="100%" src={image} alt="test" />}
+
+        <Divider style={{ marginTop: '7px' }} />
+        {image
+          ? <ImageEditor imageTest={image} /> : (
+            <div>
+              <Dropzone setImage={setImage} />
+            </div>
+          )}
+
       </Modal>
     </div>
   );

@@ -1,12 +1,15 @@
 /* eslint-disable react/jsx-props-no-spreading */
+import { Button } from 'antd';
 import { FC } from 'react';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
+import ImageEditor from '../ImageEditor';
+import { DropZoneIcon } from './icons';
+import './style.css';
 
 interface IDropZone{
-  image:string,
   setImage:Function,
 }
-const Dropzone: FC<IDropZone> = ({ image, setImage }) => {
+const Dropzone: FC<IDropZone> = ({ setImage }) => {
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: 'image/*' as string,
     onDrop: (acceptedFiles:any): void => {
@@ -27,17 +30,13 @@ const Dropzone: FC<IDropZone> = ({ image, setImage }) => {
       }
     },
   } as unknown as DropzoneOptions);
-  console.log(image);
   return (
-    <div {...getRootProps()}>
+    <div className="drop-zone-container" {...getRootProps()}>
       <input {...getInputProps()} />
+      <DropZoneIcon />
       {
-          isDragActive
-            ? <p>Drop the files here ...</p>
-            : <p>Drag drop some files here, or click to select files</p>
-
-        // image
-        //   && <p>Drop the files here ...</p>
+          !isDragActive
+            && <p className="drop-text">Drag photos and videos here</p>
       }
     </div>
   );
