@@ -4,6 +4,7 @@ import {
   Input, Divider, Button, Dropdown,
 } from 'antd';
 import type { MenuProps } from 'antd';
+import { Link } from 'react-router-dom';
 import MediaSlider from '../MediaSlider';
 import UserInfo from '../UserInfo';
 import { SaveIcon, LikeIcon, CommentIcon } from './icons';
@@ -42,7 +43,10 @@ const Post:FC<{post : IPost}> = ({ post }) => {
     <div className="post" key={post.id}>
       <div className="post-header">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <UserInfo username={post.username} image={post.image} />
+          <Link to={`/${post.username}`}>
+
+            <UserInfo username={post.username} image={post.image} />
+          </Link>
           <p className="post-date">• 11h</p>
         </div>
         <EllipsisOutlined className="post-options" />
