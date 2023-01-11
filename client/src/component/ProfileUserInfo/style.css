@@ -1,14 +1,126 @@
+.user-data-container-profile {
+  display: flex;
+  justify-content: center;
+  gap: 80px;
+  width: 60%;
+  margin-left: 15%;
+  margin-top: 30px;
+}
+
+.user-data-container-profile img {
+  width: 165px;
+  height: 165px;
+  border-radius: 50%;
+}
+
+.user-info-section {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  align-items: flex-start;
+  width: 80%;
+  /* border: 1px saddlebrown solid; */
+}
+
+.user-info-section .first-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 25px;
+  width: 90%;
+  /* border: 1px red solid; */
+}
+
+.first-row h1 {
+  font-weight: 400;
+  font-size: 1rem;
+  width: fit-content;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
 .edit-profile-btn {
   background-color: #e8e8e87e;
   border: black;
+  color: black;
+  font-weight: 500;
 }
 
 .edit-profile-btn:hover {
   background-color: #c1bdbd7e;
 }
 
-.username-profile-userInfo {
-  font-weight: 400;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+.setting-button {
+  border: none;
+  background-color: inherit;
+  width: 40px;
+  font-size: 25px;
+}
 
+.second-row {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 30px;
+  width: 90%;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.bio {
+  font-size: 12px;
+  color: rgba(13, 13, 13, 0.77);
+  text-align: start;
+  width: 50%;
+  height: fit-content;
+}
+
+@media (max-width: 1030px) {
+  .second-row {
+    font-size: 14px;
+    width: 100%;
+  }
+  .user-data-container-profile {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-data-container-profile {
+    margin-left: 20px;
+    gap: 20px;
+  }
+  .user-info-section {
+    margin-top: 20px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .user-data-container-profile {
+    width: 100%;
+    margin-left: 0px;
+  }
+  .user-data-container-profile img {
+    height: 120px;
+    width: 120px;
+  }
+}
+
+@media (max-width: 495px) {
+  .user-data-container-profile {
+    gap: 10px;
+  }
+  .user-data-container-profile img {
+    height: 100px;
+    width: 100px;
+    margin-left: 10px;
+  }
+  .second-row {
+    gap: 15px;
+    font-size: 12px;
+  }
+
+  .bio {
+    width: 80%;
+  }
 }
