@@ -63,8 +63,7 @@ export class UserService {
       raw: true,
       where: { userId },
     });
-    if (!posts) return 0;
-    return posts;
+    return posts || 0;
   }
 
   async checkUser(id: number) {
