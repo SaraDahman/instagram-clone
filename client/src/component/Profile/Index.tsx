@@ -90,6 +90,7 @@ const UserProfile: FC = () => {
             content="When you share photos, they will appear on your profile"
             title="Share photos"
             isPost
+            userId={user?.id}
           />
         )
           : <ProfilePosts isPostsLoading={isPostsLoading} posts={userPosts} />

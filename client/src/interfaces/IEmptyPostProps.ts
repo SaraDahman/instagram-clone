@@ -3,4 +3,5 @@ export interface IEmptyPostProps {
   title: string;
   content: string;
   isPost:boolean;
+  userId?:number| undefined;
 }
