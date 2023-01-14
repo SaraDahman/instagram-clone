@@ -87,27 +87,17 @@ export class PostsService {
   }
 
   // get all the posts for one user (profile page)
-  async findUserPosts(username) {
-    const user = await this.userRepository.findOne({ where: { username } });
+  async findUserPosts(username: string) {
+    const { id } = await this.userRepository.findOne({
+      attributes: ['id'],
+      where: { username },
+    });
 
-    if (!user) throw new NotFoundException('user not found');
+    if (!id) throw new NotFoundException('user not found');
 
     const posts = this.postRepository.findAll({
-      attributes: [
-        '*',
-        'user.name' as 'name',
-        'user.username' as 'username',
-        'user.image' as 'image',
-      ],
-      raw: true,
-      include: [
-        {
-          model: this.userRepository,
-          attributes: [],
-          required: true,
-          where: { username },
-        },
-      ],
+      where: { userId: id },
+      attributes: ['id', 'media', 'caption'],
     });
 
     return posts;
