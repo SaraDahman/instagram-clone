@@ -13,6 +13,7 @@ import { tabsItem } from './TabsItem';
 import { ApiService } from '../../services/ApiService';
 import { AuthContext } from '../../context/AuthContext';
 import { IProfileData } from '../../interfaces';
+import Loading from '../Loading/Index';
 import cameraIcon from '../../assets/images/camera.png';
 import './style.css';
 
@@ -46,7 +47,7 @@ const UserProfile: FC = () => {
     fetchUserData();
   }, []);
 
-  if (isLoading) return <h1>Loading</h1>;
+  if (isLoading) return <Loading />;
 
   const handleOnChange = (key:string):void => {
     if (key === 'Posts' || key === 'Saved') setActiveKey(key);

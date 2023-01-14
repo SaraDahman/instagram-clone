@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-closing-tag-location */
 import { FC } from 'react';
 
 import { v4 as uuidv4 } from 'uuid';
@@ -19,12 +18,11 @@ const ProfilePosts: FC = () => {
   while (rowsNumber >= i) {
     const start = i * 3; // Start from 0 then increase three by three
     const end = i * 3 + 3;
-    renderRows.push(<div
-      className="profile-row-posts"
-      key={uuidv4()}
-    >
-      {renderedPosts.slice(start, end)}
-    </div>);
+    renderRows.push(
+      <div className="profile-row-posts" key={uuidv4()}>
+        {renderedPosts.slice(start, end)}
+      </div>,
+    );
     i += 1;
   }
   return (
