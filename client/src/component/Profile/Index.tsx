@@ -12,30 +12,43 @@ import ProfilePosts from '../ProfilePosts';
 import { tabsItem } from './TabsItem';
 import { ApiService } from '../../services/ApiService';
 import { AuthContext } from '../../context/AuthContext';
-import { IProfileData } from '../../interfaces';
+import { IProfileData, IProfilePosts } from '../../interfaces';
 import Loading from '../Loading/Index';
 import cameraIcon from '../../assets/images/camera.png';
 import './style.css';
 
 const UserProfile: FC = () => {
+  const [userPosts, setUserPosts] = useState<IProfilePosts[]>([]);
+  const [user, setUser] = useState<IProfileData | null>(null);
   const data = useContext(AuthContext);
   const [tabWidth, setTabWidth] = useState<number>(50);
-
-  const [userPosts] = useState<any>([]);
   const [items, setItems] = useState(tabsItem);
   const [activeKey, setActiveKey] = useState<string>('Posts');
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [user, setUser] = useState<IProfileData|null>(null);
+  const [isPostsLoading, setIsPostsLoading] = useState<boolean>(false);
   const { username } = useParams();
 
-  const fetchUserData = async ():Promise<void> => {
+  const fetchUserData = async (): Promise<void> => {
     try {
       setIsLoading(true);
+      // Here I got the number of the followers, followings and posts. so I can't get
+      // the user information with all his posts in one request
       const response = await ApiService.get(`/api/v1/user/${username}`);
       setUser(response.data);
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
+    }
+  };
+
+  const fetchUserPosts = async (): Promise<void> => {
+    try {
+      setIsPostsLoading(true);
+      const response = await ApiService.get(`/api/v1/posts/profile/${username}`);
+      setUserPosts(response.data);
+      setIsPostsLoading(false);
+    } catch (error) {
+      setIsPostsLoading(false);
     }
   };
 
@@ -45,11 +58,12 @@ const UserProfile: FC = () => {
       setTabWidth(100);
     }
     fetchUserData();
+    fetchUserPosts();
   }, []);
 
   if (isLoading) return <Loading />;
 
-  const handleOnChange = (key:string):void => {
+  const handleOnChange = (key: string): void => {
     if (key === 'Posts' || key === 'Saved') setActiveKey(key);
   };
 
@@ -69,7 +83,7 @@ const UserProfile: FC = () => {
           items={items}
         />
       </div>
-      { activeKey === 'Posts'
+      {activeKey === 'Posts'
         ? !userPosts.length ? (
           <EmptyPosts
             icon={cameraIcon}
@@ -78,7 +92,7 @@ const UserProfile: FC = () => {
             isPost
           />
         )
-          : <ProfilePosts />
+          : <ProfilePosts isPostsLoading={isPostsLoading} posts={userPosts} />
         : <Saved />}
 
     </div>
