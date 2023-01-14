@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import { FC } from 'react';
 import { Avatar } from 'antd';
 import Slider from 'react-slick';
@@ -11,24 +10,19 @@ import NextArrow from './NextArrow';
 import { userData } from '../../data/FakeUsersData';
 import './style.css';
 
-const Stories:FC = () => {
-  const settings = {
-    dots: false,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 6,
-    slidesToScroll: 4,
-    accessibility: true,
-    nextArrow: <NextArrow />,
-    prevArrow: <PrevArrow />,
-  };
-
-  return (
-    <Slider
-      {...settings}
-      className="story-slider"
-    >
-      {
+const Stories:FC = () => (
+  <Slider
+    dots={false}
+    infinite={false}
+    speed={500}
+    slidesToShow={6}
+    slidesToScroll={4}
+    accessibility
+    nextArrow={<NextArrow />}
+    prevArrow={<PrevArrow />}
+    className="story-slider"
+  >
+    {
         userData.map((story) => (
           <div className="story-user" key={story.id}>
             <div className={story.seen ? 'avatar-story-seen' : 'avatar-story-unseen'}>
@@ -46,8 +40,7 @@ const Stories:FC = () => {
           </div>
         ))
         }
-    </Slider>
-  );
-};
+  </Slider>
+);
 
 export default Stories;
