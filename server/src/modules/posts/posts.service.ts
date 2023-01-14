@@ -10,7 +10,6 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities';
 import { fn, col } from 'sequelize';
-
 @Injectable()
 export class PostsService {
   constructor(
@@ -95,11 +94,31 @@ export class PostsService {
 
     if (!id) throw new NotFoundException('user not found');
 
-    const posts = this.postRepository.findAll({
+    const posts = await this.postRepository.findAll({
       where: { userId: id },
-      attributes: ['id', 'media', 'caption'],
+      attributes: [
+        'id',
+        'media',
+        [fn('COUNT', col('comments.id')), 'comments'],
+      ],
+      raw: true,
+      include: { model: Comment, attributes: [] },
+      order: [['createdAt', 'DESC']],
+      group: ['Post.id'],
     });
-
+    const likesCount = await this.postRepository.findAll({
+      where: { userId: id },
+      attributes: [[fn('COUNT', col('likes.userId')), 'likes']],
+      raw: true,
+      include: { model: Like, attributes: [] },
+      order: [['createdAt', 'DESC']],
+      group: ['Post.id'],
+    });
+    posts.map((post, i) => {
+      const { likes } = likesCount[i];
+      post['likesCount'] = likes;
+      return post;
+    });
     return posts;
   }
 

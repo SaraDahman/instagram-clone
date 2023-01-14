@@ -1,5 +1,6 @@
 export interface IProfilePosts {
-  caption: string;
   id: string;
   media: string[];
+  comments:string;
+  likesCount:string;
 }

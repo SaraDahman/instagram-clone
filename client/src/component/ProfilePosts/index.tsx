@@ -1,6 +1,8 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 
+import { Image } from 'antd';
 import { v4 as uuidv4 } from 'uuid';
+import { HeartFilled, CommentOutlined } from '@ant-design/icons';
 
 import Loading from '../Loading/Index';
 import { IProfilePosts } from '../../interfaces';
@@ -8,9 +10,32 @@ import './style.css';
 
 const ProfilePosts:FC <{isPostsLoading: boolean,
   posts:IProfilePosts[] }> = ({ isPostsLoading, posts }) => {
+    const [hoveredPostId, setHoveredPostId] = useState<number>(0);
     const renderedPosts = posts.map((post) => (
       <div className="single-posts" key={uuidv4()}>
-        <img className="images-posts-profile" src={post.media[0]} alt="post" />
+        {
+        hoveredPostId === +post.id
+          ? (
+            <div className="hover-icons">
+              <CommentOutlined />
+              <p>{post.comments || 0}</p>
+              <HeartFilled />
+              <p>{post.likesCount || 0}</p>
+            </div>
+          ) : null
+}
+        <Image
+          preview={{ mask: true, visible: false }}
+          className="images-posts-profile"
+          src={post.media[0]}
+          alt="post"
+          onMouseOver={() => {
+            setHoveredPostId(+post.id);
+          }}
+          onMouseLeave={() => {
+            setHoveredPostId(0);
+          }}
+        />
       </div>
     ));
 
