@@ -99,7 +99,6 @@ export class PostsService {
       attributes: [
         'id',
         'media',
-        'caption',
         [fn('COUNT', col('comments.id')), 'comments'],
       ],
       raw: true,
