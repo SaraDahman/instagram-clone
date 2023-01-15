@@ -10,12 +10,15 @@ import { SaveIcon, LikeIcon, CommentIcon } from './icons';
 import './style.css';
 import EmojiPicker from '../EmojiPicker';
 import { IPost } from '../../interfaces';
+import PosPopUp from '../PostPopup';
 
 const Post:FC<{post : IPost, comments: {id: string, comments:string}}> = ({ post, comments }) => {
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [comment, setComment] = useState<string>('');
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const items: MenuProps['items'] = [
     {
@@ -38,6 +41,10 @@ const Post:FC<{post : IPost, comments: {id: string, comments:string}}> = ({ post
     setOpen(e);
   };
 
+  const showModal = ():void => {
+    setIsModalOpen(true);
+  };
+
   return (
     <div className="post" key={post.id}>
       <div className="post-header">
@@ -47,7 +54,7 @@ const Post:FC<{post : IPost, comments: {id: string, comments:string}}> = ({ post
         </div>
         <EllipsisOutlined className="post-options" />
       </div>
-      <MediaSlider media={post.media} />
+      <MediaSlider media={post.media} className="img-slider" />
 
       <div className="post-operations">
         <div>
@@ -66,13 +73,13 @@ const Post:FC<{post : IPost, comments: {id: string, comments:string}}> = ({ post
         {post.caption}
       </p>
 
-      <p className="comments-count">
+      <button className="comments-count" onClick={showModal} type="button">
         View all
         {' '}
         {Number(comments.comments) || ''}
         {' '}
         comments
-      </p>
+      </button>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Input
           placeholder="add a comment..."
@@ -100,6 +107,7 @@ const Post:FC<{post : IPost, comments: {id: string, comments:string}}> = ({ post
       </div>
 
       <Divider />
+      <PosPopUp isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
     </div>
   );
 };
