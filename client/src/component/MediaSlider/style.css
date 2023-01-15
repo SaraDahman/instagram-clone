@@ -5,7 +5,7 @@
 .prev-btn, .next-btn{
   position: absolute;
   top: 50%;
-  z-index: 10;
+  z-index: 5;
   font-size: 22px;
   color: rgba(255, 255, 255, 0.662);
 }
@@ -18,7 +18,7 @@
   right: 10px;
 }
 
-.media-post{
+.img-slider .media-post{
   width: 100%;
   max-width: 470px;
   max-height: 589px;
@@ -26,7 +26,7 @@
   overflow: hidden;
 }
 
-.media-post img{
-  object-fit: cover;
+.img-slider .media-post img{
+  object-fit: contain;
   width: 100%;
 }
