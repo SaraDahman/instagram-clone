@@ -7,6 +7,12 @@
   color: rgba(0, 0, 0, 0.789);
 }
 
+.pop-up svg{
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+}
+
 .pop-up .popup-slider{
   width: 50%;
   position: relative;
@@ -18,7 +24,7 @@
   width: 100%;
   border-radius: 4px;
   overflow: hidden;
-  height: 620px;
+  height: 650px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -32,6 +38,9 @@
 
 .pop-up .popup-details{
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .pop-up .popup-details .user-avatar{
@@ -41,7 +50,8 @@
   padding: 0.5rem 1rem;
 }
 
-.popup-details .user-avatar .avatar{
+
+.popup-details  .avatar{
   width: 2.5rem;
   height: 2.5rem;
 }
@@ -52,6 +62,7 @@
   font-size: 1.6rem;
   cursor: pointer;
 }
+
 
 .popup-details .comments{
   height: 450px;
@@ -65,23 +76,23 @@
   display: none;
 }
 
-.popup-details .popup-caption {
+.popup-details .popup-caption{
   width: 100%;
   display: flex;
   align-items: flex-start;
+  flex-wrap: wrap;
   gap: 0.5rem;
   font-size: 13px;
   font-weight: 300;
   margin-bottom: 1rem;
 }
 
-
-.popup-details .popup-caption .avatar{
-  width: 2.5rem;
-  height: 2.5rem;
+.popup-caption .time{
+  width: 100%;
+  margin-top: 0.5rem;
 }
 
-.popup-details .popup-caption p{
+.popup-details p{
   width: 80%;
 }
 
@@ -101,4 +112,53 @@
 
 .popup-details .icons svg:last-child{
   margin-left: auto;
+}
+
+
+.popup-details .likes-count{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 13px;
+  font-weight: 300;
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+}
+
+.popup-details .likes-count .avatar{
+  width: 2rem;
+  height: 2rem;
+}
+
+.popup-details .add-comment{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0 1rem;
+}
+
+.popup-details .add-comment .text-area{
+  outline: 0;
+  border: 0;
+}
+
+.popup-details .add-comment .text-area:focus{
+  outline: 0;
+  border: 0;
+}
+
+.popup-details .add-comment button {
+  border: 0;
+  outline: 0;
+  background-color: inherit;
+  color: #1ca1f7;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.popup-details .add-comment .disable{
+  pointer-events: none;
+  color: #b3dbff;
 }

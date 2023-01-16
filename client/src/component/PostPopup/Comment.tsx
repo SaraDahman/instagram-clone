@@ -1,18 +1,23 @@
 import { FC } from 'react';
 import { Avatar } from 'antd';
 
-const Comment:FC = ():any => (
+const Comment:FC<{
+  username:string | undefined,
+  image:string | undefined,
+  comment:string | undefined,
+}> = ({ username, image, comment }):any => (
   <div className="popup-caption">
     <Avatar
-      src="https://images.pexels.com/photos/5702958/pexels-photo-5702958.jpeg"
+      src={image}
       className="avatar"
     />
     <p>
-      <strong>Sara Dahman </strong>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit.
-      Saepe sit tenetur aliquam eos totam unde deleniti assumenda
-      molestiae quis, quod voluptate. Omnis officia exercitationem,
-      eveniet natus culpa aliquam eaque fugit.
+      <strong>
+        {username}
+        {' '}
+      </strong>
+      {comment}
+      <p className="time">1d</p>
     </p>
   </div>
 );

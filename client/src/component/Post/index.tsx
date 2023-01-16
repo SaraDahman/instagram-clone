@@ -107,7 +107,7 @@ const Post:FC<{post : IPost, comments: {id: string, comments:string}}> = ({ post
       </div>
 
       <Divider />
-      <PosPopUp isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
+      <PosPopUp isOpen={isModalOpen} setIsOpen={setIsModalOpen} id={post.id} />
     </div>
   );
 };
