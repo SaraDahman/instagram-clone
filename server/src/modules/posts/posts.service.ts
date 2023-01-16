@@ -4,18 +4,17 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { Following, Like, User } from '../index.models';
+import { Following, Like, User, Comment } from '../index.models';
 import { Messages } from 'src/core/messages';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities';
-import { findAllQueryDTO } from './dto/find-all-query.dto';
-
+import { fn, col } from 'sequelize';
 @Injectable()
 export class PostsService {
   constructor(
-    @InjectModel(Post)
-    private postRepository: typeof Post,
+    @InjectModel(Post) private postRepository: typeof Post,
+    @InjectModel(User) private userRepository: typeof User,
   ) {}
 
   async create(userId: number, dto: CreatePostDto) {
@@ -26,46 +25,101 @@ export class PostsService {
     return { data, message: Messages.CREATE_SUCCESS };
   }
 
-  async findAll(userId: number, dto: findAllQueryDTO) {
-    const whereObj = {};
-    if (dto.profileUserId) {
-      whereObj['userId'] = dto.profileUserId;
-    }
-
+  // get all home page posts
+  async findAll(userId: number) {
     const includeFollowing = [];
     if (userId) {
       includeFollowing[0] = {
         model: Following,
+        attributes: [],
         required: true,
         as: 'followed',
         where: { followerId: userId },
       };
     }
     const data = await this.postRepository.findAll({
-      attributes: { exclude: ['updatedAt'] },
+      attributes: [
+        '*',
+        [fn('COUNT', col('likes.userId')), 'likes'],
+        // [fn('COUNT', col('comments.id')), 'comments'],
+        'user.name' as 'name',
+        'user.username' as 'username',
+        'user.image' as 'image',
+      ],
+      raw: true,
       include: [
         {
           model: User,
-          attributes: ['name', 'username', 'image'],
+          attributes: [],
           required: true,
           include: includeFollowing,
         },
         {
           model: Like,
-          include: [
-            {
-              model: User,
-              attributes: ['name', 'username', 'image'],
-              required: true,
-            },
-          ],
+          attributes: [],
         },
       ],
-      where: whereObj,
       order: [['createdAt', 'DESC']],
+      group: ['Post.id', 'user.id'],
     });
 
-    return { data };
+    const comments = await this.postRepository.findAll({
+      attributes: ['id', [fn('COUNT', col('comments.id')), 'comments']],
+      raw: true,
+      include: [
+        {
+          model: User,
+          attributes: [],
+          required: true,
+          include: includeFollowing,
+        },
+        {
+          model: Comment,
+          attributes: [],
+        },
+      ],
+      order: [['createdAt', 'DESC']],
+      group: ['Post.id'],
+    });
+
+    return { data, comments };
+  }
+
+  // get all the posts for one user (profile page)
+  async findUserPosts(username: string) {
+    const { id } = await this.userRepository.findOne({
+      attributes: ['id'],
+      where: { username },
+    });
+
+    if (!id) throw new NotFoundException('user not found');
+
+    const posts = await this.postRepository.findAll({
+      where: { userId: id },
+      attributes: [
+        'id',
+        'media',
+        [fn('COUNT', col('comments.id')), 'comments'],
+      ],
+      raw: true,
+      include: { model: Comment, attributes: [] },
+      order: [['createdAt', 'DESC']],
+      group: ['Post.id'],
+    });
+    const likesCount = await this.postRepository.findAll({
+      where: { userId: id },
+      attributes: [[fn('COUNT', col('likes.userId')), 'likes']],
+      raw: true,
+      include: { model: Like, attributes: [] },
+      order: [['createdAt', 'DESC']],
+      group: ['Post.id'],
+    });
+    posts.map((post, i) => {
+      const { likes } = likesCount[i];
+      post['likesCount'] = likes;
+      return post;
+    });
+    return posts;
   }
 
   async findOne(id: number) {
@@ -87,7 +141,8 @@ export class PostsService {
       ],
       where: { id },
     });
-    return { data };
+
+    return data;
   }
 
   async checkPost(postId: number) {

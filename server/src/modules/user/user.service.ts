@@ -1,18 +1,69 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { col, fn } from 'sequelize';
+import { Following, Post } from '../index.models';
 import { User } from './entities';
 
 @Injectable()
 export class UserService {
   constructor(@InjectModel(User) private userRepository: typeof User) {}
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+
+  async getUserFollowingNumber(
+    username: string,
+    attributes: string[],
+    columnName: string,
+    alisa: string,
+    as: string,
+  ) {
+    const user = await this.userRepository.findOne({
+      attributes: [...attributes, [fn('count', col(columnName)), alisa]],
+      raw: true,
+      include: [
+        {
+          model: Following,
+          as,
+          attributes: [],
+        },
+      ],
+      group: ['User.id'],
+      where: { username },
+    });
+
+    if (!user) throw new NotFoundException();
+    return user;
   }
 
-  findAll() {
-    return `This action returns all user`;
+  findUserProfileInfo = async (username: string) => {
+    const user = await this.getUserFollowingNumber(
+      username,
+      ['id', 'name', 'bio', 'username', 'image'],
+      'followed.followedId',
+      'followers',
+      'followed',
+    );
+    const followings = await this.getUserFollowingNumber(
+      username,
+      [],
+      'followerId',
+      'followings',
+      'follower',
+    );
+
+    const posts = await this.getUserPostsNumber(user.id);
+    return {
+      ...user,
+      ...followings,
+      ...posts,
+    };
+  };
+
+  async getUserPostsNumber(userId: number) {
+    const posts = await Post.findOne({
+      attributes: [[fn('count', col('id')), 'posts']],
+      raw: true,
+      where: { userId },
+    });
+    return posts || 0;
   }
 
   async checkUser(id: number) {
@@ -20,11 +71,13 @@ export class UserService {
     if (!user) throw new NotFoundException();
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+  async getUser(id: number) {
+    const user = await this.userRepository.findOne({
+      attributes: ['id', 'name', 'username', 'email', 'image'],
+      where: { id },
+    });
+    if (!user) throw new NotFoundException();
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+    return user;
   }
 }

@@ -4,20 +4,15 @@ import {
   Input, Divider, Button, Dropdown,
 } from 'antd';
 import type { MenuProps } from 'antd';
+import { Link } from 'react-router-dom';
 import MediaSlider from '../MediaSlider';
 import UserInfo from '../UserInfo';
 import { SaveIcon, LikeIcon, CommentIcon } from './icons';
 import './style.css';
 import EmojiPicker from '../EmojiPicker';
+import { IPost } from '../../interfaces';
 
-const media = [
-  'https://images.pexels.com/photos/5702958/pexels-photo-5702958.jpeg',
-  'https://images.pexels.com/photos/5945570/pexels-photo-5945570.jpeg',
-  'https://images.pexels.com/photos/13522191/pexels-photo-13522191.jpeg',
-  'https://images.pexels.com/photos/6159139/pexels-photo-6159139.jpeg',
-];
-
-const Post:FC = () => {
+const Post:FC<{post : IPost, comments: {id: string, comments:string}}> = ({ post, comments }) => {
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
@@ -45,15 +40,18 @@ const Post:FC = () => {
   };
 
   return (
-    <div className="post">
+    <div className="post" key={post.id}>
       <div className="post-header">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <UserInfo />
+          <Link to={`/${post.username}`}>
+
+            <UserInfo username={post.username} image={post.image} />
+          </Link>
           <p className="post-date">• 11h</p>
         </div>
         <EllipsisOutlined className="post-options" />
       </div>
-      <MediaSlider media={media} />
+      <MediaSlider media={post.media} />
 
       <div className="post-operations">
         <div>
@@ -62,16 +60,20 @@ const Post:FC = () => {
         </div>
         {SaveIcon(isSaved, handleSave)}
       </div>
-      <p className="likes-count">19,020 Likes</p>
+      <p className="likes-count">
+        {post.likes}
+        {' '}
+        Likes
+      </p>
       <p className="caption">
-        <span className="username">mostafa.4omar</span>
-        2022: BEST MOMENTS
+        <span className="username">{post.username}</span>
+        {post.caption}
       </p>
 
       <p className="comments-count">
         View all
         {' '}
-        {652}
+        {Number(comments.comments) || ''}
         {' '}
         comments
       </p>

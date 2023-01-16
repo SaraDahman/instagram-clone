@@ -4,7 +4,7 @@ import {
 } from '../../component';
 
 const Home:FC = () => (
-  <div style={{ display: 'flex', justifyContent: 'center' }}>
+  <div style={{ display: 'flex', justifyContent: 'center', backgroundColor: '#ffffff' }}>
     <div>
       <Stories />
       <AddPosts />

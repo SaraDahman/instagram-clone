@@ -1,7 +1,7 @@
 import { Modal, Button, Divider } from 'antd';
 import { FC, useState } from 'react';
 import { Dropzone } from '..';
-import ImageEditor from '../ImageEditor';
+import CropImage from '../CropImage';
 import { BackIcon } from './icons';
 import './style.css';
 
@@ -32,6 +32,7 @@ const AddPosts:FC = () => {
         onCancel={handleCancel}
         footer={[]}
         closable={false}
+        className="add-post-modal"
       >
         <div className="add-post-modal-title">
           {image && <BackIcon />}
@@ -42,7 +43,9 @@ const AddPosts:FC = () => {
 
         <Divider style={{ marginTop: '7px' }} />
         {image
-          ? <ImageEditor imageTest={image} /> : (
+          ? (
+            <CropImage imageTest={image} />
+          ) : (
             <div>
               <Dropzone setImage={setImage} />
             </div>

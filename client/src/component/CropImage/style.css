@@ -1,0 +1,30 @@
+.cropper-container{
+  margin-top: 15pxx;
+  min-height: 400px;
+  max-height: 500px;
+  position: relative;
+}
+
+.actions{
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+}
+
+.pop-over{
+color: white ;
+}
+
+.actions button{
+  background-color: #474747;
+  border: #474747;
+}
+
+.cropper-icons{
+  color: white;
+}

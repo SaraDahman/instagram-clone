@@ -7,15 +7,13 @@ import {
   Param,
   Delete,
   UseGuards,
-  Query,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { JwtAuthGuard } from '../auth/strategy/jwt-auth-guard';
 import { GetUser } from '../auth/decorator/user.decorator';
-import { findAllQueryDTO } from './dto/find-all-query.dto';
-import { ValidationParamPipe } from '../../core/Pipes';
+import { ValidationParamPipe, UsernameParamValidation } from '../../core/Pipes';
 
 @Controller('posts')
 export class PostsController {
@@ -27,9 +25,15 @@ export class PostsController {
     return this.postsService.create(userId, dto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAll(@GetUser() userId: number, @Query() dto: findAllQueryDTO) {
-    return this.postsService.findAll(userId, dto);
+  findAll(@GetUser() userId: number) {
+    return this.postsService.findAll(userId);
+  }
+
+  @Get('profile/:username')
+  findUserPosts(@Param('username', UsernameParamValidation) username: string) {
+    return this.postsService.findUserPosts(username);
   }
 
   @Get(':id')

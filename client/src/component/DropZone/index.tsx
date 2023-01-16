@@ -2,7 +2,6 @@
 import { Button } from 'antd';
 import { FC } from 'react';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
-import ImageEditor from '../ImageEditor';
 import { DropZoneIcon } from './icons';
 import './style.css';
 
@@ -38,6 +37,12 @@ const Dropzone: FC<IDropZone> = ({ setImage }) => {
           !isDragActive
             && <p className="drop-text">Drag photos and videos here</p>
       }
+      <Button
+        className="select-img-btn"
+        type="primary"
+      >
+        select from computer
+      </Button>
     </div>
   );
 };

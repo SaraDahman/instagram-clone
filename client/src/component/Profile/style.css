@@ -1,0 +1,32 @@
+
+.tabs-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  
+}
+
+.tabs-slider {
+  margin-bottom: 32;
+  width: 70%;
+}
+
+/* Ant Design */
+.ant-tabs-tab-active div span {
+  color: black !important; 
+}
+
+.tab-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-transform: uppercase;
+  color: #b7b3b3ca;
+  font-size: 12px;
+}
+
+
+.post-tab-profile {
+  gap: 0px;
+}
+
