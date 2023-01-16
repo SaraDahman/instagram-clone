@@ -10,7 +10,6 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { Post } from './entities';
 import { fn, col } from 'sequelize';
-
 @Injectable()
 export class PostsService {
   constructor(
@@ -87,29 +86,39 @@ export class PostsService {
   }
 
   // get all the posts for one user (profile page)
-  async findUserPosts(username) {
-    const user = await this.userRepository.findOne({ where: { username } });
-
-    if (!user) throw new NotFoundException('user not found');
-
-    const posts = this.postRepository.findAll({
-      attributes: [
-        '*',
-        'user.name' as 'name',
-        'user.username' as 'username',
-        'user.image' as 'image',
-      ],
-      raw: true,
-      include: [
-        {
-          model: this.userRepository,
-          attributes: [],
-          required: true,
-          where: { username },
-        },
-      ],
+  async findUserPosts(username: string) {
+    const { id } = await this.userRepository.findOne({
+      attributes: ['id'],
+      where: { username },
     });
 
+    if (!id) throw new NotFoundException('user not found');
+
+    const posts = await this.postRepository.findAll({
+      where: { userId: id },
+      attributes: [
+        'id',
+        'media',
+        [fn('COUNT', col('comments.id')), 'comments'],
+      ],
+      raw: true,
+      include: { model: Comment, attributes: [] },
+      order: [['createdAt', 'DESC']],
+      group: ['Post.id'],
+    });
+    const likesCount = await this.postRepository.findAll({
+      where: { userId: id },
+      attributes: [[fn('COUNT', col('likes.userId')), 'likes']],
+      raw: true,
+      include: { model: Like, attributes: [] },
+      order: [['createdAt', 'DESC']],
+      group: ['Post.id'],
+    });
+    posts.map((post, i) => {
+      const { likes } = likesCount[i];
+      post['likesCount'] = likes;
+      return post;
+    });
     return posts;
   }
 

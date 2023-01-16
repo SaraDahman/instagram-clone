@@ -1,9 +1,10 @@
-/* eslint-disable react/no-array-index-key */
-/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { FC, useEffect, useState } from 'react';
+
+import { v4 as uuidv4 } from 'uuid';
+
 import Post from '../Post';
 import { ApiService } from '../../services';
-
+import Loading from '../Loading/Index';
 import './style.css';
 
 const PostsContainer:FC = () => {
@@ -11,7 +12,7 @@ const PostsContainer:FC = () => {
   const [comment, setComment] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchPosts = async () => {
+  const fetchPosts = async ():Promise<void> => {
     try {
       setLoading(true);
       const response = await ApiService.get('/api/v1/posts');
@@ -28,10 +29,10 @@ const PostsContainer:FC = () => {
     fetchPosts();
   }, []);
 
-  if (loading) return <h1>Loading ...</h1>;
+  if (loading) return <Loading />;
   return (
     <div className="posts-containers">
-      {posts.map((post, i) => <Post post={post} comments={comment[i]} key={i} />)}
+      {posts.map((post, i) => <Post post={post} comments={comment[i]} key={uuidv4()} />)}
     </div>
   );
 };

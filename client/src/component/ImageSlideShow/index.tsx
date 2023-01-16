@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { FC, useState, useEffect } from 'react';
 import { Transition } from 'react-transition-group';
 import './style.css';
@@ -26,7 +25,7 @@ const ImageSlideshow:FC = () => {
   return (
     <div className="auth-trailer">
       <Transition in timeout={1000}>
-        {(state) => (
+        {() => (
           <div
             key={currentImage}
             style={{
