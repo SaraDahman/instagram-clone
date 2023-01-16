@@ -2,7 +2,9 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Messages } from '../../core/messages';
 import { PostsService } from '../posts/posts.service';
-import { Post, Bookmark, User, Like } from '../index.models';
+import { Post, Bookmark, Comment, Like } from '../index.models';
+import { fn, col } from 'sequelize';
+import { comments } from '../../core/database/seeder-data';
 
 @Injectable()
 export class BookmarksService {
@@ -24,30 +26,55 @@ export class BookmarksService {
 
   async findAll(userId: number) {
     const data = await this.BookmarkRepository.findAll({
+      attributes: [],
+      raw: true,
       include: [
         {
           model: Post,
-          required: true,
+          attributes: ['media'],
           include: [
             {
-              model: User,
-              attributes: ['id', 'name', 'username', 'image'],
-            },
-            {
               model: Like,
-              include: [
-                {
-                  model: User,
-                  attributes: ['id', 'name', 'username', 'image'],
-                },
-              ],
+              attributes: [[fn('COUNT', col('post.likes.userId')), 'likes']],
             },
           ],
         },
       ],
       where: { userId },
+      group: ['post.id', 'post->likes.userId', 'post->likes.postId'],
     });
-    return { data };
+    const modifiedData = data.map((item) => {
+      return {
+        media: item['post.media'],
+        postId: item['post.likes.postId'],
+        userId: item['post.likes.userId'],
+        likes: item['post.likes.likes'],
+      };
+    });
+    console.log(modifiedData);
+    console.log('No error');
+    const data1 = await Post.findAll({
+      attributes: [
+        'id',
+        'caption',
+        [fn('COUNT', col('comments.postId')), 'Comments'],
+      ],
+      include: [
+        {
+          model: this.BookmarkRepository,
+          attributes: [],
+        },
+        {
+          model: Comment,
+          attributes: [],
+        },
+      ],
+      where: { userId },
+      group: ['Post.id'],
+    });
+
+    console.log(data1[0].dataValues);
+    return modifiedData;
   }
 
   async remove(userId: number, postId: number) {
