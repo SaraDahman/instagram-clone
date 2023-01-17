@@ -4,7 +4,6 @@ import { Messages } from '../../core/messages';
 import { PostsService } from '../posts/posts.service';
 import { Post, Bookmark, Comment, Like } from '../index.models';
 import { fn, col } from 'sequelize';
-import { comments } from '../../core/database/seeder-data';
 
 @Injectable()
 export class BookmarksService {
@@ -25,55 +24,47 @@ export class BookmarksService {
   }
 
   async findAll(userId: number) {
-    const data = await this.BookmarkRepository.findAll({
-      attributes: [],
+    const bookmarks = await Post.findAll({
+      attributes: ['id', 'media', [fn('COUNT', col('likes.postId')), 'likes']],
       raw: true,
-      include: [
-        {
-          model: Post,
-          attributes: ['media'],
-          include: [
-            {
-              model: Like,
-              attributes: [[fn('COUNT', col('post.likes.userId')), 'likes']],
-            },
-          ],
-        },
-      ],
-      where: { userId },
-      group: ['post.id', 'post->likes.userId', 'post->likes.postId'],
-    });
-    const modifiedData = data.map((item) => {
-      return {
-        media: item['post.media'],
-        postId: item['post.likes.postId'],
-        userId: item['post.likes.userId'],
-        likes: item['post.likes.likes'],
-      };
-    });
-    console.log(modifiedData);
-    console.log('No error');
-    const data1 = await Post.findAll({
-      attributes: [
-        'id',
-        'caption',
-        [fn('COUNT', col('comments.postId')), 'Comments'],
-      ],
       include: [
         {
           model: this.BookmarkRepository,
           attributes: [],
+          required: true,
+          where: { userId },
+        },
+        {
+          model: Like,
+          attributes: [],
+        },
+      ],
+      group: 'Post.id',
+      order: [['id', 'DESC']],
+    });
+
+    const postComments = await Post.findAll({
+      attributes: ['id', [fn('COUNT', col('comments.postId')), 'comments']],
+      raw: true,
+      include: [
+        {
+          model: this.BookmarkRepository,
+          attributes: [],
+          required: true,
+          where: { userId },
         },
         {
           model: Comment,
           attributes: [],
         },
       ],
-      where: { userId },
       group: ['Post.id'],
+      order: [['id', 'DESC']],
     });
 
-    console.log(data1[0].dataValues);
+    const modifiedData = bookmarks.map((bookmark, i) => {
+      return { ...bookmark, ...postComments[i] };
+    });
     return modifiedData;
   }
 
