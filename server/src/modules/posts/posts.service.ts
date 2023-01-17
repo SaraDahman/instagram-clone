@@ -142,7 +142,26 @@ export class PostsService {
       where: { id },
     });
 
-    return data;
+    const comments = await this.postRepository.findOne({
+      include: [
+        {
+          model: User,
+          attributes: ['name', 'username', 'image'],
+        },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ['name', 'username', 'image'],
+            },
+          ],
+        },
+      ],
+      where: { id },
+    });
+
+    return { data, comments: comments.comments };
   }
 
   async checkPost(postId: number) {
