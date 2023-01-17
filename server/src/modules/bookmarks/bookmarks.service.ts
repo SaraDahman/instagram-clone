@@ -2,7 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { Messages } from '../../core/messages';
 import { PostsService } from '../posts/posts.service';
-import { Post, Bookmark, User, Like } from '../index.models';
+import { Post, Bookmark, Comment, Like } from '../index.models';
+import { fn, col } from 'sequelize';
 
 @Injectable()
 export class BookmarksService {
@@ -23,31 +24,48 @@ export class BookmarksService {
   }
 
   async findAll(userId: number) {
-    const data = await this.BookmarkRepository.findAll({
+    const bookmarks = await Post.findAll({
+      attributes: ['id', 'media', [fn('COUNT', col('likes.postId')), 'likes']],
+      raw: true,
       include: [
         {
-          model: Post,
+          model: this.BookmarkRepository,
+          attributes: [],
           required: true,
-          include: [
-            {
-              model: User,
-              attributes: ['id', 'name', 'username', 'image'],
-            },
-            {
-              model: Like,
-              include: [
-                {
-                  model: User,
-                  attributes: ['id', 'name', 'username', 'image'],
-                },
-              ],
-            },
-          ],
+          where: { userId },
+        },
+        {
+          model: Like,
+          attributes: [],
         },
       ],
-      where: { userId },
+      group: 'Post.id',
+      order: [['id', 'DESC']],
     });
-    return { data };
+
+    const postComments = await Post.findAll({
+      attributes: ['id', [fn('COUNT', col('comments.postId')), 'comments']],
+      raw: true,
+      include: [
+        {
+          model: this.BookmarkRepository,
+          attributes: [],
+          required: true,
+          where: { userId },
+        },
+        {
+          model: Comment,
+          attributes: [],
+        },
+      ],
+      group: ['Post.id'],
+      order: [['id', 'DESC']],
+    });
+
+    const modifiedData = bookmarks.map((bookmark, i) => {
+      return { ...bookmark, ...postComments[i] };
+    });
+    return modifiedData;
   }
 
   async remove(userId: number, postId: number) {
