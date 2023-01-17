@@ -20,7 +20,7 @@ const ProfilePosts:FC <{isPostsLoading: boolean,
               <CommentOutlined />
               <p>{post.comments || 0}</p>
               <HeartFilled />
-              <p>{post.likesCount || 0}</p>
+              <p>{post.likes || 0}</p>
             </div>
           ) : null
 }

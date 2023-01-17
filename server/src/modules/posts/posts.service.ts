@@ -116,7 +116,7 @@ export class PostsService {
     });
     posts.map((post, i) => {
       const { likes } = likesCount[i];
-      post['likesCount'] = likes;
+      post['likes'] = likes;
       return post;
     });
     return posts;
