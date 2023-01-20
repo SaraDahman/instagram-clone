@@ -73,7 +73,7 @@ export class UserService {
 
   async getUser(id: number) {
     const user = await this.userRepository.findOne({
-      attributes: ['id', 'name', 'username', 'email', 'image'],
+      attributes: ['id', 'name', 'username', 'email', 'image', 'bio'],
       where: { id },
     });
     if (!user) throw new NotFoundException();
