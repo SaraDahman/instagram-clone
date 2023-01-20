@@ -1,9 +1,10 @@
-import { Controller, Get, Param, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { ValidationParamPipe } from '../../core/Pipes';
 import { JwtAuthGuard } from '../auth/strategy';
 import { GetUser } from '../auth/decorator/user.decorator';
 import { UsernameParamValidation } from '../../core/Pipes/UsernameParamValidation.pipe';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -16,12 +17,22 @@ export class UserController {
   }
 
   @Get(':username')
-  getUserData(@Param('username', UsernameParamValidation) username: string) {
+  getUserData(
+    @Param('username', new UsernameParamValidation()) username: string,
+  ) {
     return this.userService.findUserProfileInfo(username);
   }
 
   @Get(':id')
-  checkUser(@Param('id', ValidationParamPipe) id: string) {
-    return this.userService.checkUser(+id);
+  checkUser(@Param('id', new ValidationParamPipe()) id: number) {
+    return this.userService.checkUser(id);
+  }
+
+  @Patch(':id')
+  update(
+    @Param('id', new ValidationParamPipe()) id: number,
+    @Body() dto: UpdateUserDto,
+  ) {
+    return this.userService.update(id, dto);
   }
 }
