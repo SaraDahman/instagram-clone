@@ -11,6 +11,7 @@
   width: 165px;
   height: 165px;
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .user-info-section {
