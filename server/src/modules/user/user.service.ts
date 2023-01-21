@@ -1,7 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/sequelize';
 import { col, fn } from 'sequelize';
+import { Messages } from 'src/core/messages';
 import { Following, Post } from '../index.models';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities';
 
 @Injectable()
@@ -73,11 +75,22 @@ export class UserService {
 
   async getUser(id: number) {
     const user = await this.userRepository.findOne({
-      attributes: ['id', 'name', 'username', 'email', 'image'],
+      attributes: ['id', 'name', 'username', 'email', 'image', 'bio'],
       where: { id },
     });
     if (!user) throw new NotFoundException();
 
     return user;
+  }
+
+  async update(id: number, dto: UpdateUserDto) {
+    const updated = await this.userRepository.update(dto, {
+      where: { id },
+    });
+    if (!updated) {
+      throw new NotFoundException(Messages.UPDATE_FAILED);
+    }
+
+    return { data: updated, message: Messages.UPDATE_SUCCESS };
   }
 }

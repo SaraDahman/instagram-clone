@@ -1,7 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
+import { EditProfile } from '../component';
 import {
-  Home, Profile, SignUp, SignIn,
+  Home, Profile, SignUp, SignIn, Settings,
 } from '../pages';
 
 const router = createBrowserRouter([
@@ -16,6 +17,14 @@ const router = createBrowserRouter([
       {
         path: '/:username',
         element: <Profile />,
+      },
+      {
+        path: '/accounts/edit/',
+        element: <Settings />,
+        children: [{
+          index: true,
+          element: <EditProfile />,
+        }],
       },
     ],
   },

@@ -1,0 +1,36 @@
+
+.edit-profile-container h3{
+  font-weight: 500;
+  font-size: 19px;
+  padding: 15px;
+}
+
+.edit-profile-form{
+  width: 60%;
+  min-width: 300px;
+  margin: 40px auto;
+}
+
+.edit-avatar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: max-content;
+  gap: 10px;
+}
+
+.edit-avatar .img{
+  width: 45px;
+  height: 45px;
+}
+
+.avatar-container{
+  position: relative;
+}
+.avatar-container .spin{
+  position: absolute;
+  right: 10px;
+  top: 10px;
+  color: gainsboro;
+  
+}
