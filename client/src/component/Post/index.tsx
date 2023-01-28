@@ -1,9 +1,10 @@
-import { FC, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import { EllipsisOutlined, SmileOutlined } from '@ant-design/icons';
 import {
-  Input, Divider, Button, Dropdown,
-} from 'antd';
+  Input, Divider, Button, Dropdown, message,
+} from 'antd/lib';
 import type { MenuProps } from 'antd';
+import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom';
 import MediaSlider from '../MediaSlider';
 import UserInfo from '../UserInfo';
@@ -11,15 +12,19 @@ import { SaveIcon, LikeIcon, CommentIcon } from './icons';
 import './style.css';
 import EmojiPicker from '../EmojiPicker';
 import { IPost } from '../../interfaces';
-import PosPopUp from '../PostPopup';
+import PostPopUp from '../PostPopup';
+import { ApiService } from '../../services';
+import { AuthContext } from '../../context';
 
 const Post:FC<{post : IPost, comments: {id: string, comments:string}}> = ({ post, comments }) => {
   const [isSaved, setIsSaved] = useState<boolean>(false);
   const [isLiked, setIsLiked] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [comment, setComment] = useState<string>('');
-
+  const [newComments, setNewComments] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const userAuth = useContext(AuthContext);
 
   const items: MenuProps['items'] = [
     {
@@ -44,6 +49,18 @@ const Post:FC<{post : IPost, comments: {id: string, comments:string}}> = ({ post
 
   const showModal = ():void => {
     setIsModalOpen(true);
+  };
+
+  const handleAddComments = async ():Promise<void> => {
+    if (comment.trim() !== '') {
+      try {
+        const result = await ApiService.post(`/api/v1/comments/${post.id}`, { comment });
+        setComment('');
+        setNewComments([...newComments, result.data.data.comment]);
+      } catch (error:any) {
+        message.error(error.response.data.message);
+      }
+    }
   };
 
   return (
@@ -84,7 +101,16 @@ const Post:FC<{post : IPost, comments: {id: string, comments:string}}> = ({ post
         {' '}
         comments
       </button>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+
+      {newComments.length
+        ? newComments.map((ele:string) => (
+          <div className="new-comments-list" key={uuidv4()}>
+            <p className="username">{userAuth?.user?.username}</p>
+            <p>{ele}</p>
+          </div>
+        )) : null}
+
+      <div className="input-btn-add-comment">
         <Input
           placeholder="add a comment..."
           bordered={false}
@@ -95,7 +121,7 @@ const Post:FC<{post : IPost, comments: {id: string, comments:string}}> = ({ post
           }}
         />
         {
-        comment && <Button type="link">Post</Button>
+        comment && <Button onClick={handleAddComments} type="link">Post</Button>
       }
 
         <Dropdown
@@ -111,7 +137,7 @@ const Post:FC<{post : IPost, comments: {id: string, comments:string}}> = ({ post
       </div>
 
       <Divider />
-      <PosPopUp isOpen={isModalOpen} setIsOpen={setIsModalOpen} id={post.id} />
+      <PostPopUp isOpen={isModalOpen} setIsOpen={setIsModalOpen} id={post.id} />
     </div>
   );
 };

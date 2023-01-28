@@ -30,7 +30,7 @@ import config from './core/database/connection';
       synchronize: true,
       logging: false,
     }),
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: false }),
     AuthModule,
     UserModule,
     PostsModule,

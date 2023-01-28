@@ -68,6 +68,24 @@
   background-color: #fff;
 }
 
+.input-btn-add-comment{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.new-comments-list{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+.new-comments-list p:first-child{
+  font-weight: 500;
+  font-size: 15px;
+}
+
 .emoji-drop-down{
   margin: 0 !important;
 }
