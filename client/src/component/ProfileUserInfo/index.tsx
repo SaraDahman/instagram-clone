@@ -12,6 +12,7 @@ import './style.css';
 
 const ProfileUserInfo: FC<IUserInfoProps> = ({ user }) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [type, setType] = useState<string>('');
 
   const loggedUser = useContext(AuthContext);
   const navigate = useNavigate();
@@ -23,8 +24,9 @@ const ProfileUserInfo: FC<IUserInfoProps> = ({ user }) => {
     return false;
   };
 
-  const handleOpen = ():void => {
+  const handleOpen = (value:string):void => {
     setIsOpen(true);
+    setType(value);
   };
 
   return (
@@ -59,12 +61,12 @@ const ProfileUserInfo: FC<IUserInfoProps> = ({ user }) => {
             {' '}
             Posts
           </p>
-          <button type="button" onClick={handleOpen}>
+          <button type="button" onClick={() => handleOpen('followers')}>
             {user?.followers}
             {' '}
             Followers
           </button>
-          <button type="button" onClick={handleOpen}>
+          <button type="button" onClick={() => handleOpen('following')}>
             {user?.followings}
             {' '}
             Following
@@ -84,7 +86,7 @@ const ProfileUserInfo: FC<IUserInfoProps> = ({ user }) => {
           )
 }
       </div>
-      <FollowPopUp isOpen={isOpen} setIsOpen={setIsOpen} />
+      <FollowPopUp isOpen={isOpen} setIsOpen={setIsOpen} type={type} />
     </div>
   );
 };

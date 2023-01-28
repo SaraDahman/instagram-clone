@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
 import { FC } from 'react';
 import Modal from 'react-modal';
+import Person from './Person';
+import './style.css';
 
 const FollowPopUp:FC<{
-  isOpen: boolean, setIsOpen:(val:boolean)=>void
-}> = ({ isOpen, setIsOpen }):any => {
+  isOpen: boolean, setIsOpen:(val:boolean)=>void, type:string
+}> = ({ isOpen, setIsOpen, type }):any => {
   const handleCancel = ():void => {
     setIsOpen(false);
   };
@@ -26,14 +28,18 @@ const FollowPopUp:FC<{
           height: '400px',
           position: 'static',
           padding: 'auto',
-          // overflow: 'auto',
         },
       }}
     >
-      <div>
-        <p>Following</p>
+      <div className="content">
+        <p className="type">{type}</p>
         <div className="people">
-          <p>test</p>
+          <Person />
+          <Person />
+          <Person />
+          <Person />
+          <Person />
+          <Person />
         </div>
       </div>
     </Modal>
