@@ -1,11 +1,11 @@
-.cropper-container{
+.cropper-container {
   margin-top: 15pxx;
   min-height: 400px;
   max-height: 500px;
   position: relative;
 }
 
-.actions{
+.actions {
   position: absolute;
   bottom: 10px;
   left: 10px;
@@ -16,15 +16,76 @@
   width: 90%;
 }
 
-.pop-over{
-color: white ;
+.pop-over {
+  color: white;
 }
 
-.actions button{
+.actions button {
   background-color: #474747;
   border: #474747;
 }
 
-.cropper-icons{
+.cropper-icons {
   color: white;
 }
+
+.input-container {
+  height: fit-content;
+  width: fit-content;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.slider-add-post {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  padding-left: 20px;
+  gap: 0px;
+  overflow: hidden;
+}
+
+.slider-add-post img {
+  width: 100px !important;
+  height: 100px !important;
+}
+
+
+.custom-next {
+margin-top: 10%;
+}
+
+.custom-prev  {
+  margin-top: 10%;
+}
+
+.button-slider {
+  position: absolute;
+  top: 2px;
+  border: none;
+  background-color: inherit;
+}
+
+.slider-container-popover {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  height: 110px;
+  margin-right: 0px;
+}
+
+.slider-input-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.slider-input-container :first-child {
+  width: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
