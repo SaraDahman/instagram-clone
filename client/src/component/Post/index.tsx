@@ -104,12 +104,11 @@ const Post:FC<{post : IPost, comments: {id: string, comments:string}}> = ({ post
 
       {newComments.length
         ? newComments.map((ele:string) => (
-          <div className="new-comments-list" key={uuidv4()}>
-            <p className="username">{userAuth?.user?.username}</p>
-            <p>{ele}</p>
-          </div>
+          <p className="caption" key={uuidv4()}>
+            <span className="username">{userAuth?.user?.username}</span>
+            {ele}
+          </p>
         )) : null}
-
       <div className="input-btn-add-comment">
         <Input
           placeholder="add a comment..."

@@ -94,7 +94,8 @@
 
 .popup-caption .time{
   width: 100%;
-  margin-top: 0.5rem;
+  color: #8E8E8E;
+  font-weight: 500;
 }
 
 .popup-details p{
@@ -166,4 +167,30 @@
 .popup-details .add-comment .disable{
   pointer-events: none;
   color: #b3dbff;
+}
+
+
+.time-options{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: max-content;
+  gap: 15px;
+  margin-top: 0.5rem;
+}
+
+.time-options :last-child{
+  color: #8E8E8E;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.comments-options .ant-modal-content{
+  padding: 0 !important;
+  border-radius: 15px;
+}
+
+.comments-options .ant-modal-close-x{
+  display: none;
 }
