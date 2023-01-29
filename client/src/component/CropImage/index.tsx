@@ -1,19 +1,53 @@
-import { ArrowsAltOutlined, SwitcherOutlined, ZoomInOutlined } from '@ant-design/icons';
+/* eslint-disable array-callback-return */
+/* eslint-disable react/jsx-props-no-spreading */
+import {
+  FC, useState, useCallback, useEffect,
+} from 'react';
+
 import {
   Button, Dropdown, MenuProps, Popover, Slider, Tooltip,
-} from 'antd';
-import { FC, useState, useCallback } from 'react';
-import Cropper from 'react-easy-crop';
 
+} from 'antd';
+import {
+  ArrowsAltOutlined, SwitcherOutlined, ZoomInOutlined, PlusOutlined, CloseCircleFilled,
+} from '@ant-design/icons';
+import { useDropzone, DropzoneOptions } from 'react-dropzone';
+import Cropper from 'react-easy-crop';
+import SliderSlick from 'react-slick';
+import { v4 as uuidv4 } from 'uuid';
+
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
+import { ICropProps } from '../../interfaces';
+import NextArrow from './NextArrow';
+import PrevArrow from './PrevArrow';
+import ImageLoading from '../ImageLoading/Loading';
+import { handleUploadImage } from '../../helpers/handleUploadImage';
+import { handleCrop } from './handleCrop';
 import './style.css';
 
-const CropImage:FC<{imageTest:string}> = ({ imageTest }) => {
+const CropImage: FC<ICropProps> = ({ mainImage, setMainImage }) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
-  const [sizes, setSizes] = useState <number>(1 / 1);
+  const [sizes, setSizes] = useState<number>(1 / 1);
+  const [sliderImages, setSliderImages] = useState<string[]>([]);
   const [openZoom, setOpenZoom] = useState(false);
   const [openMultiPic, setOpenMultiPic] = useState(false);
-  const [croppedImageUrl, setCroppedImageUrl] = useState('');
+  const [, setCroppedImageUrl] = useState('');
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [sliderWidth, setSliderWidth] = useState<number>(180);
+  const [slidesToShow, setSlidesToShow] = useState(1);
+  // Add main image to slider of images
+  useEffect(() => {
+    if (!sliderImages?.includes(mainImage)) {
+      setSliderImages((prev) => {
+        prev.unshift(mainImage);
+        return prev;
+      });
+    }
+  }, []);
+  console.log(sliderImages.length);
 
   const items: MenuProps['items'] = [
     {
@@ -43,45 +77,47 @@ const CropImage:FC<{imageTest:string}> = ({ imageTest }) => {
     },
   ];
 
-  const handleOpenZoom = (newOpen: boolean):void => {
+  // here is drag active property
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: 'image/*' as string,
+    onDrop: async (acceptedFiles: any): Promise<void> => {
+      if (acceptedFiles[0].path) {
+        setIsLoading(true);
+        const result = await handleUploadImage(acceptedFiles);
+        setSliderImages((prev) => {
+          setIsLoading(false);
+          prev.unshift(result.url);
+          return prev;
+        });
+        if (slidesToShow < 3) {
+          setSlidesToShow(slidesToShow + 1);
+          setSliderWidth(sliderWidth + 150);
+        }
+
+        if (slidesToShow === 4) {
+          setSliderWidth(sliderWidth - 150);
+        }
+      }
+    },
+  } as unknown as DropzoneOptions);
+
+  const handleOpenZoom = (newOpen: boolean): void => {
     setOpenZoom(newOpen);
   };
 
-  const handleOpenMultiPic = (newOpen: boolean):void => {
+  const handleOpenMultiPic = (newOpen: boolean): void => {
     setOpenMultiPic(newOpen);
   };
 
-  const onCropComplete = useCallback((croppedArea:any, croppedAreaPixels:any) => {
-    const image = new Image();
-    image.src = imageTest;
-    image.crossOrigin = 'anonymous';
-
-    // Get the canvas element from the DOM
-    const canvas = document.createElement('canvas');
-    const scaleX = image.naturalWidth / image.width;
-    const scaleY = image.naturalHeight / image.height;
-    canvas.width = croppedAreaPixels.width;
-    canvas.height = croppedAreaPixels.height;
-
-    // Draw the cropped image to the canvas
-    const ctx :any = canvas.getContext('2d');
-    ctx.drawImage(
-      image,
-      croppedAreaPixels.x * scaleX,
-      croppedAreaPixels.y * scaleY,
-      croppedAreaPixels.width * scaleX,
-      croppedAreaPixels.height * scaleY,
-      0,
-      0,
-      croppedAreaPixels.width,
-      croppedAreaPixels.height,
-    );
-    // Convert the canvas to a data URL
-    const url = canvas.toDataURL();
-    setCroppedImageUrl(url);
+  const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
+    try {
+      const url = handleCrop(croppedAreaPixels, mainImage);
+      setCroppedImageUrl(url);
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
-  console.log(croppedImageUrl);
   const onChange = (e: number):void => {
     setZoom(e);
   };
@@ -90,7 +126,7 @@ const CropImage:FC<{imageTest:string}> = ({ imageTest }) => {
     <div>
       <div className="cropper-container">
         <Cropper
-          image={imageTest}
+          image={mainImage}
           crop={crop}
           zoom={zoom}
           aspect={sizes}
@@ -109,13 +145,12 @@ const CropImage:FC<{imageTest:string}> = ({ imageTest }) => {
 
             <Popover
               content={(
-                <div style={{ width: '100px' }}>
+                <div style={{ width: 'fit-content' }}>
                   <Slider
                     onChange={onChange}
                     defaultValue={zoom}
                     min={1}
                     max={10}
-                    handleStyle={{ color: 'red' }}
                     trackStyle={{ backgroundColor: '#000' }}
                   />
                 </div>
@@ -137,13 +172,92 @@ const CropImage:FC<{imageTest:string}> = ({ imageTest }) => {
           </div>
 
           <Popover
+            placement="topRight"
             content={(
-              <Button
-                type="primary"
-                onClick={() => { console.log('first'); }}
-              >
-                Click me
-              </Button>
+              <div className="slider-container-popover" style={{ width: `${sliderWidth}px` }}>
+
+                <SliderSlick
+                  infinite={false}
+                  speed={500}
+                  slidesToShow={slidesToShow}
+                  slidesToScroll={1}
+                  accessibility
+                  dots
+                  arrows={sliderImages.length > 3}
+                  nextArrow={<NextArrow />}
+                  prevArrow={<PrevArrow />}
+                  className="slider-add-post"
+                >
+                  {
+                    sliderImages.map((image) => (
+                      <div>
+                        <button
+                          type="button"
+                          className="button-slider"
+                          onClick={() => {
+                            // get the index of the next image
+                            const indexOfPreviousImage = sliderImages.indexOf(image) + 1;
+                            // if the deleted image is the main image
+                            if (image === mainImage) {
+                              // change the main image to the previous one or to the next one.
+                              setMainImage(sliderImages[indexOfPreviousImage]
+                                ? sliderImages[indexOfPreviousImage]
+                                : sliderImages[indexOfPreviousImage - 2]);
+                            }
+                            // delete it
+                            setSliderImages((prev) => prev.filter((img) => img !== image));
+
+                            if (sliderImages.length <= 3) {
+                              setSlidesToShow(slidesToShow - 1);
+                            }
+                            if (sliderImages.length <= 3) {
+                              setSliderWidth(sliderWidth - 150);
+                            }
+                          }}
+                        >
+                          <CloseCircleFilled />
+                        </button>
+                        <img
+                          key={uuidv4()}
+                          src={image}
+                          alt=""
+                          style={{ marginRight: '0px' }}
+                          onClick={() => {
+                            setMainImage(image);
+                          }}
+                          onKeyDown={() => {
+                            setMainImage(image);
+                          }}
+                          role="presentation"
+                        />
+                      </div>
+
+                    ))
+                  }
+
+                </SliderSlick>
+                <div className="slider-input-container">
+                  <div>
+                    <input
+                      {...getInputProps()}
+                      {...getRootProps()}
+                      type="primary"
+                      style={{
+                        borderRadius: '50%',
+                        width: '50px',
+                        height: '50px',
+                        backgroundColor: 'inherit',
+                        position: 'absolute',
+                      }}
+                      disabled={isLoading || sliderImages.length === 10}
+                    />
+                    <PlusOutlined style={{ color: 'wheat', fontSize: '18px' }} />
+                  </div>
+                  {isLoading ? <ImageLoading /> : null}
+
+                </div>
+              </div>
+
             )}
             trigger="click"
             open={openMultiPic}
