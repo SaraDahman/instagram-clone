@@ -18,7 +18,7 @@
 
 .content .people{
   height: 90%;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .content .people .person{

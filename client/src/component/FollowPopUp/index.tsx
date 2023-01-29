@@ -1,15 +1,42 @@
 /* eslint-disable no-unused-vars */
-import { FC } from 'react';
+import {
+  FC, useEffect, useState, useContext,
+} from 'react';
 import Modal from 'react-modal';
 import Person from './Person';
+import { ApiService } from '../../services';
+import { AuthContext } from '../../context/AuthContext';
+import { IFollower, IFollowPopUp } from '../../interfaces';
 import './style.css';
 
-const FollowPopUp:FC<{
-  isOpen: boolean, setIsOpen:(val:boolean)=>void, type:string
-}> = ({ isOpen, setIsOpen, type }):any => {
+const FollowPopUp:FC<IFollowPopUp> = ({
+  isOpen, setIsOpen, type, userId,
+}):any => {
+  const [list, setList] = useState<IFollower[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const user = useContext(AuthContext);
+
+  // console.log(user);
+
   const handleCancel = ():void => {
     setIsOpen(false);
   };
+
+  useEffect(() => {
+    const fetchData = async ():Promise<void> => {
+      const query = type === 'followers' ? 'followedId' : 'followerId';
+
+      setIsLoading(true);
+
+      const { data } = await ApiService.get(`/api/v1/followings?${query}=${userId}`);
+      setIsLoading(false);
+      setList(data);
+
+      console.log(data);
+    };
+    if (isOpen) fetchData();
+  }, [isOpen, type]);
 
   return (
     <Modal
@@ -30,18 +57,20 @@ const FollowPopUp:FC<{
           padding: 'auto',
         },
       }}
+      ariaHideApp={false}
     >
-      <div className="content">
-        <p className="type">{type}</p>
-        <div className="people">
-          <Person />
-          <Person />
-          <Person />
-          <Person />
-          <Person />
-          <Person />
+      {
+      isLoading ? <h1>Loading</h1> : (
+        <div className="content">
+          <p className="type">{type}</p>
+          <div className="people">
+            {
+                list.map((e) => <Person item={e} key={e.id} />)
+              }
+          </div>
         </div>
-      </div>
+      )
+    }
     </Modal>
   );
 };
