@@ -86,7 +86,7 @@ const ProfileUserInfo: FC<IUserInfoProps> = ({ user }) => {
           )
 }
       </div>
-      <FollowPopUp isOpen={isOpen} setIsOpen={setIsOpen} type={type} />
+      <FollowPopUp isOpen={isOpen} setIsOpen={setIsOpen} type={type} userId={user?.id} />
     </div>
   );
 };
