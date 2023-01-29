@@ -9,6 +9,7 @@ import { User } from '../index.models';
 import { UserService } from '../user/user.service';
 import { Messages } from '../../core/messages/index';
 import { FollowingDto } from './dto';
+import { literal } from 'sequelize';
 @Injectable()
 export class FollowingService {
   constructor(
@@ -27,26 +28,56 @@ export class FollowingService {
   async findAll(followingDto: FollowingDto) {
     const whereObj = {};
     let as = 'follower';
+    let attributes = [];
+
     if (followingDto.followedId) {
       // To get all users who are following you
       whereObj['followedId'] = followingDto.followedId;
+      attributes = [
+        'follower.name' as 'name',
+        'follower.id' as 'id',
+        'follower.username' as 'username',
+        'follower.image' as 'image',
+        [
+          literal('case when "followerId"= 1 then true else false end'),
+          'following',
+        ],
+      ];
     } else {
       // To get all users who you are following
       whereObj['followerId'] = followingDto.followerId;
+      attributes = [
+        'followed.name' as 'name',
+        'followed.id' as 'id',
+        'followed.username' as 'username',
+        'followed.image' as 'image',
+        [
+          literal('case when "followerId"= 1 then true else false end'),
+          'following',
+        ],
+      ];
       as = 'followed';
     }
 
     const data = await this.followingRepository.findAll({
       nest: false,
       raw: true,
-      attributes: [],
+      attributes,
       where: whereObj,
-      include: {
-        model: this.userRepository,
-        attributes: ['id', 'name', 'image', 'username'],
-        required: true,
-        as,
-      },
+      include: [
+        {
+          model: this.userRepository,
+          attributes: [],
+          required: true,
+          as,
+        },
+        {
+          model: this.userRepository,
+          attributes: [],
+          required: true,
+          as,
+        },
+      ],
     });
     return data;
   }
