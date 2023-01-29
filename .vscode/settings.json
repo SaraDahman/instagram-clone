@@ -10,6 +10,7 @@
         "Filerobot",
         "Formik",
         "nestjs",
+        "Sider",
         "signin",
         "signup",
         "uuidv"

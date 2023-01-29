@@ -6,6 +6,7 @@ interface IUser {
   image: string,
   name: string,
   username: string
+  bio:string
 }
 
 export interface IContext {

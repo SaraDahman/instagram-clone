@@ -14,6 +14,7 @@ import {
   StoriesModule,
   ViewersModule,
   FollowingModule,
+  CloudinaryModule,
 } from './modules';
 
 import config from './core/database/connection';
@@ -39,8 +40,9 @@ import config from './core/database/connection';
     StoriesModule,
     ViewersModule,
     FollowingModule,
+    CloudinaryModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule { }
+export class AppModule {}

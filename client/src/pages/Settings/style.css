@@ -1,0 +1,16 @@
+.settings-container{
+  width: 80%;
+  margin: 60px auto;
+}
+.settings-container h2{
+  margin: 30px auto;
+  color: #262626;
+  font-weight: 600;
+}
+
+.settings-layout{
+  padding: 24px 0;
+  border:1px #e1e1e1 solid;
+  min-height: 70vh;
+  margin: 15px auto;
+}

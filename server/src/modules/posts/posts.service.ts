@@ -116,7 +116,7 @@ export class PostsService {
     });
     posts.map((post, i) => {
       const { likes } = likesCount[i];
-      post['likesCount'] = likes;
+      post['likes'] = likes;
       return post;
     });
     return posts;
@@ -142,7 +142,26 @@ export class PostsService {
       where: { id },
     });
 
-    return data;
+    const comments = await this.postRepository.findOne({
+      include: [
+        {
+          model: User,
+          attributes: ['name', 'username', 'image'],
+        },
+        {
+          model: Comment,
+          include: [
+            {
+              model: User,
+              attributes: ['name', 'username', 'image'],
+            },
+          ],
+        },
+      ],
+      where: { id },
+    });
+
+    return { data, comments: comments.comments };
   }
 
   async checkPost(postId: number) {

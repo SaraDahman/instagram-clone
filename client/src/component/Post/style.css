@@ -63,6 +63,9 @@
   color:#8E8E8E;
   cursor: pointer;
   margin-top: 10px;
+  border: 0;
+  outline: 0;
+  background-color: #fff;
 }
 
 .emoji-drop-down{

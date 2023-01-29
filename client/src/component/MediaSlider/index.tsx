@@ -7,7 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import './style.css';
 
-const MediaSlider:FC<{media:string[]}> = ({ media }) => {
+const MediaSlider:FC<{media:string[], className: string}> = ({ media, className }) => {
   const slider = useRef<any>(null);
   const imageRef = useRef<any>(null);
 
@@ -34,7 +34,7 @@ const MediaSlider:FC<{media:string[]}> = ({ media }) => {
   }, []);
 
   return (
-    <div className="img-slider">
+    <div className={className}>
 
       {showPrev && (
       <LeftCircleFilled
@@ -51,6 +51,7 @@ const MediaSlider:FC<{media:string[]}> = ({ media }) => {
               height={i ? imageHeight : undefined}
               src={img}
               alt="img"
+              loading="lazy"
             />
           </div>
         ))}

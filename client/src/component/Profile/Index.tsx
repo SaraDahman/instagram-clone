@@ -31,8 +31,6 @@ const UserProfile: FC = () => {
   const fetchUserData = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      // Here I got the number of the followers, followings and posts. so I can't get
-      // the user information with all his posts in one request
       const response = await ApiService.get(`/api/v1/user/${username}`);
       setUser(response.data);
       setIsLoading(false);
@@ -51,14 +49,20 @@ const UserProfile: FC = () => {
       setIsPostsLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (data?.user?.id) {
+  const checkAuth = async ():Promise<void> => {
+    if (data?.user?.id === user?.id) {
       setItems(items.filter((item) => item.key !== 'Saved'));
       setTabWidth(100);
     }
-    fetchUserData();
-    fetchUserPosts();
+  };
+
+  useEffect(() => {
+    const handleRequest = async ():Promise<void> => {
+      await fetchUserData();
+      await checkAuth();
+      await fetchUserPosts();
+    };
+    handleRequest();
   }, []);
 
   if (isLoading) return <Loading />;

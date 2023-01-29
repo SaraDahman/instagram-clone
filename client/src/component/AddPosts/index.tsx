@@ -31,6 +31,10 @@ const AddPosts:FC = () => {
     setIsCaptionOpen(false);
   };
 
+  const handleRequest = async () :Promise<void> => {
+
+  };
+
   useEffect(() => {
     if (!image) {
       setIsCaptionOpen(false);
@@ -62,7 +66,13 @@ const AddPosts:FC = () => {
           )}
           <p>Create new post</p>
           { image && (
-            <Button type="link" onClick={() => { setIsCaptionOpen(true); }}>
+            <Button
+              type="link"
+              onClick={() => {
+                if (isCaptionOpen) setIsCaptionOpen(true);
+                else handleRequest();
+              }}
+            >
               { isCaptionOpen ? 'Share' : 'Next' }
             </Button>
           )}

@@ -5,3 +5,4 @@ export { default as Suggestions } from './Suggestions';
 export { default as AddPosts } from './AddPosts';
 export { default as Dropzone } from './DropZone';
 export { default as UserProfile } from './Profile/Index';
+export { default as EditProfile } from './EditProfile';
