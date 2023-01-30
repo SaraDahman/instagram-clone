@@ -18,23 +18,28 @@
 .single-posts {
   width: 31%;
   height: 320px;
-  /* border: 1px springgreen solid; */
-  display: flex;
   box-shadow: rgba(4, 93, 182, 0.2) 2px 8px 24px;
+  position: relative;
+}
+
+.single-posts div {
+  width: 100%;
+  height: 100%;
 }
 
 .hover-icons {
-  height: 0px;
-  position: relative;
-  top: 45%;
-  left: 45%;
-  z-index: 70;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 5;
   display:flex;
-  font-size: 25px;
-  width: 0px;
-  color: white;
   justify-content: center;
-  gap: 15px;
+  align-items: center;
+  font-size: 25px;
+  color: white;
+  gap: 15px; 
+  background-color: rgba(0, 0, 0, 0.4);
+  cursor: pointer;
 }
 
 .images-posts-profile {
