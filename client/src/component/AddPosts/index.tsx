@@ -17,6 +17,7 @@ const AddPosts:FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCaptionOpen, setIsCaptionOpen] = useState<boolean>(false);
   const [image, setImage] = useState<string>('');
+  const [openMultiPic, setOpenMultiPic] = useState(false);
 
   const showModal = ():void => {
     setIsModalOpen(true);
@@ -58,7 +59,11 @@ const AddPosts:FC = () => {
           {image && (
           <Button
             onClick={() => {
-              setIsCaptionOpen(false);
+              if (isCaptionOpen) {
+                setIsCaptionOpen(false);
+              } else {
+                setIsModalOpen(false);
+              }
             }}
             style={{ border: 'none' }}
             icon={<BackIcon />}
@@ -69,8 +74,10 @@ const AddPosts:FC = () => {
             <Button
               type="link"
               onClick={() => {
-                if (isCaptionOpen) setIsCaptionOpen(true);
-                else handleRequest();
+                if (!isCaptionOpen) {
+                  setIsCaptionOpen(true);
+                  setOpenMultiPic(false);
+                } else handleRequest();
               }}
             >
               { isCaptionOpen ? 'Share' : 'Next' }
@@ -83,7 +90,12 @@ const AddPosts:FC = () => {
           <div style={{ width: isCaptionOpen ? '65%' : '100%' }}>
             {image
               ? (
-                <CropImage mainImage={image} setMainImage={setImage} />
+                <CropImage
+                  mainImage={image}
+                  setMainImage={setImage}
+                  openMultiPic={openMultiPic}
+                  setOpenMultiPic={setOpenMultiPic}
+                />
               ) : (
                 <div>
                   <Dropzone setImage={setImage} />

@@ -19,21 +19,23 @@ import { v4 as uuidv4 } from 'uuid';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import { ICropProps } from '../../interfaces';
 import NextArrow from './NextArrow';
 import PrevArrow from './PrevArrow';
 import ImageLoading from '../ImageLoading/Loading';
-import { handleUploadImage } from '../../helpers/handleUploadImage';
+// import { handleUploadImage } from '../../helpers/handleUploadImage';
 import { handleCrop } from './handleCrop';
+import { ICropProps } from '../../interfaces';
 import './style.css';
+import { ApiService } from '../../services';
 
-const CropImage: FC<ICropProps> = ({ mainImage, setMainImage }) => {
+const CropImage: FC<ICropProps> = ({
+  mainImage, setMainImage, openMultiPic, setOpenMultiPic,
+}) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
   const [sizes, setSizes] = useState<number>(1 / 1);
   const [sliderImages, setSliderImages] = useState<string[]>([]);
   const [openZoom, setOpenZoom] = useState(false);
-  const [openMultiPic, setOpenMultiPic] = useState(false);
   const [, setCroppedImageUrl] = useState('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [sliderWidth, setSliderWidth] = useState<number>(180);
@@ -47,7 +49,6 @@ const CropImage: FC<ICropProps> = ({ mainImage, setMainImage }) => {
       });
     }
   }, []);
-  console.log(sliderImages.length);
 
   const items: MenuProps['items'] = [
     {
@@ -82,16 +83,27 @@ const CropImage: FC<ICropProps> = ({ mainImage, setMainImage }) => {
     accept: 'image/*' as string,
     onDrop: async (acceptedFiles: any): Promise<void> => {
       if (acceptedFiles[0].path) {
+        const formData = new FormData();
         setIsLoading(true);
-        const result = await handleUploadImage(acceptedFiles);
-        setSliderImages((prev) => {
-          setIsLoading(false);
-          prev.unshift(result.url);
-          return prev;
-        });
+        formData.append('files', acceptedFiles[0]);
+        try {
+          const { data } = await ApiService.post('/api/v1/upload/images/', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          setSliderImages((prev) => {
+            setIsLoading(false);
+            prev.unshift(data[0].image);
+            return prev;
+          });
+        } catch (error) {
+          console.log(error);
+        }
+
         if (slidesToShow < 3) {
           setSlidesToShow(slidesToShow + 1);
-          setSliderWidth(sliderWidth + 150);
+          setSliderWidth(sliderWidth + 180);
         }
 
         if (slidesToShow === 4) {
@@ -190,7 +202,7 @@ const CropImage: FC<ICropProps> = ({ mainImage, setMainImage }) => {
                 >
                   {
                     sliderImages.map((image) => (
-                      <div>
+                      <div className="image-container">
                         <button
                           type="button"
                           className="button-slider"

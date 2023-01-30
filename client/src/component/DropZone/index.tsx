@@ -6,8 +6,8 @@ import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import { DropZoneIcon } from './icons';
 
 import ImageLoading from '../ImageLoading/Loading';
-import { handleUploadImage } from '../../helpers/handleUploadImage';
 import './style.css';
+import { ApiService } from '../../services';
 
 interface IDropZone{
   setImage:Function,
@@ -20,9 +20,19 @@ const Dropzone: FC<IDropZone> = ({ setImage }) => {
     onDrop: async (acceptedFiles:any): Promise<void> => {
       if (acceptedFiles[0].path) {
         setIslLoading(true);
-        const result = await handleUploadImage(acceptedFiles);
-        setImage(result.url);
-        setIslLoading(false);
+        const formData = new FormData();
+        formData.append('files', acceptedFiles[0]);
+        try {
+          const { data } = await ApiService.post('/api/v1/upload/images/', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          setImage(data[0].image);
+          setIslLoading(false);
+        } catch (error) {
+          console.log(error);
+        }
       }
     },
   } as unknown as DropzoneOptions);
