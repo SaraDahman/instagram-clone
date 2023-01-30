@@ -6,3 +6,4 @@ export * from './IProfileData';
 export * from './IProfilePosts';
 export * from './IFollowers';
 export * from './IFollowPopUp';
+export * from './ICropsProps';

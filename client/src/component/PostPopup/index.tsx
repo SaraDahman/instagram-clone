@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-/* eslint-disable no-unused-vars */
-import { FC, useState, useEffect } from 'react';
+import {
+  FC, useState, useEffect, useContext,
+} from 'react';
 import Modal from 'react-modal';
 import {
-  Avatar, Dropdown, MenuProps, Input,
+  Avatar, Dropdown, MenuProps, Input, message,
 } from 'antd';
 import {
   CommentOutlined, MoreOutlined, SendOutlined, SmileOutlined,
@@ -15,18 +16,22 @@ import { IComment, IPostDetails } from '../../interfaces/IPostDetails';
 import EmojiPicker from '../EmojiPicker';
 import Comment from './Comment';
 import './style.css';
+import { AuthContext } from '../../context';
+import Loading from '../Loading/Index';
 
 const PosPopUp:FC<{
-  isOpen: boolean, setIsOpen:(val:boolean)=>void, id:string
+  isOpen: boolean, setIsOpen:Function, id:string
 }> = ({ isOpen, setIsOpen, id }) => {
-  const { TextArea } = Input;
-
-  const [comment, setComment] = useState<string>('');
   const [openEmoji, setOpenEmoji] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-
   const [post, setPost] = useState<IPostDetails | null>(null);
   const [allComments, setAllComments] = useState<IComment[]>([]);
+  const [deletedComments, setDeletedComments] = useState<string[]>([]);
+
+  const [comment, setComment] = useState<string>('');
+  const [newComments, setNewComments] = useState<IComment[]>([]);
+
+  const userAuth = useContext(AuthContext);
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -35,7 +40,6 @@ const PosPopUp:FC<{
         const { data: { data, comments } } = await ApiService.get(`/api/v1/posts/${id}`);
         setPost(data);
         setAllComments(comments);
-
         setLoading(false);
       } catch (error) {
         console.log(error, 'error in fetching one post');
@@ -56,11 +60,24 @@ const PosPopUp:FC<{
   ];
 
   const handleCancel = ():any => {
+    setNewComments([]);
     setIsOpen(false);
   };
 
   const handleEmojiOpenChange = ():any => {
     setOpenEmoji(!openEmoji);
+  };
+
+  const handleAddComments = async ():Promise<void> => {
+    if (comment.trim() !== '') {
+      try {
+        const result = await ApiService.post(`/api/v1/comments/${id}`, { comment });
+        setComment('');
+        setNewComments([...newComments, { ...result.data.data, user: userAuth?.user }]);
+      } catch (error:any) {
+        message.error(error.response.data.message);
+      }
+    }
   };
 
   return (
@@ -77,13 +94,15 @@ const PosPopUp:FC<{
         },
         content: {
           width: '70%',
+          height: '650px',
           position: 'static',
           padding: 'auto',
           overflow: 'visible',
         },
       }}
+      ariaHideApp={false}
     >
-      {loading || !post ? (<h1>Loading</h1>) : (
+      {loading || !post ? (<Loading />) : (
         <div className="pop-up">
           <MediaSlider media={post.media} className="popup-slider" />
 
@@ -98,18 +117,20 @@ const PosPopUp:FC<{
             {/* section 2 */}
             <div className="comments">
 
-              <Comment
-                username={post.user.username}
-                image={post.user.image}
-                comment={post?.caption}
-              />
-              {allComments?.map((e) => (
-                <Comment
-                  username={e.user?.username}
-                  image={e.user?.image}
-                  comment={e?.comment}
-                />
-              ))}
+              { allComments.concat(newComments)
+                ?.filter((e) => !deletedComments.includes(e.id)).map((e) => (
+                  <Comment
+                    username={e.user?.username}
+                    image={e.user?.image}
+                    comment={e?.comment}
+                    createdAt={e?.createdAt}
+                    setDeletedComments={setDeletedComments}
+                    id={e?.id}
+                    postId={e?.id}
+                    userId={e?.userId}
+                    key={e?.id}
+                  />
+                ))}
 
             </div>
             {/* --- */}
@@ -122,23 +143,34 @@ const PosPopUp:FC<{
             {/*  */}
 
             <div className="likes-count">
-              <Avatar
-                src={post.likes[0].user.image}
-                className="avatar"
-              />
-              <p>
-                Liked by
-                {' '}
-                <strong>{post.likes[0].user.username}</strong>
-                {' '}
-                and
-                {' '}
-                <strong>
-                  {post.likes.length - 1}
-                  {' '}
-                  others
-                </strong>
-              </p>
+              {post.likes.length ? (
+                <div className="like">
+                  <Avatar
+                    src={post.likes[0].user.image}
+                    className="avatar"
+                  />
+                  <p>
+                    Liked by
+                    {' '}
+                    <strong>
+                      {post.likes[0].user.username}
+                      {' '}
+                    </strong>
+                    {' '}
+                    {post.likes.length - 1 ? (
+                      <>
+                        and
+                        {' '}
+                        <strong>
+                          {post.likes.length - 1}
+                          {' '}
+                          others
+                        </strong>
+                      </>
+                    ) : ''}
+                  </p>
+                </div>
+              ) : <p>no one liked this post yet</p>}
             </div>
             {/*  */}
 
@@ -153,14 +185,20 @@ const PosPopUp:FC<{
               >
                 <SmileOutlined />
               </Dropdown>
-              <TextArea
+              <Input
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 placeholder="add a comment .."
-                autoSize={{ minRows: 1, maxRows: 1 }}
                 className="text-area"
+                bordered={false}
               />
-              <button type="button" className={comment || 'disable'}>Post</button>
+              <button
+                type="button"
+                onClick={handleAddComments}
+                className={comment || 'disable'}
+              >
+                Post
+              </button>
             </div>
             {/*  */}
           </div>
