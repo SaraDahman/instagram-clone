@@ -61,12 +61,20 @@ const ProfileUserInfo: FC<IUserInfoProps> = ({ user }) => {
             {' '}
             Posts
           </p>
-          <button type="button" onClick={() => handleOpen('followers')}>
+          <button
+            type="button"
+            onClick={() => handleOpen('followers')}
+            disabled={!user?.followers}
+          >
             {user?.followers}
             {' '}
             Followers
           </button>
-          <button type="button" onClick={() => handleOpen('following')}>
+          <button
+            type="button"
+            onClick={() => handleOpen('following')}
+            disabled={!user?.followings}
+          >
             {user?.followings}
             {' '}
             Following

@@ -4,6 +4,11 @@
   color: #2f2f2f;
 }
 
+.content a{
+  text-decoration: none;
+  color: #000;
+}
+
 .content .type{
   display: flex;
   justify-content: center;

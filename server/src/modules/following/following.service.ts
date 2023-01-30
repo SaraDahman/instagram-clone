@@ -64,20 +64,12 @@ export class FollowingService {
       raw: true,
       attributes,
       where: whereObj,
-      include: [
-        {
-          model: this.userRepository,
-          attributes: [],
-          required: true,
-          as,
-        },
-        {
-          model: this.userRepository,
-          attributes: [],
-          required: true,
-          as,
-        },
-      ],
+      include: {
+        model: this.userRepository,
+        attributes: [],
+        required: true,
+        as,
+      },
     });
     return data;
   }
