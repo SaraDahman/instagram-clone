@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   FC, useContext, useRef, useState,
 } from 'react';
@@ -31,17 +32,18 @@ const EditProfile:FC = () => {
   const handleUploadImage = async (e:any):Promise<void> => {
     setLoader(true);
     const formData = new FormData();
+
     formData.append('file', e.target.files[0]);
     try {
-      const { data: { image } } = await ApiService.post('/api/v1/upload/image', formData, {
+      const { data } = await ApiService.post('/api/v1/upload/image/', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setNewAvatar(image);
+      setNewAvatar(data.image);
       setLoader(false);
     } catch (err:any) {
-      toast.error(err);
+      toast.error('Failed to upload the image');
       setLoader(false);
     }
   };
@@ -102,7 +104,6 @@ const EditProfile:FC = () => {
           maxLength={150}
           style={{ height: 120, resize: 'none', marginTop: '30px' }}
           onChange={(e) => setBio(e.target.value)}
-          placeholder="disable resize"
           value={bio}
         />
 

@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '../auth/strategy/jwt-auth-guard';
+import { FileSizeValidationPipe } from 'src/core/Pipes/FileSizeValidation.pipe';
 import { CloudinaryService } from './cloudinary.service';
 
 const imageRegex = /^image\/(jpeg|png|jpg)$/;
@@ -23,17 +24,7 @@ export class UploadController {
   @Post('image')
   @UseInterceptors(FileInterceptor('file'))
   async uploadFile(
-    @UploadedFile(
-      new ParseFilePipe({
-        validators: [
-          new MaxFileSizeValidator({ maxSize: 50000000 }),
-          new FileTypeValidator({
-            fileType: imageRegex,
-          }),
-        ],
-      }),
-    )
-    file: Express.Multer.File,
+    @UploadedFile(FileSizeValidationPipe) file: Express.Multer.File,
   ) {
     return await this.cloudinary.uploadImage(file).catch(() => {
       throw new BadRequestException('Invalid file type.');

@@ -1,0 +1,24 @@
+.drop-zone-container{
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  
+}
+
+.drop-zone-icon, .select-img-btn{
+  margin: 0px auto ;
+  display: block;
+}
+
+.drop-text{
+  margin: 0px auto;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 300;
+}
+
+.select-img-btn{
+  margin: 15px auto ;
+  display: block;
+}
