@@ -1,13 +1,10 @@
 import { FC } from 'react';
 import MediaSlider from '../MediaSlider';
 
-const PrepareSharingPost:FC = () => {
-  console.log('first');
-  return (
-    <div>
-      <MediaSlider media={[]} />
-    </div>
-  );
-};
+const PrepareSharingPost:FC = () => (
+  <div>
+    <MediaSlider media={[]} className="" />
+  </div>
+);
 
 export default PrepareSharingPost;
