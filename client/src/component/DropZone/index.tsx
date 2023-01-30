@@ -3,11 +3,12 @@ import { FC, useState } from 'react';
 
 import { Button } from 'antd';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
+import { toast } from 'react-toastify';
 import { DropZoneIcon } from './icons';
 
 import ImageLoading from '../ImageLoading/Loading';
-import './style.css';
 import { ApiService } from '../../services';
+import './style.css';
 
 interface IDropZone{
   setImage:Function,
@@ -21,21 +22,23 @@ const Dropzone: FC<IDropZone> = ({ setImage }) => {
       if (acceptedFiles[0].path) {
         setIslLoading(true);
         const formData = new FormData();
-        formData.append('files', acceptedFiles[0]);
+        formData.append('file', acceptedFiles[0]);
         try {
-          const { data } = await ApiService.post('/api/v1/upload/images/', formData, {
+          const { data } = await ApiService.post('/api/v1/upload/image/', formData, {
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           });
-          setImage(data[0].image);
+          setImage(data.image);
           setIslLoading(false);
         } catch (error) {
-          console.log(error);
+          setIslLoading(false);
+          toast.error('failed to upload the image');
         }
       }
     },
   } as unknown as DropzoneOptions);
+
   return (
     <div
       className="drop-zone-container"

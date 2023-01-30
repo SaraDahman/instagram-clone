@@ -40,10 +40,10 @@ const EditProfile:FC = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
-      setNewAvatar(data[0].image);
+      setNewAvatar(data.image);
       setLoader(false);
     } catch (err:any) {
-      toast.error(err);
+      toast.error('Failed to upload the image');
       setLoader(false);
     }
   };

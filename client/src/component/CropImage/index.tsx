@@ -1,52 +1,96 @@
 /* eslint-disable array-callback-return */
 /* eslint-disable react/jsx-props-no-spreading */
 import {
-  FC, useState, useCallback, useEffect,
+  FC, useState, useCallback, useEffect, useRef,
 } from 'react';
 
 import {
-  Button, Dropdown, MenuProps, Popover, Slider, Tooltip,
-
+  Button, Dropdown, MenuProps, Popover, Tooltip,
 } from 'antd';
 import {
-  ArrowsAltOutlined, SwitcherOutlined, ZoomInOutlined, PlusOutlined, CloseCircleFilled,
+  ArrowsAltOutlined, SwitcherOutlined, PlusOutlined, CloseCircleFilled,
 } from '@ant-design/icons';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
 import Cropper from 'react-easy-crop';
 import SliderSlick from 'react-slick';
 import { v4 as uuidv4 } from 'uuid';
-
+import { toast } from 'react-toastify';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import NextArrow from './NextArrow';
 import PrevArrow from './PrevArrow';
 import ImageLoading from '../ImageLoading/Loading';
-// import { handleUploadImage } from '../../helpers/handleUploadImage';
 import { handleCrop } from './handleCrop';
 import { ICropProps } from '../../interfaces';
-import './style.css';
 import { ApiService } from '../../services';
+import './style.css';
 
 const CropImage: FC<ICropProps> = ({
   mainImage, setMainImage, openMultiPic, setOpenMultiPic,
+  sliderImages, setSliderImages,
 }) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState<number>(1);
   const [sizes, setSizes] = useState<number>(1 / 1);
-  const [sliderImages, setSliderImages] = useState<string[]>([]);
-  const [openZoom, setOpenZoom] = useState(false);
   const [, setCroppedImageUrl] = useState('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [sliderWidth, setSliderWidth] = useState<number>(180);
   const [slidesToShow, setSlidesToShow] = useState(1);
+  const fileInputRef = useRef<any>(null);
   // Add main image to slider of images
   useEffect(() => {
     if (!sliderImages?.includes(mainImage)) {
       setSliderImages((prev) => {
-        prev.unshift(mainImage);
+        prev[0] = mainImage;
         return prev;
       });
+    }
+  }, []);
+
+  // Drag and drop functionality
+  const { getRootProps, getInputProps } = useDropzone({
+    accept: 'image/*' as string,
+    onDrop: async (acceptedFiles: any): Promise<void> => {
+      if (acceptedFiles[0].path) {
+        const formData = new FormData();
+        setIsLoading(true);
+        formData.append('file', acceptedFiles[0]);
+        try {
+          const { data } = await ApiService.post('/api/v1/upload/image/', formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          });
+          setSliderImages((prev) => {
+            setIsLoading(false);
+            prev.unshift(data.image);
+            return prev;
+          });
+        } catch (error) {
+          setIsLoading(false);
+          toast.error('Failed to upload the image');
+        }
+
+        if (slidesToShow < 3) {
+          setSlidesToShow(slidesToShow + 1);
+          setSliderWidth(sliderWidth + 180);
+        }
+
+        if (slidesToShow === 4) {
+          setSliderWidth(sliderWidth - 150);
+        }
+      }
+    },
+  } as unknown as DropzoneOptions);
+
+  // for resize the image
+  const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
+    try {
+      const url = handleCrop(croppedAreaPixels, mainImage);
+      setCroppedImageUrl(url);
+    } catch (error) {
+      toast.error('Failed to get the image');
     }
   }, []);
 
@@ -78,62 +122,6 @@ const CropImage: FC<ICropProps> = ({
     },
   ];
 
-  // here is drag active property
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: 'image/*' as string,
-    onDrop: async (acceptedFiles: any): Promise<void> => {
-      if (acceptedFiles[0].path) {
-        const formData = new FormData();
-        setIsLoading(true);
-        formData.append('files', acceptedFiles[0]);
-        try {
-          const { data } = await ApiService.post('/api/v1/upload/images/', formData, {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-            },
-          });
-          setSliderImages((prev) => {
-            setIsLoading(false);
-            prev.unshift(data[0].image);
-            return prev;
-          });
-        } catch (error) {
-          console.log(error);
-        }
-
-        if (slidesToShow < 3) {
-          setSlidesToShow(slidesToShow + 1);
-          setSliderWidth(sliderWidth + 180);
-        }
-
-        if (slidesToShow === 4) {
-          setSliderWidth(sliderWidth - 150);
-        }
-      }
-    },
-  } as unknown as DropzoneOptions);
-
-  const handleOpenZoom = (newOpen: boolean): void => {
-    setOpenZoom(newOpen);
-  };
-
-  const handleOpenMultiPic = (newOpen: boolean): void => {
-    setOpenMultiPic(newOpen);
-  };
-
-  const onCropComplete = useCallback((croppedArea: any, croppedAreaPixels: any) => {
-    try {
-      const url = handleCrop(croppedAreaPixels, mainImage);
-      setCroppedImageUrl(url);
-    } catch (error) {
-      console.log(error);
-    }
-  }, []);
-
-  const onChange = (e: number):void => {
-    setZoom(e);
-  };
-
   return (
     <div>
       <div className="cropper-container">
@@ -155,32 +143,6 @@ const CropImage: FC<ICropProps> = ({
               </Tooltip>
             </Dropdown>
 
-            <Popover
-              content={(
-                <div style={{ width: 'fit-content' }}>
-                  <Slider
-                    onChange={onChange}
-                    defaultValue={zoom}
-                    min={1}
-                    max={10}
-                    trackStyle={{ backgroundColor: '#000' }}
-                  />
-                </div>
-              )}
-              trigger="click"
-              open={openZoom}
-              onOpenChange={handleOpenZoom}
-              className="pop-over"
-              color="#262626cb"
-            >
-              <Tooltip>
-                <Button
-                  shape="circle"
-                  style={{ marginLeft: '10px' }}
-                  icon={<ZoomInOutlined className="cropper-icons" />}
-                />
-              </Tooltip>
-            </Popover>
           </div>
 
           <Popover
@@ -202,7 +164,8 @@ const CropImage: FC<ICropProps> = ({
                 >
                   {
                     sliderImages.map((image) => (
-                      <div className="image-container">
+                      <div key={uuidv4()} className="image-container">
+                        {/*  This button to delete an image from the slider */}
                         <button
                           type="button"
                           className="button-slider"
@@ -216,6 +179,7 @@ const CropImage: FC<ICropProps> = ({
                                 ? sliderImages[indexOfPreviousImage]
                                 : sliderImages[indexOfPreviousImage - 2]);
                             }
+
                             // delete it
                             setSliderImages((prev) => prev.filter((img) => img !== image));
 
@@ -273,12 +237,13 @@ const CropImage: FC<ICropProps> = ({
             )}
             trigger="click"
             open={openMultiPic}
-            onOpenChange={handleOpenMultiPic}
+            onOpenChange={(isVisible) => setOpenMultiPic(isVisible)}
             className="pop-over"
             color="#262626cb"
           >
             <Tooltip title="search">
               <Button
+                ref={fileInputRef}
                 shape="circle"
                 icon={<SwitcherOutlined className="cropper-icons" />}
               />
