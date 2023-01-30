@@ -69,7 +69,6 @@ const CropImage: FC<ICropProps> = ({
           });
         } catch (error) {
           setIsLoading(false);
-          toast.error('Failed to upload the image');
         }
 
         if (slidesToShow < 3) {

@@ -125,7 +125,12 @@ const AddPosts:FC = () => {
           {isCaptionOpen ? (
             <div style={{ width: '40%' }}>
               <div className="add-post-caption-username">
-                <Image width="50px" src={context?.user?.image} />
+                <Image
+                  width="35px"
+                  height="35px"
+                  style={{ borderRadius: '50%' }}
+                  src={context?.user?.image}
+                />
                 <p>{context?.user?.username}</p>
               </div>
               <TextArea

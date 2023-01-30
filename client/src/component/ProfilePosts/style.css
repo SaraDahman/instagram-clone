@@ -3,8 +3,9 @@
   align-items: center;
   flex-wrap: wrap;
   width: 72%;
+  min-width: 350px;
   gap: 20px;
-  margin: 5px auto 0px;
+  margin: 5px auto 60px;
 }
 
 .profile-row-posts {
@@ -17,10 +18,9 @@
 
 .single-posts {
   width: 31%;
+  min-width: 300px;
   height: 320px;
-  /* border: 1px springgreen solid; */
   display: flex;
-  box-shadow: rgba(4, 93, 182, 0.2) 2px 8px 24px;
 }
 
 .hover-icons {
@@ -38,7 +38,8 @@
 }
 
 .images-posts-profile {
-  width: 100%;
+  width: 100;
+  min-width: 300px ;
   height: 100% !important;
   object-fit: cover;
 }

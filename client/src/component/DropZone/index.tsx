@@ -3,7 +3,6 @@ import { FC, useState } from 'react';
 
 import { Button } from 'antd';
 import { useDropzone, DropzoneOptions } from 'react-dropzone';
-import { toast } from 'react-toastify';
 import { DropZoneIcon } from './icons';
 
 import ImageLoading from '../ImageLoading/Loading';
@@ -33,7 +32,6 @@ const Dropzone: FC<IDropZone> = ({ setImage }) => {
           setIslLoading(false);
         } catch (error) {
           setIslLoading(false);
-          toast.error('failed to upload the image');
         }
       }
     },

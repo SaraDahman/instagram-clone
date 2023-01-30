@@ -104,7 +104,6 @@ const EditProfile:FC = () => {
           maxLength={150}
           style={{ height: 120, resize: 'none', marginTop: '30px' }}
           onChange={(e) => setBio(e.target.value)}
-          placeholder="disable resize"
           value={bio}
         />
 
