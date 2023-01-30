@@ -5,4 +5,6 @@ export interface ICropProps {
   mainImage: string;
   openMultiPic: boolean;
   setOpenMultiPic: Dispatch<SetStateAction<boolean>>;
+  sliderImages:string[];
+  setSliderImages:Dispatch<SetStateAction<string[]>>;
 }
