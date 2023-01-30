@@ -9,7 +9,6 @@
 
 .profile-row-posts {
   display: flex;
-  justify-content: center;
   gap: 3%;
   width: 100%;
   margin-top: 20px;
@@ -38,7 +37,7 @@
   font-size: 25px;
   color: white;
   gap: 15px; 
-  background-color: rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
 }
 
