@@ -18,7 +18,7 @@ const SignIn:FC = () => {
 
   const handleSignIn = async (body: IAuth, setSubmitting:any) => {
     try {
-      const { data } = await ApiService.post('/api/v1/auth/signIn', body);
+      const { data } = await ApiService.post('/api/v1/auth/sign-in', body);
       JwtService.setToken(data.access_token);
       ApiService.setHeader();
       navigate('/');
