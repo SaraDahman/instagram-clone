@@ -17,6 +17,7 @@ import EmojiPicker from '../EmojiPicker';
 import Comment from './Comment';
 import './style.css';
 import { AuthContext } from '../../context';
+import Loading from '../Loading/Index';
 
 const PosPopUp:FC<{
   isOpen: boolean, setIsOpen:Function, id:string
@@ -93,13 +94,15 @@ const PosPopUp:FC<{
         },
         content: {
           width: '70%',
+          height: '650px',
           position: 'static',
           padding: 'auto',
           overflow: 'visible',
         },
       }}
+      ariaHideApp={false}
     >
-      {loading || !post ? (<h1>Loading</h1>) : (
+      {loading || !post ? (<Loading />) : (
         <div className="pop-up">
           <MediaSlider media={post.media} className="popup-slider" />
 
@@ -125,6 +128,7 @@ const PosPopUp:FC<{
                     id={e?.id}
                     postId={e?.id}
                     userId={e?.userId}
+                    key={e?.id}
                   />
                 ))}
 
@@ -139,23 +143,34 @@ const PosPopUp:FC<{
             {/*  */}
 
             <div className="likes-count">
-              <Avatar
-                src={post.likes[0].user.image}
-                className="avatar"
-              />
-              <p>
-                Liked by
-                {' '}
-                <strong>{post.likes[0].user.username}</strong>
-                {' '}
-                and
-                {' '}
-                <strong>
-                  {post.likes.length - 1}
-                  {' '}
-                  others
-                </strong>
-              </p>
+              {post.likes.length ? (
+                <div className="like">
+                  <Avatar
+                    src={post.likes[0].user.image}
+                    className="avatar"
+                  />
+                  <p>
+                    Liked by
+                    {' '}
+                    <strong>
+                      {post.likes[0].user.username}
+                      {' '}
+                    </strong>
+                    {' '}
+                    {post.likes.length - 1 ? (
+                      <>
+                        and
+                        {' '}
+                        <strong>
+                          {post.likes.length - 1}
+                          {' '}
+                          others
+                        </strong>
+                      </>
+                    ) : ''}
+                  </p>
+                </div>
+              ) : <p>no one liked this post yet</p>}
             </div>
             {/*  */}
 

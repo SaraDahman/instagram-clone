@@ -5,6 +5,7 @@
 .pop-up {
   display: flex;
   color: rgba(0, 0, 0, 0.789);
+  height: 100%;
 }
 
 .pop-up svg{
@@ -120,16 +121,24 @@
   margin-left: auto;
 }
 
+/* .popup-details .likes-count .like p{
+  width: 100%;
+  display: flex;
+  gap: 0.3rem;
+} */
 
-.popup-details .likes-count{
+.popup-details .likes-count {
+  margin-bottom: 1rem;
+  padding: 0 1rem;
+  font-size: 13px;
+  font-weight: 300;
+}
+
+.popup-details .likes-count .like{
   width: 100%;
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 13px;
-  font-weight: 300;
-  margin-bottom: 1rem;
-  padding: 0 1rem;
 }
 
 .popup-details .likes-count .avatar{
