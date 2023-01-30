@@ -1,15 +1,18 @@
 import {
   FC, useState, useContext, useEffect,
 } from 'react';
+
 import {
   Modal, Button, Image, Divider,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import { toast } from 'react-toastify';
 import { Dropzone } from '..';
 
 import CropImage from '../CropImage';
 import { BackIcon } from './icons';
 import { AuthContext } from '../../context/AuthContext';
+import { ApiService } from '../../services';
 import './style.css';
 
 const AddPosts:FC = () => {
@@ -18,6 +21,8 @@ const AddPosts:FC = () => {
   const [isCaptionOpen, setIsCaptionOpen] = useState<boolean>(false);
   const [image, setImage] = useState<string>('');
   const [openMultiPic, setOpenMultiPic] = useState(false);
+  const [caption, setCaption] = useState<string>('');
+  const [sliderImages, setSliderImages] = useState<string[]>([]);
 
   const showModal = ():void => {
     setIsModalOpen(true);
@@ -25,15 +30,26 @@ const AddPosts:FC = () => {
 
   const handleOk = ():void => {
     setIsModalOpen(false);
+    setOpenMultiPic(false);
   };
 
   const handleCancel = ():void => {
     setIsModalOpen(false);
     setIsCaptionOpen(false);
+    setOpenMultiPic(false);
   };
 
   const handleRequest = async () :Promise<void> => {
-
+    try {
+      const result = await ApiService.post('/api/v1/posts/', { caption, media: sliderImages });
+      toast.success(result.data.message);
+      setSliderImages([]);
+      setCaption('');
+      setIsModalOpen(false);
+      setImage('');
+    } catch (error:any) {
+      toast.error(error.response.message[0]);
+    }
   };
 
   useEffect(() => {
@@ -41,6 +57,7 @@ const AddPosts:FC = () => {
       setIsCaptionOpen(false);
     }
   }, [image]);
+
   return (
     <div>
       <Button type="primary" onClick={showModal}>
@@ -95,6 +112,8 @@ const AddPosts:FC = () => {
                   setMainImage={setImage}
                   openMultiPic={openMultiPic}
                   setOpenMultiPic={setOpenMultiPic}
+                  sliderImages={sliderImages}
+                  setSliderImages={setSliderImages}
                 />
               ) : (
                 <div>
@@ -119,6 +138,8 @@ const AddPosts:FC = () => {
                   border: 'none',
                   padding: '7px',
                 }}
+                value={caption}
+                onChange={(e) => setCaption(e.target.value)}
                 placeholder="Write a caption"
               />
             </div>
