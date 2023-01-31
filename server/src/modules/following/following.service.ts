@@ -25,11 +25,11 @@ export class FollowingService {
     return data;
   }
 
-  async findAll(followingDto: FollowingDto) {
+  async findAll(followingDto: FollowingDto, followerId: number) {
     const whereObj = {};
     let as = 'follower';
     let attributes = [];
-
+    // Here we suppose that the current user is 1
     if (followingDto.followedId) {
       // To get all users who are following you
       whereObj['followedId'] = followingDto.followedId;
@@ -39,7 +39,16 @@ export class FollowingService {
         'follower.username' as 'username',
         'follower.image' as 'image',
         [
-          literal('case when "followerId"= 1 then true else false end'),
+          literal(
+            `case when 0 < 
+            (
+              select  "Followings"."followedId" 
+              from "Followings" 
+              where "Followings"."followerId"=${followerId} 
+              and "Followings"."followedId"="follower"."id"
+            )  
+              then true else false end`,
+          ),
           'following',
         ],
       ];
@@ -52,7 +61,16 @@ export class FollowingService {
         'followed.username' as 'username',
         'followed.image' as 'image',
         [
-          literal('case when "followerId"= 1 then true else false end'),
+          literal(
+            `case when 0 < 
+            (
+              select  "Followings"."followerId" 
+              from "Followings" 
+              where "Followings"."followerId"=${followerId}
+              and "Followings"."followedId"="followed"."id"
+            )  
+            then true else false end`,
+          ),
           'following',
         ],
       ];
@@ -74,10 +92,17 @@ export class FollowingService {
     return data;
   }
 
-  async remove(followedId: number, followerId: number) {
+  async remove(followedId: number, followerId: number, remove: boolean) {
+    const where = { followedId, followerId };
+
+    if (remove) {
+      where['followedId'] = followerId;
+      where['followerId'] = followedId;
+    }
     const affectedRows = await this.followingRepository.destroy({
-      where: { followedId, followerId },
+      where,
     });
+
     if (!affectedRows) throw new NotFoundException();
     return { message: Messages.DELETE_SUCCESS };
   }
