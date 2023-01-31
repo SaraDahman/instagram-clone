@@ -1,0 +1,84 @@
+.content {
+  height: 100%;
+  width: 100%;
+  color: #2f2f2f;
+}
+
+.content a{
+  text-decoration: none;
+  color: #000;
+}
+
+.content .type{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-transform: capitalize;
+  border-bottom: solid rgb(230, 227, 227) 0.03px;
+  height: 10%
+}
+
+.content .people{
+  height: 90%;
+  overflow-y: auto;
+}
+
+.content .people .person{
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.content .people .person .avatar{
+  width: 3rem;
+  height: 3rem;
+}
+
+.content .people .person button{
+  margin-left: auto;
+  background-color: #efefef;
+  border: 0;
+  outline: 0;
+  font-size: 0.9rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  text-transform: capitalize;
+  color: #000,
+}
+
+.content .people .person button:hover{
+  background-color: #dbdbdb;
+  color: #000,
+}
+
+.content .people .person .follow{
+  background-color: #0095f6;
+  color: #fff
+}
+
+.content .people .person .follow:hover{
+  background-color: #1877f2;
+}
+
+.content .people .person button:disabled{
+  pointer-events: none;
+}
+
+.content .people .person p{
+  font-size: 0.9rem;
+}
+
+.content .people .person .username{
+  font-weight: 500;
+}
+
+.content .people .person .name {
+  color: #989898;
+}

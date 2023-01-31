@@ -68,6 +68,17 @@
   font-weight: 400;
 }
 
+.second-row > * {
+  outline: 0;
+  border: 0;
+  background-color: #fff;
+  font-size: 1rem;
+}
+
+.second-row button{
+  cursor: pointer;
+}
+
 .bio {
   font-size: 12px;
   color: rgba(13, 13, 13, 0.77);

@@ -1,4 +1,4 @@
-import { FC, useContext } from 'react';
+import { FC, useContext, useState } from 'react';
 
 import { Button } from 'antd';
 import { SettingOutlined, DownOutlined } from '@ant-design/icons';
@@ -6,9 +6,14 @@ import { useNavigate } from 'react-router-dom';
 
 import { IUserInfoProps } from '../../interfaces/IUserInfoProps';
 import { AuthContext } from '../../context/AuthContext';
+
+import FollowPopUp from '../FollowPopUp';
 import './style.css';
 
 const ProfileUserInfo: FC<IUserInfoProps> = ({ user }) => {
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [type, setType] = useState<string>('');
+
   const loggedUser = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -18,6 +23,12 @@ const ProfileUserInfo: FC<IUserInfoProps> = ({ user }) => {
     }
     return false;
   };
+
+  const handleOpen = (value:string):void => {
+    setIsOpen(true);
+    setType(value);
+  };
+
   return (
     <div className="user-data-container-profile">
       <img src={user?.image} alt={user?.name} />
@@ -50,16 +61,24 @@ const ProfileUserInfo: FC<IUserInfoProps> = ({ user }) => {
             {' '}
             Posts
           </p>
-          <p>
+          <button
+            type="button"
+            onClick={() => handleOpen('followers')}
+            disabled={!user?.followers}
+          >
             {user?.followers}
             {' '}
             Followers
-          </p>
-          <p>
+          </button>
+          <button
+            type="button"
+            onClick={() => handleOpen('following')}
+            disabled={!user?.followings}
+          >
             {user?.followings}
             {' '}
             Following
-          </p>
+          </button>
         </div>
 
         {
@@ -75,6 +94,7 @@ const ProfileUserInfo: FC<IUserInfoProps> = ({ user }) => {
           )
 }
       </div>
+      <FollowPopUp isOpen={isOpen} setIsOpen={setIsOpen} type={type} userId={user?.id} />
     </div>
   );
 };

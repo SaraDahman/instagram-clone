@@ -19,10 +19,11 @@ export class FollowingController {
     return this.followingService.create(followedId, followerId);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Get()
-  findAllFollowers(@Query() dto: FollowingDto) {
+  findAllFollowers(@Query() dto: FollowingDto, @GetUser() followerId: number) {
     // Get all followers for specific user
-    return this.followingService.findAll(dto);
+    return this.followingService.findAll(dto, followerId);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -30,7 +31,8 @@ export class FollowingController {
   remove(
     @Param('followedId', ValidationParamPipe) followedId: number,
     @GetUser() followerId: number,
+    @Query('remove') remove: boolean,
   ) {
-    return this.followingService.remove(followedId, followerId);
+    return this.followingService.remove(followedId, followerId, remove);
   }
 }

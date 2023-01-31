@@ -63,7 +63,7 @@ const UserProfile: FC = () => {
       await fetchUserPosts();
     };
     handleRequest();
-  }, []);
+  }, [username]);
 
   if (isLoading) return <Loading />;
 
