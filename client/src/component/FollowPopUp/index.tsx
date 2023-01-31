@@ -7,6 +7,7 @@ import Person from './Person';
 import { ApiService } from '../../services';
 import { AuthContext } from '../../context/AuthContext';
 import { IFollower, IFollowPopUp } from '../../interfaces';
+import Loading from '../Loading/Index';
 import './style.css';
 
 const FollowPopUp:FC<IFollowPopUp> = ({
@@ -16,8 +17,6 @@ const FollowPopUp:FC<IFollowPopUp> = ({
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const user = useContext(AuthContext);
-
-  // console.log(user);
 
   const handleCancel = ():void => {
     setIsOpen(false);
@@ -32,8 +31,6 @@ const FollowPopUp:FC<IFollowPopUp> = ({
       const { data } = await ApiService.get(`/api/v1/followings?${query}=${userId}`);
       setIsLoading(false);
       setList(data);
-
-      console.log(data);
     };
     if (isOpen) fetchData();
   }, [isOpen, type]);
@@ -60,12 +57,18 @@ const FollowPopUp:FC<IFollowPopUp> = ({
       ariaHideApp={false}
     >
       {
-      isLoading ? <h1>Loading</h1> : (
+      isLoading ? <Loading /> : (
         <div className="content">
           <p className="type">{type}</p>
           <div className="people">
             {
-                list.map((e) => <Person item={e} key={e.id} />)
+                list.map((e) => (
+                  <Person
+                    item={e}
+                    key={e.id}
+                    remove={type === 'followers' && userId === user?.user?.id}
+                  />
+                ))
               }
           </div>
         </div>

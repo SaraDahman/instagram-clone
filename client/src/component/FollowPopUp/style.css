@@ -46,14 +46,29 @@
   border: 0;
   outline: 0;
   font-size: 0.9rem;
-  padding: 0.5rem 1.2rem;
   border-radius: 10px;
   cursor: pointer;
   font-weight: 500;
+  text-transform: capitalize;
+  color: #000,
 }
 
 .content .people .person button:hover{
   background-color: #dbdbdb;
+  color: #000,
+}
+
+.content .people .person .follow{
+  background-color: #0095f6;
+  color: #fff
+}
+
+.content .people .person .follow:hover{
+  background-color: #1877f2;
+}
+
+.content .people .person button:disabled{
+  pointer-events: none;
 }
 
 .content .people .person p{
