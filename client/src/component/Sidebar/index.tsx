@@ -14,6 +14,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/insta-logo.png';
 import { AuthContext } from '../../context';
+import { JwtService } from '../../services';
 import './style.css';
 
 const Sidebar:FC<{setIsModalOpen:Function}> = ({ setIsModalOpen }) => {
@@ -69,6 +70,7 @@ const Sidebar:FC<{setIsModalOpen:Function}> = ({ setIsModalOpen }) => {
         {
           label: 'Settings',
           key: 'settings',
+          onClick: () => navigate('/accounts/edit/'),
         },
         {
           label: 'Saved',
@@ -77,6 +79,10 @@ const Sidebar:FC<{setIsModalOpen:Function}> = ({ setIsModalOpen }) => {
         {
           label: 'Log out',
           key: 'logout',
+          onClick: () => {
+            JwtService.removeToken();
+            navigate('/sign-in');
+          },
         },
       ],
     },
