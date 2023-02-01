@@ -26,7 +26,7 @@ export class PostsService {
   }
 
   // get all home page posts
-  async findAll(userId: number) {
+  async findAll(userId: number, offset: number) {
     const includeFollowing = [];
     if (userId) {
       includeFollowing[0] = {
@@ -35,6 +35,7 @@ export class PostsService {
         required: true,
         as: 'followed',
         where: { followerId: userId },
+        duplicating: false,
       };
     }
     const data = await this.postRepository.findAll({
@@ -52,15 +53,30 @@ export class PostsService {
           model: User,
           attributes: [],
           required: true,
+          duplicating: false,
           include: includeFollowing,
         },
         {
           model: Like,
+          duplicating: false,
           attributes: [],
         },
       ],
       order: [['createdAt', 'DESC']],
       group: ['Post.id', 'user.id'],
+      limit: 8,
+      offset,
+    });
+
+    const postsFound = await this.postRepository.count({
+      include: [
+        {
+          model: User,
+          attributes: [],
+          required: true,
+          include: includeFollowing,
+        },
+      ],
     });
 
     const comments = await this.postRepository.findAll({
@@ -82,7 +98,7 @@ export class PostsService {
       group: ['Post.id'],
     });
 
-    return { data, comments };
+    return { data, postsFound, comments };
   }
 
   // get all the posts for one user (profile page)
