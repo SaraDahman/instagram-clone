@@ -9,6 +9,7 @@ import {
   MenuOutlined,
 } from '@ant-design/icons';
 
+import { Link } from 'react-router-dom';
 import logo from '../../assets/insta-logo.png';
 
 const sidebarContent = [
@@ -18,7 +19,7 @@ const sidebarContent = [
   },
   {
     icon: HomeOutlined,
-    label: 'Home',
+    label: <Link to="/">Home</Link>,
   },
   {
     icon: SearchOutlined,
