@@ -13,7 +13,11 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { JwtAuthGuard } from '../auth/strategy/jwt-auth-guard';
 import { GetUser } from '../auth/decorator/user.decorator';
-import { ValidationParamPipe, UsernameParamValidation } from '../../core/Pipes';
+import {
+  ValidationParamPipe,
+  UsernameParamValidation,
+  OffsetParamValidation,
+} from '../../core/Pipes';
 
 @Controller('posts')
 export class PostsController {
@@ -26,9 +30,12 @@ export class PostsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get()
-  findAll(@GetUser() userId: number) {
-    return this.postsService.findAll(userId);
+  @Get(':offset')
+  findAll(
+    @Param('offset', OffsetParamValidation) offset: number,
+    @GetUser() userId: number,
+  ) {
+    return this.postsService.findAll(userId, offset);
   }
 
   @Get('profile/:username')
