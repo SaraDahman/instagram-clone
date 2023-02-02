@@ -3,7 +3,7 @@ import './App.css';
 import './component/Sidebar/style.css';
 import { Outlet } from 'react-router-dom';
 import { Layout } from 'antd';
-import { Sidebar } from './component';
+import { Sidebar, AddPosts } from './component';
 import { AuthProvider } from './context/AuthContext';
 
 const {
@@ -12,6 +12,7 @@ const {
 
 const App:FC = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <AuthProvider>
@@ -31,12 +32,13 @@ const App:FC = () => {
             else setCollapsed(false);
           }}
         >
-          <Sidebar />
+          <Sidebar setIsModalOpen={setIsModalOpen} />
         </Sider>
         <Content>
           <Outlet />
         </Content>
       </Layout>
+      <AddPosts isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
     </AuthProvider>
   );
 };

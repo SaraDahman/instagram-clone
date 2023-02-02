@@ -16,6 +16,7 @@
 
 .sub-menu .ant-menu-item {
   margin-bottom: 1.5rem;
+  border-radius: 30px;
 }
 
 .sub-menu .ant-menu-item:first-child{
@@ -29,7 +30,21 @@
 }
 
 .sub-menu .ant-menu-item:last-child{
- margin-top: auto;
+  margin-top: auto;
+}
+
+
+.sub-menu .more .ant-menu-item{
+  margin-bottom: 0.1rem;
+  border-bottom: solid #000 0.5px;
+  border-radius: 0;
+  margin: auto;
+  padding: auto;
+  background-color: #fff;
+}
+
+.sub-menu .more .ant-menu-item:last-child{
+  border: 0;
 }
 
 .menu svg{

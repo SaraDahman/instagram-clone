@@ -79,6 +79,10 @@
   cursor: pointer;
 }
 
+.second-row .disable{
+  pointer-events: none;
+}
+
 .bio {
   font-size: 12px;
   color: rgba(13, 13, 13, 0.77);

@@ -64,7 +64,7 @@ const ProfileUserInfo: FC<IUserInfoProps> = ({ user }) => {
           <button
             type="button"
             onClick={() => handleOpen('followers')}
-            disabled={!user?.followers}
+            className={!Number(user?.followers) ? 'disable' : ''}
           >
             {user?.followers}
             {' '}
@@ -73,7 +73,7 @@ const ProfileUserInfo: FC<IUserInfoProps> = ({ user }) => {
           <button
             type="button"
             onClick={() => handleOpen('following')}
-            disabled={!user?.followings}
+            className={!Number(user?.followings) ? 'disable' : ''}
           >
             {user?.followings}
             {' '}

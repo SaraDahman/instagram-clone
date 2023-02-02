@@ -6,6 +6,7 @@ import {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ApiService } from '../services';
+import Loading from '../component/Loading/Index';
 import { IContext } from '../interfaces';
 
 export const AuthContext = createContext <IContext | null>(null);
@@ -28,9 +29,10 @@ export const AuthProvider = ({ children } : {children : ReactNode}) => {
     fetchUser();
   }, []);
 
-  return (
-    <AuthContext.Provider value={{ user, setUser }}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return !user ? (<Loading />)
+    : (
+      <AuthContext.Provider value={{ user, setUser }}>
+        {children}
+      </AuthContext.Provider>
+    );
 };
