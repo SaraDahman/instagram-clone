@@ -17,7 +17,7 @@ const Suggestions :FC = () => {
           <Link to={loggedUser?.user?.username}>
             <Avatar
               className="current-user-avatar"
-              src="https://images.pexels.com/photos/6159139/pexels-photo-6159139.jpeg"
+              src={loggedUser?.user?.image}
               alt="user-avatar"
             />
           </Link>

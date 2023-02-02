@@ -15,18 +15,17 @@ import { AuthContext } from '../../context/AuthContext';
 import { ApiService } from '../../services';
 import './style.css';
 
-const AddPosts:FC = () => {
+const AddPosts:FC<{
+  isModalOpen:boolean,
+  setIsModalOpen:Function
+}> = ({ isModalOpen, setIsModalOpen }) => {
   const context = useContext(AuthContext);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCaptionOpen, setIsCaptionOpen] = useState<boolean>(false);
   const [image, setImage] = useState<string>('');
   const [openMultiPic, setOpenMultiPic] = useState(false);
   const [caption, setCaption] = useState<string>('');
   const [sliderImages, setSliderImages] = useState<string[]>([]);
-
-  const showModal = ():void => {
-    setIsModalOpen(true);
-  };
 
   const handleOk = ():void => {
     setIsModalOpen(false);
@@ -60,9 +59,6 @@ const AddPosts:FC = () => {
 
   return (
     <div>
-      <Button type="primary" onClick={showModal}>
-        Open Modal
-      </Button>
       <Modal
         open={isModalOpen}
         onOk={handleOk}
