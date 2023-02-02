@@ -64,7 +64,7 @@ export class PostsService {
       ],
       order: [['createdAt', 'DESC']],
       group: ['Post.id', 'user.id'],
-      limit: 8,
+      limit: 3,
       offset,
     });
 
