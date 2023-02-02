@@ -44,7 +44,7 @@ export class PostsController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get(':id')
+  @Get('postDetails/:id')
   findOne(@Param('id', ValidationParamPipe) id: number) {
     return this.postsService.findOne(id);
   }
