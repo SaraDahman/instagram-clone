@@ -1,0 +1,17 @@
+.all-seen-post-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+  height: 340px;
+}
+
+.all-seen-post-container img {
+ margin-top: 20px; 
+}
+
+.first-para {
+  color: #262626; 
+   font-size: 20px; 
+   margin-top: 20px 
+}

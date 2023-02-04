@@ -22,6 +22,7 @@
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-easy-crop": "^4.6.3",
+    "react-infinite-scroll-component": "^6.1.0",
     "react-modal": "^3.16.1",
     "react-router-dom": "^6.6.1",
     "react-scripts": "5.0.1",
