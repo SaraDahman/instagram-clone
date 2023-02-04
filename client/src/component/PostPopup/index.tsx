@@ -37,7 +37,8 @@ const PosPopUp:FC<{
     const fetchPost = async () => {
       try {
         setLoading(true);
-        const { data: { data, comments } } = await ApiService.get(`/api/v1/posts/${id}`);
+        const { data: { data, comments } } = await
+        ApiService.get(`/api/v1/posts/postDetails/${id}`);
         setPost(data);
         setAllComments(comments);
         setLoading(false);
